@@ -597,15 +597,14 @@
           "preservePageBreaks": "${preservePageBreaks}"
         }
       },
-      "size": 2974,
-      "md5": "f81e323a7fa3e6dec5eb0abb29f41a32",
-      "sha256": "57f732f9428ede3354e53e5395658a3bc5a745b529d143db5de9a0ddde61722f",
+      "size": 15231,
+      "md5": "69d9a9c93b970b49904efcd0341ad7b8",
+      "sha256": "b1744ad5f64762cedb510fd06d502bc61ab583ab58bcbd6422d9f44aa0ebc5d5",
       "isOfficial": true,
       "downloadUrls": {
         "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/master/packages/doc-converter.zip",
         "github_cdn": "https://cdn.jsdelivr.net/gh/SuJiuOvO/Toolbox-Community-Registry@main/packages/doc-converter.zip",
-        "github": "https://raw.githubusercontent.com/SuJiuOvO/Toolbox-Community-Registry/main/packages/doc-converter.zip",
-        "release": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/v1.0.0/doc-converter.zip"
+        "github": "https://raw.githubusercontent.com/SuJiuOvO/Toolbox-Community-Registry/main/packages/doc-converter.zip"
       },
       "downloadUrl": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/master/packages/doc-converter.zip"
     },
@@ -652,15 +651,14 @@
           "fileName": "${fileName}"
         }
       },
-      "size": 842,
-      "md5": "779ea4740995d5248cf0f4e99ab57e18",
-      "sha256": "c89e27f45252573a2984c6e51eab23687b8101f9753f0ae9481fa4e55da79394",
+      "size": 1424,
+      "md5": "d04fe241526720dc7419fe7c628ed331",
+      "sha256": "4f5dd6d2a1f5ff151e4f9a023c36ff5dcff131da438712d0b63d0a240e08fc72",
       "isOfficial": true,
       "downloadUrls": {
         "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/master/packages/downloader-toolbox.zip",
         "github_cdn": "https://cdn.jsdelivr.net/gh/SuJiuOvO/Toolbox-Community-Registry@main/packages/downloader-toolbox.zip",
-        "github": "https://raw.githubusercontent.com/SuJiuOvO/Toolbox-Community-Registry/main/packages/downloader-toolbox.zip",
-        "release": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/v1.0.0/downloader-toolbox.zip"
+        "github": "https://raw.githubusercontent.com/SuJiuOvO/Toolbox-Community-Registry/main/packages/downloader-toolbox.zip"
       },
       "downloadUrl": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/master/packages/downloader-toolbox.zip"
     },
@@ -928,15 +926,14 @@
           "exportZip": "${exportZip}"
         }
       },
-      "size": 1823,
-      "md5": "ae8239b0e159203eb6bff50a80d7eade",
-      "sha256": "0c002973017d6aff04873116e215bcf2446a7000e5f008eb13c1e24845b0865d",
+      "size": 6598,
+      "md5": "cfb3c729261f6bf1b5767c5b72315318",
+      "sha256": "f5403f688d6db3312b93fa14b4b9e73dfaa680f8adaba3db0879ce559301def3",
       "isOfficial": true,
       "downloadUrls": {
         "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/master/packages/gif-toolbox.zip",
         "github_cdn": "https://cdn.jsdelivr.net/gh/SuJiuOvO/Toolbox-Community-Registry@main/packages/gif-toolbox.zip",
-        "github": "https://raw.githubusercontent.com/SuJiuOvO/Toolbox-Community-Registry/main/packages/gif-toolbox.zip",
-        "release": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/v1.0.0/gif-toolbox.zip"
+        "github": "https://raw.githubusercontent.com/SuJiuOvO/Toolbox-Community-Registry/main/packages/gif-toolbox.zip"
       },
       "downloadUrl": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/master/packages/gif-toolbox.zip"
     },
@@ -1040,15 +1037,14 @@
           "tolerance": "${tolerance}"
         }
       },
-      "size": 1204,
-      "md5": "141a46e8c018e2dfe62e396447ef3b0e",
-      "sha256": "5d05f02abc55cf3516d7ade2d111b4b0012a963633f68d8f4d60bfcaa2e61744",
+      "size": 2819,
+      "md5": "56c98ee37402ee2fe9ee0cedaf38eb6a",
+      "sha256": "4ec4ce5a12b09c1eb578f38c551b4c212574f0afb8be7b3ae7bc5ac7a656ca8d",
       "isOfficial": true,
       "downloadUrls": {
         "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/master/packages/id-photo-bg.zip",
         "github_cdn": "https://cdn.jsdelivr.net/gh/SuJiuOvO/Toolbox-Community-Registry@main/packages/id-photo-bg.zip",
-        "github": "https://raw.githubusercontent.com/SuJiuOvO/Toolbox-Community-Registry/main/packages/id-photo-bg.zip",
-        "release": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/v1.0.0/id-photo-bg.zip"
+        "github": "https://raw.githubusercontent.com/SuJiuOvO/Toolbox-Community-Registry/main/packages/id-photo-bg.zip"
       },
       "downloadUrl": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/master/packages/id-photo-bg.zip"
     },
@@ -1143,15 +1139,14 @@
           "maxEdge": "${maxEdge}"
         }
       },
-      "size": 1093,
-      "md5": "7346e4dfcc973d9c8043d3720532d739",
-      "sha256": "a1bd1d5dbf77861ee3034379d77c738e8fb32f490e46d7469beee7cdc6d6d57e",
+      "size": 2587,
+      "md5": "732468d9cd8705ed499504d15aea47ea",
+      "sha256": "4020aa286c3b2195a3d07f4316de3cd5d57d29afed021d529bfb2dba9c7bd01d",
       "isOfficial": true,
       "downloadUrls": {
         "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/master/packages/image-compress.zip",
         "github_cdn": "https://cdn.jsdelivr.net/gh/SuJiuOvO/Toolbox-Community-Registry@main/packages/image-compress.zip",
-        "github": "https://raw.githubusercontent.com/SuJiuOvO/Toolbox-Community-Registry/main/packages/image-compress.zip",
-        "release": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/v1.0.0/image-compress.zip"
+        "github": "https://raw.githubusercontent.com/SuJiuOvO/Toolbox-Community-Registry/main/packages/image-compress.zip"
       },
       "downloadUrl": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/master/packages/image-compress.zip"
     },
@@ -1235,15 +1230,14 @@
           "height": "${targetHeight}"
         }
       },
-      "size": 938,
-      "md5": "721f3a492c505e5303be95bc9c46a61d",
-      "sha256": "453dce4a924b5aab6fb4784d7624d0282fba479e8c553d3f855bb4d4b03d8e88",
+      "size": 2214,
+      "md5": "3fad1479987872c80f06aa332a17941b",
+      "sha256": "b9c16663ba62b5358d40c590c6e04ae1edd07956becddaf84fdc2695de15c565",
       "isOfficial": true,
       "downloadUrls": {
         "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/master/packages/image-resize.zip",
         "github_cdn": "https://cdn.jsdelivr.net/gh/SuJiuOvO/Toolbox-Community-Registry@main/packages/image-resize.zip",
-        "github": "https://raw.githubusercontent.com/SuJiuOvO/Toolbox-Community-Registry/main/packages/image-resize.zip",
-        "release": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/v1.0.0/image-resize.zip"
+        "github": "https://raw.githubusercontent.com/SuJiuOvO/Toolbox-Community-Registry/main/packages/image-resize.zip"
       },
       "downloadUrl": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/master/packages/image-resize.zip"
     },
@@ -1414,15 +1408,14 @@
           "exportFormat": "${exportFormat}"
         }
       },
-      "size": 1447,
-      "md5": "6c584b4f2c862191d090abf26e010292",
-      "sha256": "5d3df556f8ce2db80aac9a7fdb7917116c1ed7e7100bf236036fe1a5e48f9429",
+      "size": 4624,
+      "md5": "0a895bbc0fe75298557169fc7e910b6a",
+      "sha256": "b845f730b0cc0647651bfb2865cfd8777c47491303105369f4f2c792fcd50276",
       "isOfficial": true,
       "downloadUrls": {
         "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/master/packages/livephoto-toolbox.zip",
         "github_cdn": "https://cdn.jsdelivr.net/gh/SuJiuOvO/Toolbox-Community-Registry@main/packages/livephoto-toolbox.zip",
-        "github": "https://raw.githubusercontent.com/SuJiuOvO/Toolbox-Community-Registry/main/packages/livephoto-toolbox.zip",
-        "release": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/v1.0.0/livephoto-toolbox.zip"
+        "github": "https://raw.githubusercontent.com/SuJiuOvO/Toolbox-Community-Registry/main/packages/livephoto-toolbox.zip"
       },
       "downloadUrl": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/master/packages/livephoto-toolbox.zip"
     },
@@ -1742,15 +1735,14 @@
           "compressStrategy": "${compressStrategy}"
         }
       },
-      "size": 2026,
-      "md5": "46fa7a5b7ac78b708fe6c81517340b7a",
-      "sha256": "0a9057d1c91ec82af61ba4b3e0cc048fbdad01e9b18eda46b6e97a97e3ef575b",
+      "size": 8157,
+      "md5": "afcec5d26cf575c1fe76706e281df72e",
+      "sha256": "cbfed5baf57c20898dae6e4262b2b14577d8fd5e3326601704d8c6773cb17907",
       "isOfficial": true,
       "downloadUrls": {
         "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/master/packages/pdf-toolbox.zip",
         "github_cdn": "https://cdn.jsdelivr.net/gh/SuJiuOvO/Toolbox-Community-Registry@main/packages/pdf-toolbox.zip",
-        "github": "https://raw.githubusercontent.com/SuJiuOvO/Toolbox-Community-Registry/main/packages/pdf-toolbox.zip",
-        "release": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/v1.0.0/pdf-toolbox.zip"
+        "github": "https://raw.githubusercontent.com/SuJiuOvO/Toolbox-Community-Registry/main/packages/pdf-toolbox.zip"
       },
       "downloadUrl": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/master/packages/pdf-toolbox.zip"
     },
@@ -1861,15 +1853,14 @@
           "size": "${size}"
         }
       },
-      "size": 1154,
-      "md5": "a06937af5c011e3b550d7219e68ecd14",
-      "sha256": "38fcafca230471c42dc4f97dc1ed7aec1465d711786d730c06cd6463ff715bd3",
+      "size": 2880,
+      "md5": "174d7a7120f96da88216390becf31f47",
+      "sha256": "0791a7c97a323fa667b6690e8388d8a4d44e271f59427e4dbd32427d142549f0",
       "isOfficial": true,
       "downloadUrls": {
         "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/master/packages/qr-toolbox.zip",
         "github_cdn": "https://cdn.jsdelivr.net/gh/SuJiuOvO/Toolbox-Community-Registry@main/packages/qr-toolbox.zip",
-        "github": "https://raw.githubusercontent.com/SuJiuOvO/Toolbox-Community-Registry/main/packages/qr-toolbox.zip",
-        "release": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/v1.0.0/qr-toolbox.zip"
+        "github": "https://raw.githubusercontent.com/SuJiuOvO/Toolbox-Community-Registry/main/packages/qr-toolbox.zip"
       },
       "downloadUrl": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/master/packages/qr-toolbox.zip"
     },
@@ -1992,15 +1983,14 @@
           "format": "${audioTargetFormat}"
         }
       },
-      "size": 1299,
-      "md5": "17ad5935cabcfee647d9870c02c8ef65",
-      "sha256": "17f0b4ea42bd7e6bc51bbab56d3029146b1009938f1551f8651312c1aaa97612",
+      "size": 3408,
+      "md5": "701486000180235501810b9fe6e9ec1a",
+      "sha256": "8978f8181765cc201b8bb640eb77c069ff1086afbd336db025a5fbb7ea822eff",
       "isOfficial": true,
       "downloadUrls": {
         "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/master/packages/video-audio-toolbox.zip",
         "github_cdn": "https://cdn.jsdelivr.net/gh/SuJiuOvO/Toolbox-Community-Registry@main/packages/video-audio-toolbox.zip",
-        "github": "https://raw.githubusercontent.com/SuJiuOvO/Toolbox-Community-Registry/main/packages/video-audio-toolbox.zip",
-        "release": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/v1.0.0/video-audio-toolbox.zip"
+        "github": "https://raw.githubusercontent.com/SuJiuOvO/Toolbox-Community-Registry/main/packages/video-audio-toolbox.zip"
       },
       "downloadUrl": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/master/packages/video-audio-toolbox.zip"
     }

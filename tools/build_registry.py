@@ -35,12 +35,15 @@ for plugin_id in sorted(os.listdir(PLUGINS_DIR)):
     zip_path = os.path.join(PACKAGES_DIR, f"{plugin_id}.zip")
     with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as z:
         for root, _, files in os.walk(plugin_path):
-            for file in files:
+            for file in sorted(files):
                 if file.endswith(".md"):
                     continue
                 file_full = os.path.join(root, file)
-                rel_path = os.path.relpath(file_full, plugin_path)
-                z.write(file_full, rel_path)
+                rel_path = os.path.relpath(file_full, plugin_path).replace("\\", "/")
+                with open(file_full, "rb") as f_in:
+                    file_bytes = f_in.read()
+                zinfo = zipfile.ZipInfo(rel_path, date_time=(2026, 1, 1, 0, 0, 0))
+                z.writestr(zinfo, file_bytes)
 
     with open(zip_path, "rb") as zf:
         data = zf.read()
@@ -51,6 +54,7 @@ for plugin_id in sorted(os.listdir(PLUGINS_DIR)):
     entry["size"] = len(data)
     entry["md5"] = md5_val
     entry["sha256"] = sha256_val
+    entry["isOfficial"] = manifest.get("isOfficial", True)
     entry["downloadUrls"] = {
         "gitee": f"https://gitee.com/{GITEE_USER}/{GITEE_REPO}/raw/master/packages/{plugin_id}.zip",
         "github_cdn": f"https://cdn.jsdelivr.net/gh/{GITHUB_USER}/{GITHUB_REPO}@main/packages/{plugin_id}.zip",

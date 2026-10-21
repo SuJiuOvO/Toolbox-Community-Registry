@@ -9,12 +9,17 @@ on:
   pull_request:
     branches: [ main, master ]
 
+permissions:
+  contents: write
+
 jobs:
   validate-and-build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -28,7 +33,12 @@ jobs:
       - name: Commit & Push Changes
         if: github.event_name == 'push'
         run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action Bot"
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
           git add packages/ registry/index.json
-          git diff --quiet && git diff --staged --quiet || (git commit -m "chore(auto): build packages and regenerate index.json [skip ci]" && git push)
+          if ! git diff --staged --quiet; then
+            git commit -m "chore(auto): build packages and regenerate index.json [skip ci]"
+            git push origin HEAD:${{ github.ref_name }}
+          else
+            echo "No changes to commit"
+          fi
