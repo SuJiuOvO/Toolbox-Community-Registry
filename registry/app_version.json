@@ -10,16 +10,18 @@
       "mirrors": [
         "https://github.com/SuJiuOvO/Multi-Toolbox/releases/download/v1.0.0/app-windows.zip"
       ],
-      "sha256": "",
-      "installType": "zip_replace"
+      "sha256": "e656dc353cbaba39e7df6e9ab25180adee33c2e20556fa7e0dc6b850c60ca90b",
+      "installType": "zip_replace",
+      "size": 71556160
     },
     "android": {
       "url": "https://gitee.com/sujiuovo/multi-toolbox/releases/download/v1.0.0/app-release.apk",
       "mirrors": [
         "https://github.com/SuJiuOvO/Multi-Toolbox/releases/download/v1.0.0/app-release.apk"
       ],
-      "sha256": "",
-      "installType": "apk_installer"
+      "sha256": "2323faa683506aa32dc7f96f61477ec0f96be6409202b0bda388495407025985",
+      "installType": "apk_installer",
+      "size": 277230357
     }
   }
 }
