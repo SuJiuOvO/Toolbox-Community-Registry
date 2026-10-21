@@ -1,0 +1,25 @@
+{
+  "latestVersion": "1.0.0",
+  "minRequiredVersion": "1.0.0",
+  "releaseDate": "2026-10-21",
+  "title": "百宝箱 v1.0.0 正式发布",
+  "releaseNotes": "1. 全面接入云端多源镜像与社区模块市场 (Gitee / GitHub / CDN)；\n2. 支持模块名称、简介、技术参数的深度搜索；\n3. 支持模块本地格式校验与安装；\n4. 修复 Windows 端分类筛选鼠标拖拽滑动，新增全屏分类展开筛选；\n5. 内置最低客户端版本约束（minAppVersion）安全机制。",
+  "platforms": {
+    "windows": {
+      "url": "https://gitee.com/sujiuovo/multi-toolbox/releases/download/v1.0.0/app-windows.zip",
+      "mirrors": [
+        "https://github.com/SuJiuOvO/Multi-Toolbox/releases/download/v1.0.0/app-windows.zip"
+      ],
+      "sha256": "",
+      "installType": "zip_replace"
+    },
+    "android": {
+      "url": "https://gitee.com/sujiuovo/multi-toolbox/releases/download/v1.0.0/app-release.apk",
+      "mirrors": [
+        "https://github.com/SuJiuOvO/Multi-Toolbox/releases/download/v1.0.0/app-release.apk"
+      ],
+      "sha256": "",
+      "installType": "apk_installer"
+    }
+  }
+}

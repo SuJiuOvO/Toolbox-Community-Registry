@@ -1,0 +1,2008 @@
+{
+  "version": "1.0.0",
+  "updatedAt": "2026-10-21T14:00:00Z",
+  "description": "Multi-Toolbox 社区功能模块聚合清单 (国内/国际多源镜像支持)",
+  "mirrors": {
+    "gitee": {
+      "name": "国内镜像 (Gitee 极速)",
+      "baseUrl": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/master",
+      "pingUrl": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/master/registry/ping.json"
+    },
+    "github_cdn": {
+      "name": "全球加速 CDN (jsDelivr)",
+      "baseUrl": "https://cdn.jsdelivr.net/gh/SuJiuOvO/Toolbox-Community-Registry@main",
+      "pingUrl": "https://cdn.jsdelivr.net/gh/SuJiuOvO/Toolbox-Community-Registry@main/registry/ping.json"
+    },
+    "github": {
+      "name": "GitHub 官方直连",
+      "baseUrl": "https://raw.githubusercontent.com/SuJiuOvO/Toolbox-Community-Registry/main",
+      "pingUrl": "https://raw.githubusercontent.com/SuJiuOvO/Toolbox-Community-Registry/main/registry/ping.json"
+    }
+  },
+  "plugins": [
+    {
+      "id": "doc-converter",
+      "name": "万能文档互转中心",
+      "version": "2.3.0",
+      "minAppVersion": "1.0.0",
+      "category": "document",
+      "platforms": [
+        "universal"
+      ],
+      "description": "支持图片转PPT、PPT转长图/图片、CAD(DXF)矢量转PDF、PPT转PDF、PDF转PPT、Excel转PDF、Markdown转PDF、TXT转Word、Word转PDF、PDF转可编辑Word等各大格式互转。Windows端调用Office/WPS原生引擎实现100%保真导出与Word反向重构；Android端支持调用手机WPS/Office跳转导出并提供详细步骤指引，同时保留离线轻量引擎。",
+      "icon": "doc_converter",
+      "author": "Toolbox Team",
+      "engineType": "native_tool",
+      "inputs": [
+        {
+          "id": "subTool",
+          "label": "转换功能模式",
+          "type": "select",
+          "defaultValue": "images_to_pptx",
+          "options": [
+            {
+              "label": "🖼️ 图片批量转 PPT (全平台通用)",
+              "value": "images_to_pptx",
+              "platforms": [
+                "universal"
+              ]
+            },
+            {
+              "label": "📷 PPT 转图片 / 拼长图 (Windows 原生 Office · 100%保真)",
+              "value": "pptx_to_images",
+              "platforms": [
+                "windows"
+              ]
+            },
+            {
+              "label": "📷 PPT 转图片 / 长图 (调起手机 WPS / Office 导出 · 官方保真)",
+              "value": "pptx_to_images_android_office",
+              "platforms": [
+                "android"
+              ]
+            },
+            {
+              "label": "📐 CAD(DXF) 矢量转 PDF (全平台通用)",
+              "value": "cad_to_pdf",
+              "platforms": [
+                "universal"
+              ]
+            },
+            {
+              "label": "📽️ PDF 转 PPT 演示文稿 (全平台通用)",
+              "value": "pdf_to_pptx",
+              "platforms": [
+                "universal"
+              ]
+            },
+            {
+              "label": "📝 Markdown 文档转 PDF (全平台通用)",
+              "value": "markdown_to_pdf",
+              "platforms": [
+                "universal"
+              ]
+            },
+            {
+              "label": "📄 TXT 纯文本转 Word (全平台通用)",
+              "value": "txt_to_docx",
+              "platforms": [
+                "universal"
+              ]
+            },
+            {
+              "label": "✏️ PDF 转可编辑 Word (需 Windows 安装 Office/WPS · 完整格式重构)",
+              "value": "pdf_to_docx",
+              "platforms": [
+                "windows"
+              ]
+            },
+            {
+              "label": "✏️ PDF 转 Word (调起手机 WPS / Office 导出 · 官方高保真)",
+              "value": "pdf_to_docx_android_office",
+              "platforms": [
+                "android"
+              ]
+            },
+            {
+              "label": "✏️ PDF 转 Word (本地离线排版引擎 · 智能清洗段落与排版)",
+              "value": "pdf_to_docx_android_light",
+              "platforms": [
+                "android"
+              ]
+            },
+            {
+              "label": "📑 PPT 转 PDF (需 Windows 安装 Office/WPS · 100%保真)",
+              "value": "pptx_to_pdf",
+              "platforms": [
+                "windows"
+              ]
+            },
+            {
+              "label": "📘 Word 转 PDF (需 Windows 安装 Office/WPS · 100%保真)",
+              "value": "docx_to_pdf",
+              "platforms": [
+                "windows"
+              ]
+            },
+            {
+              "label": "📊 Excel 转 PDF (需 Windows 安装 Office/WPS · 100%保真)",
+              "value": "excel_to_pdf",
+              "platforms": [
+                "windows"
+              ]
+            },
+            {
+              "label": "📑 PPT 转 PDF (调起手机 WPS / Office 导出)",
+              "value": "pptx_to_pdf_android",
+              "platforms": [
+                "android"
+              ]
+            },
+            {
+              "label": "📘 Word 转 PDF (调起手机 WPS / Office 导出)",
+              "value": "docx_to_pdf_android",
+              "platforms": [
+                "android"
+              ]
+            },
+            {
+              "label": "📊 Excel 转 PDF (调起手机 WPS / Office 导出 · 官方保真)",
+              "value": "excel_to_pdf_android_office",
+              "platforms": [
+                "android"
+              ]
+            },
+            {
+              "label": "📊 Excel 转 PDF (本地离线轻量引擎 · 纯表格转换)",
+              "value": "excel_to_pdf_android_light",
+              "platforms": [
+                "android"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "imagesInput",
+          "label": "选择待转换图片 (支持多选，按次序排版为幻灯片)",
+          "type": "file_picker",
+          "required": true,
+          "allowMultiple": true,
+          "allowedExtensions": [
+            "jpg",
+            "jpeg",
+            "png",
+            "webp",
+            "bmp"
+          ],
+          "visibleIf": {
+            "field": "subTool",
+            "equals": "images_to_pptx"
+          }
+        },
+        {
+          "id": "aspect",
+          "label": "幻灯片画面比例与方向",
+          "type": "select",
+          "defaultValue": "auto",
+          "options": [
+            {
+              "label": "自适应匹配 (推荐)",
+              "value": "auto"
+            },
+            {
+              "label": "16:9 宽屏 (横向)",
+              "value": "16:9"
+            },
+            {
+              "label": "4:3 标屏 (横向)",
+              "value": "4:3"
+            },
+            {
+              "label": "3:4 竖屏 (手机/A4)",
+              "value": "portrait"
+            }
+          ],
+          "visibleIf": {
+            "field": "subTool",
+            "equals": "images_to_pptx"
+          }
+        },
+        {
+          "id": "pptxToImagesInput",
+          "label": "选择待提取 PPT 演示文稿 (.pptx)",
+          "type": "file_picker",
+          "required": true,
+          "allowMultiple": false,
+          "allowedExtensions": [
+            "pptx"
+          ],
+          "visibleIf": {
+            "field": "subTool",
+            "in": [
+              "pptx_to_images",
+              "pptx_to_images_android_office"
+            ]
+          }
+        },
+        {
+          "id": "exportMode",
+          "label": "图片输出模式",
+          "type": "select",
+          "defaultValue": "pages",
+          "options": [
+            {
+              "label": "📄 逐页切图 (单张高清图片)",
+              "value": "pages"
+            },
+            {
+              "label": "📜 竖向无缝拼长图 (全部幻灯片拼接为单张超清长图)",
+              "value": "long_image"
+            }
+          ],
+          "visibleIf": {
+            "field": "subTool",
+            "in": [
+              "pptx_to_images"
+            ]
+          }
+        },
+        {
+          "id": "pptResolution",
+          "label": "画面输出分辨率与清晰度",
+          "type": "select",
+          "defaultValue": "1080p",
+          "options": [
+            {
+              "label": "1080P 全高清 (1920 × 1080 · 推荐)",
+              "value": "1080p"
+            },
+            {
+              "label": "2K 超清 (2560 × 1440 · 细腻呈现)",
+              "value": "2k"
+            },
+            {
+              "label": "4K 极清 (3840 × 2160 · 商业级高精度)",
+              "value": "4k"
+            },
+            {
+              "label": "720P 标清 (1280 × 720 · 紧凑省空间)",
+              "value": "720p"
+            }
+          ],
+          "visibleIf": {
+            "field": "subTool",
+            "in": [
+              "pptx_to_images"
+            ]
+          }
+        },
+        {
+          "id": "imgFormat",
+          "label": "导出图片格式",
+          "type": "select",
+          "defaultValue": "png",
+          "options": [
+            {
+              "label": "PNG 高清无损图片 (推荐)",
+              "value": "png"
+            },
+            {
+              "label": "JPG 紧凑图片 (体积更小)",
+              "value": "jpg"
+            }
+          ],
+          "visibleIf": {
+            "field": "subTool",
+            "in": [
+              "pptx_to_images"
+            ]
+          }
+        },
+        {
+          "id": "bundleZip",
+          "label": "多张图片时自动打包为 ZIP 压缩包",
+          "type": "switch",
+          "defaultValue": true,
+          "visibleIf": {
+            "field": "subTool",
+            "in": [
+              "pptx_to_images"
+            ]
+          }
+        },
+        {
+          "id": "cadInput",
+          "label": "选择 CAD 图纸文件 (.dxf 全矢量)",
+          "type": "file_picker",
+          "required": true,
+          "allowMultiple": false,
+          "allowedExtensions": [
+            "dxf"
+          ],
+          "visibleIf": {
+            "field": "subTool",
+            "equals": "cad_to_pdf"
+          }
+        },
+        {
+          "id": "cadPageSize",
+          "label": "图纸 PDF 纸张规格",
+          "type": "select",
+          "defaultValue": "A4",
+          "options": [
+            {
+              "label": "标准 A4 (210 × 297 mm)",
+              "value": "A4"
+            },
+            {
+              "label": "中型 A3 (297 × 420 mm 工程图)",
+              "value": "A3"
+            },
+            {
+              "label": "大型 A2 (420 × 594 mm 建筑施工图)",
+              "value": "A2"
+            }
+          ],
+          "visibleIf": {
+            "field": "subTool",
+            "equals": "cad_to_pdf"
+          }
+        },
+        {
+          "id": "cadOrientation",
+          "label": "页面方向",
+          "type": "select",
+          "defaultValue": "auto",
+          "options": [
+            {
+              "label": "自动匹配长宽比 (推荐)",
+              "value": "auto"
+            },
+            {
+              "label": "横向 (Landscape)",
+              "value": "landscape"
+            },
+            {
+              "label": "纵向 (Portrait)",
+              "value": "portrait"
+            }
+          ],
+          "visibleIf": {
+            "field": "subTool",
+            "equals": "cad_to_pdf"
+          }
+        },
+        {
+          "id": "pptxToPdfInput",
+          "label": "选择待转换 PPT 演示文稿 (.pptx)",
+          "type": "file_picker",
+          "required": true,
+          "allowMultiple": false,
+          "allowedExtensions": [
+            "pptx"
+          ],
+          "visibleIf": {
+            "field": "subTool",
+            "in": [
+              "pptx_to_pdf",
+              "pptx_to_pdf_android"
+            ]
+          }
+        },
+        {
+          "id": "pdfToPptxInput",
+          "label": "选择待转换 PDF 文档 (.pdf)",
+          "type": "file_picker",
+          "required": true,
+          "allowMultiple": false,
+          "allowedExtensions": [
+            "pdf"
+          ],
+          "visibleIf": {
+            "field": "subTool",
+            "equals": "pdf_to_pptx"
+          }
+        },
+        {
+          "id": "pdfAspect",
+          "label": "幻灯片画面比例与方向",
+          "type": "select",
+          "defaultValue": "auto",
+          "options": [
+            {
+              "label": "自适应匹配 (推荐)",
+              "value": "auto"
+            },
+            {
+              "label": "16:9 宽屏 (横向)",
+              "value": "16:9"
+            },
+            {
+              "label": "4:3 标屏 (横向)",
+              "value": "4:3"
+            },
+            {
+              "label": "3:4 竖屏 (手机/A4)",
+              "value": "portrait"
+            }
+          ],
+          "visibleIf": {
+            "field": "subTool",
+            "equals": "pdf_to_pptx"
+          }
+        },
+        {
+          "id": "pdfDpi",
+          "label": "幻灯片光栅化渲染分辨率",
+          "type": "select",
+          "defaultValue": "150",
+          "options": [
+            {
+              "label": "150 DPI 高清 (推荐)",
+              "value": "150"
+            },
+            {
+              "label": "300 DPI 超清 (高精印刷)",
+              "value": "300"
+            }
+          ],
+          "visibleIf": {
+            "field": "subTool",
+            "equals": "pdf_to_pptx"
+          }
+        },
+        {
+          "id": "excelInput",
+          "label": "选择 Excel 工作簿或表格数据 (.xlsx, .csv, .tsv)",
+          "type": "file_picker",
+          "required": true,
+          "allowMultiple": false,
+          "allowedExtensions": [
+            "xlsx",
+            "csv",
+            "tsv"
+          ],
+          "visibleIf": {
+            "field": "subTool",
+            "in": [
+              "excel_to_pdf",
+              "excel_to_pdf_android",
+              "excel_to_pdf_android_office",
+              "excel_to_pdf_android_light"
+            ]
+          }
+        },
+        {
+          "id": "mdInput",
+          "label": "选择 Markdown 文本文档 (.md, .markdown)",
+          "type": "file_picker",
+          "required": true,
+          "allowMultiple": false,
+          "allowedExtensions": [
+            "md",
+            "markdown",
+            "txt"
+          ],
+          "visibleIf": {
+            "field": "subTool",
+            "equals": "markdown_to_pdf"
+          }
+        },
+        {
+          "id": "txtInput",
+          "label": "选择 TXT 纯文本文件 (.txt, .log, .ini)",
+          "type": "file_picker",
+          "required": true,
+          "allowMultiple": false,
+          "allowedExtensions": [
+            "txt",
+            "log",
+            "ini"
+          ],
+          "visibleIf": {
+            "field": "subTool",
+            "equals": "txt_to_docx"
+          }
+        },
+        {
+          "id": "txtTemplate",
+          "label": "Word 智能排版模板",
+          "type": "select",
+          "defaultValue": "standard",
+          "options": [
+            {
+              "label": "🏛️ 标准公文规范 (仿宋+黑体 · 2字符首行缩进 · 1.25倍行距)",
+              "value": "standard"
+            },
+            {
+              "label": "🎓 高校学术论文 (宋体+Times · 1.5倍行距 · 规范大纲)",
+              "value": "academic"
+            },
+            {
+              "label": "📖 随笔小说阅读 (五号楷体 · 紧凑段落 · 舒适行距)",
+              "value": "reading"
+            },
+            {
+              "label": "💻 技术源码日志 (等宽Consolas · 紧凑代码无缩进)",
+              "value": "code_log"
+            }
+          ],
+          "visibleIf": {
+            "field": "subTool",
+            "equals": "txt_to_docx"
+          }
+        },
+        {
+          "id": "docxInput",
+          "label": "选择 Microsoft Word 文档 (.docx)",
+          "type": "file_picker",
+          "required": true,
+          "allowMultiple": false,
+          "allowedExtensions": [
+            "docx"
+          ],
+          "visibleIf": {
+            "field": "subTool",
+            "in": [
+              "docx_to_pdf",
+              "docx_to_pdf_android"
+            ]
+          }
+        },
+        {
+          "id": "pdfToDocxInput",
+          "label": "选择待转换 PDF 文档 (.pdf)",
+          "type": "file_picker",
+          "required": true,
+          "allowMultiple": false,
+          "allowedExtensions": [
+            "pdf"
+          ],
+          "visibleIf": {
+            "field": "subTool",
+            "in": [
+              "pdf_to_docx",
+              "pdf_to_docx_android_office",
+              "pdf_to_docx_android_light"
+            ]
+          }
+        },
+        {
+          "id": "preservePageBreaks",
+          "label": "严格保留 PDF 原文跨页分页符",
+          "type": "switch",
+          "defaultValue": true,
+          "visibleIf": {
+            "field": "subTool",
+            "in": [
+              "pdf_to_docx",
+              "pdf_to_docx_android_light"
+            ]
+          }
+        }
+      ],
+      "action": {
+        "handler": "doc_converter",
+        "params": {
+          "subTool": "${subTool}",
+          "aspect": "${aspect}",
+          "format": "${imgFormat}",
+          "exportMode": "${exportMode}",
+          "resolution": "${pptResolution}",
+          "bundleZip": "${bundleZip}",
+          "pageSize": "${cadPageSize}",
+          "orientation": "${cadOrientation}",
+          "dpi": "${pdfDpi}",
+          "txtTemplate": "${txtTemplate}",
+          "preservePageBreaks": "${preservePageBreaks}"
+        }
+      },
+      "size": 2974,
+      "md5": "f81e323a7fa3e6dec5eb0abb29f41a32",
+      "sha256": "57f732f9428ede3354e53e5395658a3bc5a745b529d143db5de9a0ddde61722f",
+      "isOfficial": true,
+      "downloadUrls": {
+        "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/master/packages/doc-converter.zip",
+        "github_cdn": "https://cdn.jsdelivr.net/gh/SuJiuOvO/Toolbox-Community-Registry@main/packages/doc-converter.zip",
+        "github": "https://raw.githubusercontent.com/SuJiuOvO/Toolbox-Community-Registry/main/packages/doc-converter.zip",
+        "release": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/v1.0.0/doc-converter.zip"
+      },
+      "downloadUrl": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/master/packages/doc-converter.zip"
+    },
+    {
+      "id": "downloader-toolbox",
+      "name": "多线程分块下载器",
+      "version": "1.0.0",
+      "minAppVersion": "1.0.0",
+      "category": "network",
+      "description": "基于 HTTP Range 分段协议的高性能多线程网络下载引擎。支持 1~16 线程并行切片拉取、断点续传、实时下载测速与 ETA 剩余时间预估，采用无锁流式拼合直接落盘保存文件。",
+      "icon": "download",
+      "author": "Toolbox Team",
+      "engineType": "native_tool",
+      "inputs": [
+        {
+          "id": "url",
+          "label": "下载地址 (HTTP/HTTPS 直链)",
+          "type": "text",
+          "defaultValue": "https://speed.cloudflare.com/__down?bytes=10485760",
+          "required": true
+        },
+        {
+          "id": "threads",
+          "label": "切片并发线程数 (1~16 并行切片)",
+          "type": "slider",
+          "defaultValue": 4,
+          "min": 1,
+          "max": 16,
+          "step": 1
+        },
+        {
+          "id": "fileName",
+          "label": "自定义保存文件名 (留空则从 Content-Disposition 或 URL 自动识别)",
+          "type": "text",
+          "defaultValue": "",
+          "required": false
+        }
+      ],
+      "action": {
+        "handler": "chunk_downloader",
+        "params": {
+          "url": "${url}",
+          "threads": "${threads}",
+          "fileName": "${fileName}"
+        }
+      },
+      "size": 842,
+      "md5": "779ea4740995d5248cf0f4e99ab57e18",
+      "sha256": "c89e27f45252573a2984c6e51eab23687b8101f9753f0ae9481fa4e55da79394",
+      "isOfficial": true,
+      "downloadUrls": {
+        "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/master/packages/downloader-toolbox.zip",
+        "github_cdn": "https://cdn.jsdelivr.net/gh/SuJiuOvO/Toolbox-Community-Registry@main/packages/downloader-toolbox.zip",
+        "github": "https://raw.githubusercontent.com/SuJiuOvO/Toolbox-Community-Registry/main/packages/downloader-toolbox.zip",
+        "release": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/v1.0.0/downloader-toolbox.zip"
+      },
+      "downloadUrl": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/master/packages/downloader-toolbox.zip"
+    },
+    {
+      "id": "gif-toolbox",
+      "name": "GIF 动图制作与解析",
+      "version": "1.0.0",
+      "minAppVersion": "1.0.0",
+      "category": "media",
+      "description": "综合动态图处理工具箱：支持多张静态图片批量合成动态 GIF、视频智能提取高清动图（调色板防噪点抖动算法优化），以及 GIF 逐帧拆解并导出 PNG/JPG 序列帧与 ZIP 打包归档。",
+      "icon": "gif",
+      "author": "Toolbox Team",
+      "engineType": "native_tool",
+      "inputs": [
+        {
+          "id": "mode",
+          "label": "功能模式",
+          "type": "select",
+          "defaultValue": "images_to_gif",
+          "options": [
+            {
+              "label": "🖼️ 多图合成动图 (Images to GIF)",
+              "value": "images_to_gif"
+            },
+            {
+              "label": "🎬 视频转换动图 (Video to GIF)",
+              "value": "video_to_gif"
+            },
+            {
+              "label": "🔍 动图逐帧解析 (GIF Frame Extractor)",
+              "value": "extract_frames"
+            }
+          ]
+        },
+        {
+          "id": "images",
+          "label": "选择多张连续图片 (支持顺序合成)",
+          "type": "file_picker",
+          "required": true,
+          "allowMultiple": true,
+          "allowedExtensions": [
+            "jpg",
+            "jpeg",
+            "png",
+            "webp",
+            "bmp"
+          ],
+          "visibleIf": {
+            "field": "mode",
+            "equals": "images_to_gif"
+          }
+        },
+        {
+          "id": "delayMs",
+          "label": "单帧播放间隔 (毫秒 ms，如 200ms 对应约 5 FPS)",
+          "type": "slider",
+          "defaultValue": 200,
+          "min": 40,
+          "max": 1000,
+          "step": 20,
+          "visibleIf": {
+            "field": "mode",
+            "equals": "images_to_gif"
+          }
+        },
+        {
+          "id": "scaleWidth",
+          "label": "最大限制宽度 (0 为保持原图尺寸)",
+          "type": "select",
+          "defaultValue": 0,
+          "options": [
+            {
+              "label": "保持原图尺寸 (原始分辨率)",
+              "value": 0
+            },
+            {
+              "label": "320 px (表情包/微缩尺寸)",
+              "value": 320
+            },
+            {
+              "label": "480 px (标准适中推荐)",
+              "value": 480
+            },
+            {
+              "label": "640 px (高清宽屏)",
+              "value": 640
+            }
+          ],
+          "visibleIf": {
+            "field": "mode",
+            "equals": "images_to_gif"
+          }
+        },
+        {
+          "id": "repeat",
+          "label": "循环播放模式",
+          "type": "select",
+          "defaultValue": 0,
+          "options": [
+            {
+              "label": "无限循环播放 (默认推荐)",
+              "value": 0
+            },
+            {
+              "label": "仅播放一次后停止",
+              "value": 1
+            }
+          ],
+          "visibleIf": {
+            "field": "mode",
+            "equals": "images_to_gif"
+          }
+        },
+        {
+          "id": "videoFile",
+          "label": "选择待转换视频文件",
+          "type": "file_picker",
+          "required": true,
+          "allowMultiple": false,
+          "allowedExtensions": [
+            "mp4",
+            "mov",
+            "mkv",
+            "avi",
+            "flv",
+            "webm"
+          ],
+          "visibleIf": {
+            "field": "mode",
+            "equals": "video_to_gif"
+          }
+        },
+        {
+          "id": "startTime",
+          "label": "截取起始时间 (秒数如 0，或时间格式 00:00:02)",
+          "type": "textarea",
+          "defaultValue": "0",
+          "required": false,
+          "visibleIf": {
+            "field": "mode",
+            "equals": "video_to_gif"
+          }
+        },
+        {
+          "id": "duration",
+          "label": "截取片段时长 (秒, 建议 1~15s 控制动图体积)",
+          "type": "slider",
+          "defaultValue": 5,
+          "min": 1,
+          "max": 30,
+          "step": 1,
+          "visibleIf": {
+            "field": "mode",
+            "equals": "video_to_gif"
+          }
+        },
+        {
+          "id": "fps",
+          "label": "输出帧率 (FPS, 越高越流畅但文件越大)",
+          "type": "slider",
+          "defaultValue": 12,
+          "min": 6,
+          "max": 24,
+          "step": 1,
+          "visibleIf": {
+            "field": "mode",
+            "equals": "video_to_gif"
+          }
+        },
+        {
+          "id": "width",
+          "label": "目标宽度 (高度自适应等比缩放)",
+          "type": "select",
+          "defaultValue": 480,
+          "options": [
+            {
+              "label": "320 px (小体积/快速加载)",
+              "value": 320
+            },
+            {
+              "label": "480 px (标准平衡/推荐)",
+              "value": 480
+            },
+            {
+              "label": "640 px (清晰质感)",
+              "value": 640
+            },
+            {
+              "label": "800 px (超清大图)",
+              "value": 800
+            }
+          ],
+          "visibleIf": {
+            "field": "mode",
+            "equals": "video_to_gif"
+          }
+        },
+        {
+          "id": "gifFile",
+          "label": "选择待解析的 GIF 动图",
+          "type": "file_picker",
+          "required": true,
+          "allowMultiple": false,
+          "allowedExtensions": [
+            "gif"
+          ],
+          "visibleIf": {
+            "field": "mode",
+            "equals": "extract_frames"
+          }
+        },
+        {
+          "id": "format",
+          "label": "导出序列帧格式",
+          "type": "select",
+          "defaultValue": "png",
+          "options": [
+            {
+              "label": "PNG (无损透明度保留)",
+              "value": "png"
+            },
+            {
+              "label": "JPG (轻量化高压缩)",
+              "value": "jpg"
+            }
+          ],
+          "visibleIf": {
+            "field": "mode",
+            "equals": "extract_frames"
+          }
+        },
+        {
+          "id": "exportZip",
+          "label": "输出打包方式",
+          "type": "select",
+          "defaultValue": "true",
+          "options": [
+            {
+              "label": "同时生成 ZIP 压缩包与散列帧文件",
+              "value": "true"
+            },
+            {
+              "label": "仅生成独立散列帧图片",
+              "value": "false"
+            }
+          ],
+          "visibleIf": {
+            "field": "mode",
+            "equals": "extract_frames"
+          }
+        }
+      ],
+      "action": {
+        "handler": "gif_toolbox",
+        "params": {
+          "mode": "${mode}",
+          "delayMs": "${delayMs}",
+          "scaleWidth": "${scaleWidth}",
+          "repeat": "${repeat}",
+          "startTime": "${startTime}",
+          "duration": "${duration}",
+          "fps": "${fps}",
+          "width": "${width}",
+          "format": "${format}",
+          "exportZip": "${exportZip}"
+        }
+      },
+      "size": 1823,
+      "md5": "ae8239b0e159203eb6bff50a80d7eade",
+      "sha256": "0c002973017d6aff04873116e215bcf2446a7000e5f008eb13c1e24845b0865d",
+      "isOfficial": true,
+      "downloadUrls": {
+        "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/master/packages/gif-toolbox.zip",
+        "github_cdn": "https://cdn.jsdelivr.net/gh/SuJiuOvO/Toolbox-Community-Registry@main/packages/gif-toolbox.zip",
+        "github": "https://raw.githubusercontent.com/SuJiuOvO/Toolbox-Community-Registry/main/packages/gif-toolbox.zip",
+        "release": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/v1.0.0/gif-toolbox.zip"
+      },
+      "downloadUrl": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/master/packages/gif-toolbox.zip"
+    },
+    {
+      "id": "id-photo-bg",
+      "name": "修改证件照底色",
+      "version": "1.1.0",
+      "minAppVersion": "1.0.0",
+      "category": "image",
+      "description": "借鉴 HivisionIDPhotos 证件照换底算法，采用多点色彩采样 + 连续 Alpha 掩码 + 边缘去溢色技术消除杂色色边。一键更换一寸、二寸常用考试报名与工作照底色为标准白底、红底、蓝底或商务职业灰底。",
+      "icon": "badge",
+      "author": "Toolbox Team",
+      "engineType": "native_image",
+      "inputs": [
+        {
+          "id": "sourceFiles",
+          "label": "选择证件照原图",
+          "type": "file_picker",
+          "required": true,
+          "allowMultiple": false,
+          "allowedExtensions": [
+            "jpg",
+            "jpeg",
+            "png",
+            "webp"
+          ]
+        },
+        {
+          "id": "bgColor",
+          "label": "目标底色",
+          "type": "select",
+          "defaultValue": "white",
+          "options": [
+            {
+              "label": "标准白底 (#FFFFFF 常用考试/工作证)",
+              "value": "white"
+            },
+            {
+              "label": "标准红底 (#D81E1E 婚姻登记/社保证)",
+              "value": "red"
+            },
+            {
+              "label": "标准蓝底 (#438EDB 毕业证/职业资格证)",
+              "value": "blue"
+            },
+            {
+              "label": "职业灰底 (#EEEEEE 简历/商务照)",
+              "value": "gray"
+            }
+          ]
+        },
+        {
+          "id": "standardSize",
+          "label": "证件照冲印规格",
+          "type": "select",
+          "defaultValue": "keep",
+          "options": [
+            {
+              "label": "保持原图尺寸 (仅换底色)",
+              "value": "keep"
+            },
+            {
+              "label": "一寸 (295 x 413 px, 比例居中裁剪)",
+              "value": "1_inch"
+            },
+            {
+              "label": "小二寸 (413 x 531 px, 护照/签证)",
+              "value": "small_2_inch"
+            },
+            {
+              "label": "二寸 (413 x 626 px, 毕业照/标准二寸)",
+              "value": "2_inch"
+            }
+          ]
+        },
+        {
+          "id": "feather",
+          "label": "边缘羽化与去溢色半径 (默认 3)",
+          "type": "slider",
+          "defaultValue": 3,
+          "min": 1,
+          "max": 8,
+          "step": 1
+        },
+        {
+          "id": "tolerance",
+          "label": "背景色彩容差 (背景光照不匀时调大，默认 50)",
+          "type": "slider",
+          "defaultValue": 50,
+          "min": 25,
+          "max": 85,
+          "step": 5
+        }
+      ],
+      "action": {
+        "handler": "id_photo_bg",
+        "params": {
+          "color": "${bgColor}",
+          "size": "${standardSize}",
+          "feather": "${feather}",
+          "tolerance": "${tolerance}"
+        }
+      },
+      "size": 1204,
+      "md5": "141a46e8c018e2dfe62e396447ef3b0e",
+      "sha256": "5d05f02abc55cf3516d7ade2d111b4b0012a963633f68d8f4d60bfcaa2e61744",
+      "isOfficial": true,
+      "downloadUrls": {
+        "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/master/packages/id-photo-bg.zip",
+        "github_cdn": "https://cdn.jsdelivr.net/gh/SuJiuOvO/Toolbox-Community-Registry@main/packages/id-photo-bg.zip",
+        "github": "https://raw.githubusercontent.com/SuJiuOvO/Toolbox-Community-Registry/main/packages/id-photo-bg.zip",
+        "release": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/v1.0.0/id-photo-bg.zip"
+      },
+      "downloadUrl": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/master/packages/id-photo-bg.zip"
+    },
+    {
+      "id": "image-compress",
+      "name": "图片批量压缩",
+      "version": "1.1.0",
+      "minAppVersion": "1.0.0",
+      "category": "image",
+      "description": "借鉴 Caesium 与 TinyPNG 算法体系，支持 WebP 高压、JPG 质量优化与 PNG 调色板量化。支持批量导入图片、滑动调节压缩质量、智能限制超大分辨率最长边，显著降低图片文件体积同时保持高保真画质。",
+      "icon": "compress",
+      "author": "Toolbox Team",
+      "engineType": "native_image",
+      "inputs": [
+        {
+          "id": "sourceFiles",
+          "label": "选择待压缩图片 (支持批量)",
+          "type": "file_picker",
+          "required": true,
+          "allowMultiple": true,
+          "allowedExtensions": [
+            "jpg",
+            "jpeg",
+            "png",
+            "webp",
+            "bmp"
+          ]
+        },
+        {
+          "id": "quality",
+          "label": "压缩质量 (10-100)",
+          "type": "slider",
+          "defaultValue": 75,
+          "min": 10,
+          "max": 100,
+          "step": 5
+        },
+        {
+          "id": "format",
+          "label": "目标导出格式",
+          "type": "select",
+          "defaultValue": "keep_original",
+          "options": [
+            {
+              "label": "保持原图格式 (PNG自动启用量化减小体积)",
+              "value": "keep_original"
+            },
+            {
+              "label": "转换为 WebP (极力推荐，体积最小)",
+              "value": "webp"
+            },
+            {
+              "label": "转换为 JPEG",
+              "value": "jpg"
+            },
+            {
+              "label": "转换为 PNG (无损/调色板)",
+              "value": "png"
+            }
+          ]
+        },
+        {
+          "id": "maxEdge",
+          "label": "超大分辨率等比限制 (防爆内存)",
+          "type": "select",
+          "defaultValue": "0",
+          "options": [
+            {
+              "label": "保持原图分辨率不变",
+              "value": "0"
+            },
+            {
+              "label": "最长边限制为 2560 px (适合 2K/4K 减重)",
+              "value": "2560"
+            },
+            {
+              "label": "最长边限制为 1920 px (适合网络传输/网页)",
+              "value": "1920"
+            },
+            {
+              "label": "最长边限制为 1280 px (适合移动端/极速分享)",
+              "value": "1280"
+            }
+          ]
+        }
+      ],
+      "action": {
+        "handler": "image_compress",
+        "params": {
+          "quality": "${quality}",
+          "format": "${format}",
+          "maxEdge": "${maxEdge}"
+        }
+      },
+      "size": 1093,
+      "md5": "7346e4dfcc973d9c8043d3720532d739",
+      "sha256": "a1bd1d5dbf77861ee3034379d77c738e8fb32f490e46d7469beee7cdc6d6d57e",
+      "isOfficial": true,
+      "downloadUrls": {
+        "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/master/packages/image-compress.zip",
+        "github_cdn": "https://cdn.jsdelivr.net/gh/SuJiuOvO/Toolbox-Community-Registry@main/packages/image-compress.zip",
+        "github": "https://raw.githubusercontent.com/SuJiuOvO/Toolbox-Community-Registry/main/packages/image-compress.zip",
+        "release": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/v1.0.0/image-compress.zip"
+      },
+      "downloadUrl": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/master/packages/image-compress.zip"
+    },
+    {
+      "id": "image-resize",
+      "name": "图片修改尺寸",
+      "version": "1.1.0",
+      "minAppVersion": "1.0.0",
+      "category": "image",
+      "description": "基于三次样条插值 (Cubic Resampling) 算法，高质量保持清晰度与宽高比缩放图片。支持按比例百分比缩放、锁定宽度自适应、锁定高度自适应或指定固定像素拉伸宽高，支持批量多图处理。",
+      "icon": "aspect_ratio",
+      "author": "Toolbox Team",
+      "engineType": "native_image",
+      "inputs": [
+        {
+          "id": "sourceFiles",
+          "label": "选择待缩放图片 (支持批量)",
+          "type": "file_picker",
+          "required": true,
+          "allowMultiple": true,
+          "allowedExtensions": [
+            "jpg",
+            "jpeg",
+            "png",
+            "webp",
+            "bmp"
+          ]
+        },
+        {
+          "id": "resizeMode",
+          "label": "缩放模式",
+          "type": "select",
+          "defaultValue": "scale",
+          "options": [
+            {
+              "label": "按比例缩放 (百分比)",
+              "value": "scale"
+            },
+            {
+              "label": "锁定宽度 (自适应高度)",
+              "value": "fit_width"
+            },
+            {
+              "label": "锁定高度 (自适应宽度)",
+              "value": "fit_height"
+            },
+            {
+              "label": "指定固定宽高 (拉伸)",
+              "value": "fixed"
+            }
+          ]
+        },
+        {
+          "id": "scalePercent",
+          "label": "缩放比例 (%, 仅百分比模式有效)",
+          "type": "slider",
+          "defaultValue": 50,
+          "min": 10,
+          "max": 200,
+          "step": 5
+        },
+        {
+          "id": "targetWidth",
+          "label": "目标宽度 (px)",
+          "type": "number",
+          "defaultValue": 1280
+        },
+        {
+          "id": "targetHeight",
+          "label": "目标高度 (px)",
+          "type": "number",
+          "defaultValue": 720
+        }
+      ],
+      "action": {
+        "handler": "image_resize",
+        "params": {
+          "mode": "${resizeMode}",
+          "scale": "${scalePercent}",
+          "width": "${targetWidth}",
+          "height": "${targetHeight}"
+        }
+      },
+      "size": 938,
+      "md5": "721f3a492c505e5303be95bc9c46a61d",
+      "sha256": "453dce4a924b5aab6fb4784d7624d0282fba479e8c553d3f855bb4d4b03d8e88",
+      "isOfficial": true,
+      "downloadUrls": {
+        "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/master/packages/image-resize.zip",
+        "github_cdn": "https://cdn.jsdelivr.net/gh/SuJiuOvO/Toolbox-Community-Registry@main/packages/image-resize.zip",
+        "github": "https://raw.githubusercontent.com/SuJiuOvO/Toolbox-Community-Registry/main/packages/image-resize.zip",
+        "release": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/v1.0.0/image-resize.zip"
+      },
+      "downloadUrl": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/master/packages/image-resize.zip"
+    },
+    {
+      "id": "livephoto-toolbox",
+      "name": "实况照片制作与解析",
+      "version": "1.0.0",
+      "minAppVersion": "1.0.0",
+      "category": "media",
+      "description": "基于 Google Camera / Android 标准 XMP 容器规范，支持静态大片与短视频合流封装为动态照片 (.jpg)，支持长视频智能截取提炼实况照片，以及实况照片原画封面与微动视频的毫秒级无损分离剥离。",
+      "icon": "motion_photo",
+      "author": "Toolbox Team",
+      "engineType": "native_tool",
+      "inputs": [
+        {
+          "id": "mode",
+          "label": "操作模式",
+          "type": "select",
+          "defaultValue": "image_video_to_live",
+          "options": [
+            {
+              "label": "📸 封面图 + 短视频合流制作 (Image + Video)",
+              "value": "image_video_to_live"
+            },
+            {
+              "label": "🎬 视频一键提炼实况照片 (Video to Live Photo)",
+              "value": "video_to_live"
+            },
+            {
+              "label": "🔍 实况照片解析与分离 (Extract Motion Photo)",
+              "value": "extract_live_photo"
+            }
+          ]
+        },
+        {
+          "id": "imageFile",
+          "label": "选择静态封面大片 (JPG/PNG/WebP)",
+          "type": "file_picker",
+          "required": true,
+          "allowMultiple": false,
+          "allowedExtensions": [
+            "jpg",
+            "jpeg",
+            "png",
+            "webp",
+            "bmp"
+          ],
+          "visibleIf": {
+            "field": "mode",
+            "equals": "image_video_to_live"
+          }
+        },
+        {
+          "id": "videoFile",
+          "label": "选择微动实况视频 (MP4/MOV，建议 1.5s~3s)",
+          "type": "file_picker",
+          "required": true,
+          "allowMultiple": false,
+          "allowedExtensions": [
+            "mp4",
+            "mov",
+            "mkv",
+            "avi",
+            "webm"
+          ],
+          "visibleIf": {
+            "field": "mode",
+            "equals": "image_video_to_live"
+          }
+        },
+        {
+          "id": "videoSource",
+          "label": "选择待提炼的视频文件",
+          "type": "file_picker",
+          "required": true,
+          "allowMultiple": false,
+          "allowedExtensions": [
+            "mp4",
+            "mov",
+            "mkv",
+            "avi",
+            "webm"
+          ],
+          "visibleIf": {
+            "field": "mode",
+            "equals": "video_to_live"
+          }
+        },
+        {
+          "id": "coverTimestamp",
+          "label": "封面抽取时间点 (秒数如 0，或时间格式 00:00:01)",
+          "type": "textarea",
+          "defaultValue": "00:00:00",
+          "required": false,
+          "visibleIf": {
+            "field": "mode",
+            "equals": "video_to_live"
+          }
+        },
+        {
+          "id": "duration",
+          "label": "实况片段时长 (秒, 1.5~4.0s 为佳)",
+          "type": "slider",
+          "defaultValue": 2.0,
+          "min": 1.0,
+          "max": 5.0,
+          "step": 0.5,
+          "visibleIf": {
+            "field": "mode",
+            "equals": "video_to_live"
+          }
+        },
+        {
+          "id": "motionPhotoFile",
+          "label": "选择待解析分离的实况/动态照片 (.jpg)",
+          "type": "file_picker",
+          "required": true,
+          "allowMultiple": false,
+          "allowedExtensions": [
+            "jpg",
+            "jpeg"
+          ],
+          "visibleIf": {
+            "field": "mode",
+            "equals": "extract_live_photo"
+          }
+        },
+        {
+          "id": "exportFormat",
+          "label": "导出实况照片规范",
+          "type": "select",
+          "defaultValue": "android_motion_photo",
+          "options": [
+            {
+              "label": "Android Motion Photo (推荐：单张.jpg，Google/小米/三星相册即按即动)",
+              "value": "android_motion_photo"
+            },
+            {
+              "label": "iOS Live Photo 兼容配对包 (同名 JPG+MOV，生成 ZIP)",
+              "value": "ios_live_photo"
+            },
+            {
+              "label": "双格式同步输出 (Android 单文件 + iOS 配对包)",
+              "value": "both"
+            }
+          ],
+          "visibleIf": {
+            "field": "mode",
+            "in": [
+              "image_video_to_live",
+              "video_to_live"
+            ],
+            "inValues": [
+              "image_video_to_live",
+              "video_to_live"
+            ]
+          }
+        }
+      ],
+      "action": {
+        "handler": "livephoto_toolbox",
+        "params": {
+          "mode": "${mode}",
+          "imageFile": "${imageFile}",
+          "videoFile": "${videoFile}",
+          "coverTimestamp": "${coverTimestamp}",
+          "duration": "${duration}",
+          "exportFormat": "${exportFormat}"
+        }
+      },
+      "size": 1447,
+      "md5": "6c584b4f2c862191d090abf26e010292",
+      "sha256": "5d3df556f8ce2db80aac9a7fdb7917116c1ed7e7100bf236036fe1a5e48f9429",
+      "isOfficial": true,
+      "downloadUrls": {
+        "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/master/packages/livephoto-toolbox.zip",
+        "github_cdn": "https://cdn.jsdelivr.net/gh/SuJiuOvO/Toolbox-Community-Registry@main/packages/livephoto-toolbox.zip",
+        "github": "https://raw.githubusercontent.com/SuJiuOvO/Toolbox-Community-Registry/main/packages/livephoto-toolbox.zip",
+        "release": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/v1.0.0/livephoto-toolbox.zip"
+      },
+      "downloadUrl": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/master/packages/livephoto-toolbox.zip"
+    },
+    {
+      "id": "pdf-toolbox",
+      "name": "PDF 综合工具箱",
+      "version": "1.0.0",
+      "minAppVersion": "1.0.0",
+      "category": "document",
+      "description": "全功能专业 PDF 综合处理工具箱：支持多页 PDF 与高清图片双向批量互转、多个 PDF 文档高保真合并拼合、单页提取与指定页码范围拆分、添加文字水印，以及深度无损流压缩优化。",
+      "icon": "pdf",
+      "author": "Toolbox Team",
+      "engineType": "native_tool",
+      "inputs": [
+        {
+          "id": "mode",
+          "label": "操作模式",
+          "type": "select",
+          "defaultValue": "images_to_pdf",
+          "options": [
+            {
+              "label": "🖼️ 图片批量转 PDF (Images to PDF)",
+              "value": "images_to_pdf"
+            },
+            {
+              "label": "📷 PDF 转高清图片 (PDF to Images)",
+              "value": "pdf_to_images"
+            },
+            {
+              "label": "📑 PDF 页面合并 (Merge Multiple PDFs)",
+              "value": "merge_pdf"
+            },
+            {
+              "label": "✂️ PDF 页面拆分/提取 (Split / Extract Pages)",
+              "value": "split_pdf"
+            },
+            {
+              "label": "🗜️ PDF 深度压缩 (Compress PDF)",
+              "value": "compress_pdf"
+            }
+          ]
+        },
+        {
+          "id": "imagesFiles",
+          "label": "选择待转换图片 (支持多选，按次序排版)",
+          "type": "file_picker",
+          "required": true,
+          "allowMultiple": true,
+          "allowedExtensions": [
+            "jpg",
+            "jpeg",
+            "png",
+            "webp",
+            "bmp"
+          ],
+          "visibleIf": {
+            "field": "mode",
+            "equals": "images_to_pdf"
+          }
+        },
+        {
+          "id": "pageSize",
+          "label": "页面尺寸规格",
+          "type": "select",
+          "defaultValue": "a4",
+          "options": [
+            {
+              "label": "标准 A4 纸张 (打印阅读通用)",
+              "value": "a4"
+            },
+            {
+              "label": "自适应图片尺寸 (保留原始宽高比)",
+              "value": "fit_image"
+            }
+          ],
+          "visibleIf": {
+            "field": "mode",
+            "equals": "images_to_pdf"
+          }
+        },
+        {
+          "id": "pageOrientation",
+          "label": "页面方向 (A4纸张有效)",
+          "type": "select",
+          "defaultValue": "auto",
+          "options": [
+            {
+              "label": "自适应图片长宽比 (推荐)",
+              "value": "auto"
+            },
+            {
+              "label": "纵向 (Portrait)",
+              "value": "portrait"
+            },
+            {
+              "label": "横向 (Landscape)",
+              "value": "landscape"
+            }
+          ],
+          "visibleIf": {
+            "field": "mode",
+            "equals": "images_to_pdf"
+          }
+        },
+        {
+          "id": "margin",
+          "label": "页面页边距",
+          "type": "select",
+          "defaultValue": "none",
+          "options": [
+            {
+              "label": "无边距 (全画幅铺满)",
+              "value": "none"
+            },
+            {
+              "label": "窄边距 (20pt 留白)",
+              "value": "small"
+            },
+            {
+              "label": "标准边距 (40pt 商务装订)",
+              "value": "normal"
+            }
+          ],
+          "visibleIf": {
+            "field": "mode",
+            "equals": "images_to_pdf"
+          }
+        },
+        {
+          "id": "pdfToImagesFile",
+          "label": "选择待转换的 PDF 文档",
+          "type": "file_picker",
+          "required": true,
+          "allowMultiple": false,
+          "allowedExtensions": [
+            "pdf"
+          ],
+          "visibleIf": {
+            "field": "mode",
+            "equals": "pdf_to_images"
+          }
+        },
+        {
+          "id": "imageFormat",
+          "label": "导出图片格式",
+          "type": "select",
+          "defaultValue": "png",
+          "options": [
+            {
+              "label": "PNG 格式 (高清无损)",
+              "value": "png"
+            },
+            {
+              "label": "JPG 格式 (较小文件体积)",
+              "value": "jpg"
+            }
+          ],
+          "visibleIf": {
+            "field": "mode",
+            "equals": "pdf_to_images"
+          }
+        },
+        {
+          "id": "dpi",
+          "label": "渲染分辨率 (DPI)",
+          "type": "select",
+          "defaultValue": 150,
+          "options": [
+            {
+              "label": "150 DPI (高清，兼顾速度与画质)",
+              "value": 150
+            },
+            {
+              "label": "300 DPI (超高清，打印冲印级极清细节)",
+              "value": 300
+            }
+          ],
+          "visibleIf": {
+            "field": "mode",
+            "equals": "pdf_to_images"
+          }
+        },
+        {
+          "id": "bundleZip",
+          "label": "导出方式",
+          "type": "select",
+          "defaultValue": "true",
+          "options": [
+            {
+              "label": "多页自动打包为 ZIP 压缩包 (方便分享保存)",
+              "value": "true"
+            },
+            {
+              "label": "导出为单张独立图片文件",
+              "value": "false"
+            }
+          ],
+          "visibleIf": {
+            "field": "mode",
+            "equals": "pdf_to_images"
+          }
+        },
+        {
+          "id": "mergePdfs",
+          "label": "选择待合并的 PDF 文件 (可多选，按选择顺序合并)",
+          "type": "file_picker",
+          "required": true,
+          "allowMultiple": true,
+          "allowedExtensions": [
+            "pdf"
+          ],
+          "visibleIf": {
+            "field": "mode",
+            "equals": "merge_pdf"
+          }
+        },
+        {
+          "id": "splitPdfFile",
+          "label": "选择待拆分/提取的 PDF 文档",
+          "type": "file_picker",
+          "required": true,
+          "allowMultiple": false,
+          "allowedExtensions": [
+            "pdf"
+          ],
+          "visibleIf": {
+            "field": "mode",
+            "equals": "split_pdf"
+          }
+        },
+        {
+          "id": "splitMode",
+          "label": "拆分/提取模式",
+          "type": "select",
+          "defaultValue": "all_pages",
+          "options": [
+            {
+              "label": "全部页面逐页切分为独立单页 PDF (打包 ZIP)",
+              "value": "all_pages"
+            },
+            {
+              "label": "按指定页码范围提取为新 PDF",
+              "value": "custom_range"
+            }
+          ],
+          "visibleIf": {
+            "field": "mode",
+            "equals": "split_pdf"
+          }
+        },
+        {
+          "id": "pageRange",
+          "label": "提取页码范围 (如: 1-3, 5, 8-10)",
+          "type": "textarea",
+          "defaultValue": "1-3",
+          "required": false,
+          "visibleIf": {
+            "and": [
+              {
+                "field": "mode",
+                "equals": "split_pdf"
+              },
+              {
+                "field": "splitMode",
+                "equals": "custom_range"
+              }
+            ]
+          }
+        },
+        {
+          "id": "compressPdfFile",
+          "label": "选择待压缩的 PDF 文档",
+          "type": "file_picker",
+          "required": true,
+          "allowMultiple": false,
+          "allowedExtensions": [
+            "pdf"
+          ],
+          "visibleIf": {
+            "field": "mode",
+            "equals": "compress_pdf"
+          }
+        },
+        {
+          "id": "compressStrategy",
+          "label": "压缩策略",
+          "type": "select",
+          "defaultValue": "lossless",
+          "options": [
+            {
+              "label": "无损流优化 (保持矢量字形与清晰度，零膨胀保护)",
+              "value": "lossless"
+            },
+            {
+              "label": "扫描件/画质深度压缩 (重采样栅格图片为 120 DPI，大幅缩减体积)",
+              "value": "scanned_image"
+            }
+          ],
+          "visibleIf": {
+            "field": "mode",
+            "equals": "compress_pdf"
+          }
+        }
+      ],
+      "action": {
+        "handler": "pdf_toolbox",
+        "params": {
+          "mode": "${mode}",
+          "pageSize": "${pageSize}",
+          "pageOrientation": "${pageOrientation}",
+          "margin": "${margin}",
+          "imageFormat": "${imageFormat}",
+          "dpi": "${dpi}",
+          "bundleZip": "${bundleZip}",
+          "splitMode": "${splitMode}",
+          "pageRange": "${pageRange}",
+          "compressStrategy": "${compressStrategy}"
+        }
+      },
+      "size": 2026,
+      "md5": "46fa7a5b7ac78b708fe6c81517340b7a",
+      "sha256": "0a9057d1c91ec82af61ba4b3e0cc048fbdad01e9b18eda46b6e97a97e3ef575b",
+      "isOfficial": true,
+      "downloadUrls": {
+        "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/master/packages/pdf-toolbox.zip",
+        "github_cdn": "https://cdn.jsdelivr.net/gh/SuJiuOvO/Toolbox-Community-Registry@main/packages/pdf-toolbox.zip",
+        "github": "https://raw.githubusercontent.com/SuJiuOvO/Toolbox-Community-Registry/main/packages/pdf-toolbox.zip",
+        "release": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/v1.0.0/pdf-toolbox.zip"
+      },
+      "downloadUrl": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/master/packages/pdf-toolbox.zip"
+    },
+    {
+      "id": "qr-toolbox",
+      "name": "二维码制作与识别",
+      "version": "1.1.0",
+      "minAppVersion": "1.0.0",
+      "category": "utility",
+      "description": "纯原生 Dart 离线实现的专业二维码生成与扫描识别引擎。支持 L/M/Q/H 多档容错率、自定义图片分辨率 (200~1600px)、像素级静区位图渲染，以及灰度增强智能反解图片中的二维码与条码。",
+      "icon": "qr_code",
+      "author": "Toolbox Team",
+      "engineType": "native_tool",
+      "inputs": [
+        {
+          "id": "mode",
+          "label": "操作模式",
+          "type": "select",
+          "defaultValue": "generate",
+          "options": [
+            {
+              "label": "✨ 制作生成二维码",
+              "value": "generate"
+            },
+            {
+              "label": "🔍 识别解析已有二维码",
+              "value": "decode"
+            }
+          ]
+        },
+        {
+          "id": "content",
+          "label": "文本或网址内容",
+          "type": "textarea",
+          "defaultValue": "https://github.com",
+          "required": true,
+          "visibleIf": {
+            "field": "mode",
+            "equals": "generate"
+          }
+        },
+        {
+          "id": "errorLevel",
+          "label": "纠错容错等级",
+          "type": "select",
+          "defaultValue": "M",
+          "options": [
+            {
+              "label": "等级 L (7% 容错率 - 适合超长字符/高密度)",
+              "value": "L"
+            },
+            {
+              "label": "等级 M (15% 容错率 - 行业标准推荐)",
+              "value": "M"
+            },
+            {
+              "label": "等级 Q (25% 容错率 - 适合户外/轻度污损)",
+              "value": "Q"
+            },
+            {
+              "label": "等级 H (30% 容错率 - 最高防损/适合实体印制)",
+              "value": "H"
+            }
+          ],
+          "visibleIf": {
+            "field": "mode",
+            "equals": "generate"
+          }
+        },
+        {
+          "id": "size",
+          "label": "生成图片分辨率 (边长 200~1600 px)",
+          "type": "slider",
+          "defaultValue": 600,
+          "min": 200,
+          "max": 1600,
+          "step": 50,
+          "visibleIf": {
+            "field": "mode",
+            "equals": "generate"
+          }
+        },
+        {
+          "id": "sourceFiles",
+          "label": "选择含二维码的图片",
+          "type": "file_picker",
+          "required": true,
+          "allowMultiple": false,
+          "allowedExtensions": [
+            "jpg",
+            "jpeg",
+            "png",
+            "webp",
+            "bmp"
+          ],
+          "visibleIf": {
+            "field": "mode",
+            "equals": "decode"
+          }
+        }
+      ],
+      "action": {
+        "handler": "qr_toolbox",
+        "params": {
+          "mode": "${mode}",
+          "content": "${content}",
+          "errorLevel": "${errorLevel}",
+          "size": "${size}"
+        }
+      },
+      "size": 1154,
+      "md5": "a06937af5c011e3b550d7219e68ecd14",
+      "sha256": "38fcafca230471c42dc4f97dc1ed7aec1465d711786d730c06cd6463ff715bd3",
+      "isOfficial": true,
+      "downloadUrls": {
+        "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/master/packages/qr-toolbox.zip",
+        "github_cdn": "https://cdn.jsdelivr.net/gh/SuJiuOvO/Toolbox-Community-Registry@main/packages/qr-toolbox.zip",
+        "github": "https://raw.githubusercontent.com/SuJiuOvO/Toolbox-Community-Registry/main/packages/qr-toolbox.zip",
+        "release": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/v1.0.0/qr-toolbox.zip"
+      },
+      "downloadUrl": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/master/packages/qr-toolbox.zip"
+    },
+    {
+      "id": "video-audio-toolbox",
+      "name": "音视频综合工具箱",
+      "version": "1.2.0",
+      "minAppVersion": "1.0.0",
+      "category": "media",
+      "description": "基于工业级 FFmpeg 管道的音视频全能工具箱：支持极速零损提取原音轨 (Stream Copy 秒级导出)、高品质转换 MP3/WAV/AAC、HandBrake 级视频智能压缩、完全视频倒放（自适应内存保护）与通用 MP4 格式转换。",
+      "icon": "movie",
+      "author": "Toolbox Team",
+      "engineType": "media_pipeline",
+      "inputs": [
+        {
+          "id": "sourceFiles",
+          "label": "选择媒体文件 (音/视频)",
+          "type": "file_picker",
+          "required": true,
+          "allowMultiple": false,
+          "allowedExtensions": [
+            "mp4",
+            "mkv",
+            "mov",
+            "avi",
+            "mp3",
+            "wav",
+            "flac",
+            "aac",
+            "webm",
+            "ts"
+          ]
+        },
+        {
+          "id": "operation",
+          "label": "选择执行功能",
+          "type": "select",
+          "defaultValue": "compress_video",
+          "options": [
+            {
+              "label": "视频智能压缩 (减小体积保画质)",
+              "value": "compress_video"
+            },
+            {
+              "label": "极速提取原音轨 (Stream Copy 零损耗/秒级)",
+              "value": "extract_audio_copy"
+            },
+            {
+              "label": "提取音频为高兼容 MP3 (LAME VBR 动态编码)",
+              "value": "extract_audio_mp3"
+            },
+            {
+              "label": "视频完全倒放 (自适应内存保护，防卡死)",
+              "value": "reverse_video"
+            },
+            {
+              "label": "转换为通用 MP4 格式 (H.264+AAC)",
+              "value": "to_mp4"
+            },
+            {
+              "label": "音频格式转换 (MP3/WAV/AAC)",
+              "value": "audio_convert"
+            }
+          ]
+        },
+        {
+          "id": "compressPreset",
+          "label": "视频压缩预设方案",
+          "type": "select",
+          "defaultValue": "normal",
+          "options": [
+            {
+              "label": "推荐均衡模式 (减小 50%~70% 体积，保持画质)",
+              "value": "normal"
+            },
+            {
+              "label": "极致小体积模式 (降为 720p/30fps，减小 75%+)",
+              "value": "extreme"
+            },
+            {
+              "label": "高保真模式 (接近无损，体积减小 30%~50%)",
+              "value": "high_quality"
+            }
+          ],
+          "visibleIf": {
+            "field": "operation",
+            "equals": "compress_video"
+          }
+        },
+        {
+          "id": "audioTargetFormat",
+          "label": "音频转换目标格式",
+          "type": "select",
+          "defaultValue": "mp3",
+          "options": [
+            {
+              "label": "MP3 (通用高兼容)",
+              "value": "mp3"
+            },
+            {
+              "label": "WAV (无损 PCM 未压缩)",
+              "value": "wav"
+            },
+            {
+              "label": "AAC (高保真小体积)",
+              "value": "aac"
+            }
+          ],
+          "visibleIf": {
+            "field": "operation",
+            "equals": "audio_convert"
+          }
+        }
+      ],
+      "action": {
+        "handler": "media_pipeline",
+        "params": {
+          "op": "${operation}",
+          "preset": "${compressPreset}",
+          "format": "${audioTargetFormat}"
+        }
+      },
+      "size": 1299,
+      "md5": "17ad5935cabcfee647d9870c02c8ef65",
+      "sha256": "17f0b4ea42bd7e6bc51bbab56d3029146b1009938f1551f8651312c1aaa97612",
+      "isOfficial": true,
+      "downloadUrls": {
+        "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/master/packages/video-audio-toolbox.zip",
+        "github_cdn": "https://cdn.jsdelivr.net/gh/SuJiuOvO/Toolbox-Community-Registry@main/packages/video-audio-toolbox.zip",
+        "github": "https://raw.githubusercontent.com/SuJiuOvO/Toolbox-Community-Registry/main/packages/video-audio-toolbox.zip",
+        "release": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/v1.0.0/video-audio-toolbox.zip"
+      },
+      "downloadUrl": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/master/packages/video-audio-toolbox.zip"
+    }
+  ]
+}
