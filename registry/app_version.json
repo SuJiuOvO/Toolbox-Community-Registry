@@ -3,25 +3,27 @@
   "minRequiredVersion": "1.0.0",
   "releaseDate": "2026-10-21",
   "title": "百宝箱 v1.0.0 正式发布",
-  "releaseNotes": "1. 全面接入云端多源镜像与社区模块市场 (Gitee / GitHub / CDN)；\n2. 支持模块名称、简介、技术参数的深度搜索；\n3. 支持模块本地格式校验与安装；\n4. 修复 Windows 端分类筛选鼠标拖拽滑动，新增全屏分类展开筛选；\n5. 内置最低客户端版本约束（minAppVersion）安全机制。",
+  "releaseNotes": "1. 全面接入云端多源镜像与社区模块市场 (Gitee / GitHub / CDN)；\n2. 支持模块名称、简介、技术参数的深度搜索；\n3. 支持模块本地格式校验与安装；\n4. 修复 Windows 端分类筛选鼠标拖拽滑动，新增全屏分类展开筛选；\n5. 内置最低客户端版本约束（minAppVersion）安全机制；\n6. 推出 Windows 便携版（自带FFmpeg版 / 极简版）与 Android 架构精简分包（arm64 / arm32 / x86_64 / 全量包）。",
   "platforms": {
     "windows": {
-      "url": "https://gitee.com/sujiuovo/multi-toolbox/releases/download/v1.0.0/app-windows.zip",
+      "url": "https://gitee.com/sujiuovo/multi-toolbox/releases/download/v1.0.0/app-windows-without-ffmpeg.zip",
       "mirrors": [
+        "https://github.com/SuJiuOvO/Multi-Toolbox/releases/download/v1.0.0/app-windows-without-ffmpeg.zip",
         "https://github.com/SuJiuOvO/Multi-Toolbox/releases/download/v1.0.0/app-windows.zip"
       ],
-      "sha256": "e656dc353cbaba39e7df6e9ab25180adee33c2e20556fa7e0dc6b850c60ca90b",
+      "sha256": "0e3958a5d8d75a51a46e9834f5a8a46dbd424c769803ea6c30c20a5aed57f32b",
       "installType": "zip_replace",
-      "size": 71556160
+      "size": 71557630
     },
     "android": {
-      "url": "https://gitee.com/sujiuovo/multi-toolbox/releases/download/v1.0.0/app-release.apk",
+      "url": "https://gitee.com/sujiuovo/multi-toolbox/releases/download/v1.0.0/app-arm64-v8a-release.apk",
       "mirrors": [
+        "https://github.com/SuJiuOvO/Multi-Toolbox/releases/download/v1.0.0/app-arm64-v8a-release.apk",
         "https://github.com/SuJiuOvO/Multi-Toolbox/releases/download/v1.0.0/app-release.apk"
       ],
-      "sha256": "2323faa683506aa32dc7f96f61477ec0f96be6409202b0bda388495407025985",
+      "sha256": "3856ae23ef63fd0c766dce30a46f017a9544447f5e07e86a1f7a6b1c1a2a06fc",
       "installType": "apk_installer",
-      "size": 277230357
+      "size": 81996091
     }
   }
 }
