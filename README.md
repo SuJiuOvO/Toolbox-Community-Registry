@@ -68,6 +68,6 @@ python tools/build_registry.py
 
 ## 多源镜像节点地址
 
-- **国内 Gitee 极速源**: `https://gitee.com/sujiuovo/toolbox-community-registry/raw/master/registry/index.json`
+- **国内 Gitee 极速源**: `https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/registry/index.json`
 - **全球加速 CDN (jsDelivr)**: `https://cdn.jsdelivr.net/gh/SuJiuOvO/Toolbox-Community-Registry@main/registry/index.json`
 - **GitHub 官方源**: `https://raw.githubusercontent.com/SuJiuOvO/Toolbox-Community-Registry/main/registry/index.json`

@@ -56,7 +56,7 @@ for plugin_id in sorted(os.listdir(PLUGINS_DIR)):
     entry["sha256"] = sha256_val
     entry["isOfficial"] = manifest.get("isOfficial", True)
     entry["downloadUrls"] = {
-        "gitee": f"https://gitee.com/{GITEE_USER}/{GITEE_REPO}/raw/master/packages/{plugin_id}.zip",
+        "gitee": f"https://gitee.com/{GITEE_USER}/{GITEE_REPO}/raw/main/packages/{plugin_id}.zip",
         "github_cdn": f"https://cdn.jsdelivr.net/gh/{GITHUB_USER}/{GITHUB_REPO}@main/packages/{plugin_id}.zip",
         "github": f"https://raw.githubusercontent.com/{GITHUB_USER}/{GITHUB_REPO}/main/packages/{plugin_id}.zip"
     }
