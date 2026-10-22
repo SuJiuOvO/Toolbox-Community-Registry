@@ -11,9 +11,9 @@
         "https://github.com/SuJiuOvO/Multi-Toolbox/releases/download/v1.0.0/app-windows-without-ffmpeg.zip",
         "https://github.com/SuJiuOvO/Multi-Toolbox/releases/download/v1.0.0/app-windows.zip"
       ],
-      "sha256": "236869c8dab5f76a55e38a3955eae8073aa4355998ef0989aac485845658a62a",
+      "sha256": "18e034175d01f9edbb65d794b8bebb7ebf2fce7e9e45a52c0bbb436d5826ec14",
       "installType": "zip_replace",
-      "size": 71598608
+      "size": 72093581
     },
     "android": {
       "url": "https://gitee.com/sujiuovo/multi-toolbox/releases/download/v1.0.0/app-arm64-v8a-release.apk",
@@ -21,9 +21,9 @@
         "https://github.com/SuJiuOvO/Multi-Toolbox/releases/download/v1.0.0/app-arm64-v8a-release.apk",
         "https://github.com/SuJiuOvO/Multi-Toolbox/releases/download/v1.0.0/app-release.apk"
       ],
-      "sha256": "b306c2be0c859b290038e8c1f55a4a9096edd231e89a31f4535723b170ffcae9",
+      "sha256": "8a37857d31e1ac01d278005536b888d7fabf5970c1578df4400bf0feeeaecfa6",
       "installType": "apk_installer",
-      "size": 82127199
+      "size": 83043094
     }
   }
 }
