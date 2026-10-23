@@ -2075,8 +2075,8 @@
         }
       },
       "size": 4292,
-      "md5": "0d79867d2a61d876621b6d44159cd527",
-      "sha256": "044881e4c085972220ebe18ce134d142330fed207a23d2cc6d4628add356f96a",
+      "md5": "756b4f43192f4b7a6b6e029dd53eea73",
+      "sha256": "82994adb98971fc00ccd3c5ddcf69b4c7acbe7578767fe78e17385e9e1ed9ce9",
       "isOfficial": true,
       "downloadUrls": {
         "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/universal-data-codec.zip",
