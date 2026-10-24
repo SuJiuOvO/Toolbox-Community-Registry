@@ -21,7 +21,7 @@
         "https://github.com/SuJiuOvO/Multi-Toolbox/releases/download/v1.0.0/app-arm64-v8a-release.apk",
         "https://github.com/SuJiuOvO/Multi-Toolbox/releases/download/v1.0.0/app-release.apk"
       ],
-      "sha256": "8c88ea82bd87c7e3bd15c18f1976cc085f4d5f2b3ce2aaf8a7f8a2a90430baf1",
+      "sha256": "be4fec29f7d8d65f4d0ad7b8a5dad2de5e4d5ff4e7eafd4e06a10f6090fe33be",
       "installType": "apk_installer",
       "size": 88330060
     }
