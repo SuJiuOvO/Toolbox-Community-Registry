@@ -3,11 +3,9 @@ name: Build Community Registry & Packages
 on:
   push:
     branches: [ main, master ]
-    paths:
-      - 'plugins/**'
-      - 'tools/**'
   pull_request:
     branches: [ main, master ]
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -38,7 +36,7 @@ jobs:
           git add packages/ registry/index.json
           if ! git diff --staged --quiet; then
             git commit -m "chore(auto): build packages and regenerate index.json [skip ci]"
-            git push origin HEAD:${{ github.ref_name }}
+            git push origin HEAD:${{ github.ref_name }} || echo "Warning: git push failed, please verify repository workflow write permissions"
           else
             echo "No changes to commit"
           fi
