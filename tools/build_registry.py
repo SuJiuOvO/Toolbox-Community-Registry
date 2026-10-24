@@ -27,10 +27,31 @@ for plugin_id in sorted(os.listdir(PLUGINS_DIR)):
     with open(manifest_file, "r", encoding="utf-8") as f:
         manifest = json.load(f)
 
-    # 校验必填字段
+    # 1. 校验必填字段
     for req in ["id", "name", "version", "category", "description"]:
         if req not in manifest:
             raise ValueError(f"Plugin {plugin_id} missing required field: {req}")
+
+    if manifest["id"] != plugin_id:
+        raise ValueError(f"Plugin folder '{plugin_id}' does not match manifest id '{manifest['id']}'")
+
+    # 2. 校验平台配置
+    platforms = manifest.get("platforms", ["universal"])
+    if not isinstance(platforms, list) or not all(p in ["universal", "windows", "android"] for p in platforms):
+        raise ValueError(f"Plugin {plugin_id} invalid platforms: {platforms}")
+
+    # 3. 校验图标字段规范 (Manifest v2.0)
+    raw_icon = manifest.get("icon")
+    if isinstance(raw_icon, dict):
+        icon_type = raw_icon.get("type", "image")
+        if icon_type not in ["image", "code", "material", "default"]:
+            raise ValueError(f"Plugin {plugin_id} invalid icon type '{icon_type}', must be image/code/material/default")
+        icon_data = raw_icon.get("data") or raw_icon.get("content") or ""
+        max_bytes = raw_icon.get("maxSizeBytes", 512 * 1024)
+        if icon_type == "code" and len(icon_data) > 64 * 1024:
+            raise ValueError(f"Plugin {plugin_id} SVG code exceeds 64KB limit")
+        if icon_type == "image" and icon_data.startswith("data:image/") and len(icon_data) > max_bytes * 2:
+            raise ValueError(f"Plugin {plugin_id} inline image exceeds size limit")
 
     zip_path = os.path.join(PACKAGES_DIR, f"{plugin_id}.zip")
     with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as z:
@@ -71,4 +92,4 @@ current["plugins"] = index_plugins
 with open(registry_path, "w", encoding="utf-8") as f:
     json.dump(current, f, ensure_ascii=False, indent=2)
 
-print(f"Successfully processed {len(index_plugins)} plugins.")
+print(f"Successfully validated and processed {len(index_plugins)} plugins.")

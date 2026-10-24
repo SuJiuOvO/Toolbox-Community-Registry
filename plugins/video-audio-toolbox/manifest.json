@@ -15,18 +15,7 @@
       "type": "file_picker",
       "required": true,
       "allowMultiple": false,
-      "allowedExtensions": [
-        "mp4",
-        "mkv",
-        "mov",
-        "avi",
-        "mp3",
-        "wav",
-        "flac",
-        "aac",
-        "webm",
-        "ts"
-      ]
+      "allowedExtensions": ["mp4", "mkv", "mov", "avi", "mp3", "wav", "flac", "aac", "webm", "ts"]
     },
     {
       "id": "operation",
@@ -34,30 +23,12 @@
       "type": "select",
       "defaultValue": "compress_video",
       "options": [
-        {
-          "label": "视频智能压缩 (减小体积保画质)",
-          "value": "compress_video"
-        },
-        {
-          "label": "极速提取原音轨 (Stream Copy 零损耗/秒级)",
-          "value": "extract_audio_copy"
-        },
-        {
-          "label": "提取音频为高兼容 MP3 (LAME VBR 动态编码)",
-          "value": "extract_audio_mp3"
-        },
-        {
-          "label": "视频完全倒放 (自适应内存保护，防卡死)",
-          "value": "reverse_video"
-        },
-        {
-          "label": "转换为通用 MP4 格式 (H.264+AAC)",
-          "value": "to_mp4"
-        },
-        {
-          "label": "音频格式转换 (MP3/WAV/AAC)",
-          "value": "audio_convert"
-        }
+        {"label": "视频智能压缩 (减小体积保画质)", "value": "compress_video"},
+        {"label": "极速提取原音轨 (Stream Copy 零损耗/秒级)", "value": "extract_audio_copy"},
+        {"label": "提取音频为高兼容 MP3 (LAME VBR 动态编码)", "value": "extract_audio_mp3"},
+        {"label": "视频完全倒放 (自适应内存保护，防卡死)", "value": "reverse_video"},
+        {"label": "转换为通用 MP4 格式 (H.264+AAC)", "value": "to_mp4"},
+        {"label": "音频格式转换 (MP3/WAV/AAC)", "value": "audio_convert"}
       ]
     },
     {
@@ -66,18 +37,9 @@
       "type": "select",
       "defaultValue": "normal",
       "options": [
-        {
-          "label": "推荐均衡模式 (减小 50%~70% 体积，保持画质)",
-          "value": "normal"
-        },
-        {
-          "label": "极致小体积模式 (降为 720p/30fps，减小 75%+)",
-          "value": "extreme"
-        },
-        {
-          "label": "高保真模式 (接近无损，体积减小 30%~50%)",
-          "value": "high_quality"
-        }
+        {"label": "推荐均衡模式 (减小 50%~70% 体积，保持画质)", "value": "normal"},
+        {"label": "极致小体积模式 (降为 720p/30fps，减小 75%+)", "value": "extreme"},
+        {"label": "高保真模式 (接近无损，体积减小 30%~50%)", "value": "high_quality"}
       ],
       "visibleIf": {
         "field": "operation",
@@ -90,18 +52,9 @@
       "type": "select",
       "defaultValue": "mp3",
       "options": [
-        {
-          "label": "MP3 (通用高兼容)",
-          "value": "mp3"
-        },
-        {
-          "label": "WAV (无损 PCM 未压缩)",
-          "value": "wav"
-        },
-        {
-          "label": "AAC (高保真小体积)",
-          "value": "aac"
-        }
+        {"label": "MP3 (通用高兼容)", "value": "mp3"},
+        {"label": "WAV (无损 PCM 未压缩)", "value": "wav"},
+        {"label": "AAC (高保真小体积)", "value": "aac"}
       ],
       "visibleIf": {
         "field": "operation",
