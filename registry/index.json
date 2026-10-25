@@ -2083,7 +2083,7 @@
         },
         {
           "id": "filesToCompress",
-          "label": "选择待打包压缩的文件 (支持多选)",
+          "label": "选择待打包压缩的文件或文件夹 (支持多选文件与选取文件夹)",
           "type": "file_picker",
           "required": true,
           "allowMultiple": true,
@@ -2166,9 +2166,9 @@
           "splitSizeMb": "${splitSizeMb}"
         }
       },
-      "size": 4379,
-      "md5": "f364ec84a5b1d620a1dc02a3faf6fb5b",
-      "sha256": "714679b0ce04a243fe8f5571fb259856ca14dc9afafb52cf97efd9cc917af151",
+      "size": 4415,
+      "md5": "984b2b62b84ce67065af88a11ba15805",
+      "sha256": "b95c6202c1f752ceb868998b34092d3378fdd9a6ed999023b28a952495f0b429",
       "isOfficial": true,
       "downloadUrls": {
         "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/universal-archive-extractor.zip",
