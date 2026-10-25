@@ -2041,10 +2041,10 @@
         },
         {
           "id": "archiveInput",
-          "label": "选择待解压的压缩包或分卷文件 (.7z / .rar / .zip / .001 等)",
+          "label": "选择待解压的压缩包或分卷文件 (支持多选分卷 .001/.002 等)",
           "type": "file_picker",
           "required": true,
-          "allowMultiple": false,
+          "allowMultiple": true,
           "allowedExtensions": [
             "7z",
             "rar",
@@ -2166,9 +2166,9 @@
           "splitSizeMb": "${splitSizeMb}"
         }
       },
-      "size": 4415,
-      "md5": "984b2b62b84ce67065af88a11ba15805",
-      "sha256": "b95c6202c1f752ceb868998b34092d3378fdd9a6ed999023b28a952495f0b429",
+      "size": 4418,
+      "md5": "26ee059e05cf0ba77d79692c56dd125f",
+      "sha256": "1a500be05a99323ec0f69e2575f21e562876620ee5f2ce5c7eed9a45ec56ece3",
       "isOfficial": true,
       "downloadUrls": {
         "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/universal-archive-extractor.zip",
