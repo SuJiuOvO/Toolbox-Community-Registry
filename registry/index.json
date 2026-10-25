@@ -22,7 +22,7 @@
   "plugins": [
     {
       "id": "doc-converter",
-      "name": "万能文档互转中心",
+      "name": "文档格式互转",
       "version": "2.3.0",
       "minAppVersion": "1.0.0",
       "category": "document",
@@ -597,9 +597,9 @@
           "preservePageBreaks": "${preservePageBreaks}"
         }
       },
-      "size": 12189,
-      "md5": "bf4f134ef4a15025c26b99a09e990b4f",
-      "sha256": "97426fe4fce855225003e4207a9a42bc3842dd06be5c9d488f7ab295d240a9e5",
+      "size": 15227,
+      "md5": "ee495bab868f96de258923c0f355056a",
+      "sha256": "e5134f7c361f0507cf059711f06c79c63afba8dfd243657a26d4a6d343dd0e5d",
       "isOfficial": true,
       "downloadUrls": {
         "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/doc-converter.zip",
@@ -610,7 +610,7 @@
     },
     {
       "id": "downloader-toolbox",
-      "name": "多线程分块下载器",
+      "name": "多线程下载",
       "version": "1.0.0",
       "minAppVersion": "1.0.0",
       "category": "network",
@@ -651,9 +651,9 @@
           "fileName": "${fileName}"
         }
       },
-      "size": 1382,
-      "md5": "35b74e1d7f3abd40619455ac9cf4da55",
-      "sha256": "65725551232a6a5f690d2388da4911147c530b78763a4e8573ea78cdf5c20f07",
+      "size": 1417,
+      "md5": "1b1653c1a9f4b08109c3f9f32901e860",
+      "sha256": "4924ed5c5ffd855fcac438a4daa36488dd871ce87442503b1c19d9056d111bfe",
       "isOfficial": true,
       "downloadUrls": {
         "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/downloader-toolbox.zip",
@@ -664,7 +664,7 @@
     },
     {
       "id": "gemini-banana-watermark",
-      "name": "Gemini-Banana 无损去水印",
+      "name": "Gemini 去水印",
       "version": "1.0.0",
       "minAppVersion": "1.0.0",
       "category": "image",
@@ -795,9 +795,9 @@
           "format": "${format}"
         }
       },
-      "size": 13954,
-      "md5": "8e9e94d7c6d93738e7fae0929d3bda96",
-      "sha256": "ba6ac2cf3fcf10bb65ba07d528a0d0faa03348686b9fcc65c27edccef31691c6",
+      "size": 14076,
+      "md5": "f25c184334e1ff54a9038259386b3f16",
+      "sha256": "ff245550ab473afbd7bd04c92a805e27f406ba19d40181397aecfa41eefb263d",
       "isOfficial": true,
       "downloadUrls": {
         "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/gemini-banana-watermark.zip",
@@ -808,7 +808,7 @@
     },
     {
       "id": "gif-toolbox",
-      "name": "GIF 动图制作与解析",
+      "name": "GIF 动图工坊",
       "version": "1.0.0",
       "minAppVersion": "1.0.0",
       "category": "media",
@@ -1070,9 +1070,9 @@
           "exportZip": "${exportZip}"
         }
       },
-      "size": 5705,
-      "md5": "5760d43b035af882912bbb585002dcda",
-      "sha256": "34dbe8cfcbb5285fa0b2f1604f5047938b422bcc7d099d9df522ab0ef1b5002d",
+      "size": 6591,
+      "md5": "7ca41501502d1ed5263e9675d2326d1a",
+      "sha256": "6a40311460adfa8da708bec219901c5407bb14a8e1abcfb84b4d49d1751de116",
       "isOfficial": true,
       "downloadUrls": {
         "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/gif-toolbox.zip",
@@ -1083,7 +1083,7 @@
     },
     {
       "id": "id-photo-bg",
-      "name": "修改证件照底色",
+      "name": "证件照换底",
       "version": "1.1.0",
       "minAppVersion": "1.0.0",
       "category": "image",
@@ -1181,9 +1181,9 @@
           "tolerance": "${tolerance}"
         }
       },
-      "size": 2440,
-      "md5": "0ff9429598a1de94be528105262925cd",
-      "sha256": "942ce6820ffed93c55aeec7e236a9ce6674f5d9002e804092a6394b1858afa42",
+      "size": 2815,
+      "md5": "4ac196c0c1b50cc356483d0d38aa5bc2",
+      "sha256": "788c719b0c7d75f109bea833e165d8aa0dd74620ddff9c2226321d7ac557be7e",
       "isOfficial": true,
       "downloadUrls": {
         "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/id-photo-bg.zip",
@@ -1283,9 +1283,9 @@
           "maxEdge": "${maxEdge}"
         }
       },
-      "size": 2209,
-      "md5": "a2d4b97c456fafc50f457872e01d24fe",
-      "sha256": "f7b72857b9f484cfca51503b5f4234243833eb2c8bcd0fb8a19655105a0f1384",
+      "size": 2589,
+      "md5": "1a96067d69bf96521ca2a8505bc12f86",
+      "sha256": "8afa80c9fbe3e94a3a95ae8d4bb248972149eb9e70b2315e9c859af809f71a92",
       "isOfficial": true,
       "downloadUrls": {
         "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/image-compress.zip",
@@ -1296,7 +1296,7 @@
     },
     {
       "id": "image-resize",
-      "name": "图片修改尺寸",
+      "name": "图片尺寸修改",
       "version": "1.1.0",
       "minAppVersion": "1.0.0",
       "category": "image",
@@ -1374,9 +1374,9 @@
           "height": "${targetHeight}"
         }
       },
-      "size": 1967,
-      "md5": "52dcebe376ba988712a04548e3b9b00a",
-      "sha256": "0228a05c52639f95acc72f5e32e90430171e4210bfa2ccab7ca393b34aaa3776",
+      "size": 2216,
+      "md5": "2ef0ef5343445ab4520a29cce2b5210c",
+      "sha256": "16eaa3ad95525cb633a087046fd045cbc4b5707682302b940a6c69373d107d97",
       "isOfficial": true,
       "downloadUrls": {
         "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/image-resize.zip",
@@ -1387,7 +1387,7 @@
     },
     {
       "id": "livephoto-toolbox",
-      "name": "实况照片制作与解析",
+      "name": "实况照片工坊",
       "version": "1.0.0",
       "minAppVersion": "1.0.0",
       "category": "media",
@@ -1552,9 +1552,9 @@
           "exportFormat": "${exportFormat}"
         }
       },
-      "size": 4050,
-      "md5": "dfe942d8ed00474518fb420d48cbc7e6",
-      "sha256": "da00ecccaeb43f7c221311b03ffe09e305aed4a0133b32a6c086917725fc7951",
+      "size": 4617,
+      "md5": "15665c175d1eb2d8f45f2b596a128aef",
+      "sha256": "ef8bb309fa24a36ea9efa8fc6242c1e908276e42e46e370b9c468825ac5efc28",
       "isOfficial": true,
       "downloadUrls": {
         "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/livephoto-toolbox.zip",
@@ -1565,7 +1565,7 @@
     },
     {
       "id": "pdf-toolbox",
-      "name": "PDF 综合工具箱",
+      "name": "PDF 工具箱",
       "version": "1.0.0",
       "minAppVersion": "1.0.0",
       "category": "document",
@@ -1879,9 +1879,9 @@
           "compressStrategy": "${compressStrategy}"
         }
       },
-      "size": 6968,
-      "md5": "e079f20800d2f02fb38a74674d5880bb",
-      "sha256": "311b8be5f9c7c2422a36e06666c2d00dfa61da72600ca82de9dc4a50f842efe3",
+      "size": 8153,
+      "md5": "1c18d32033bd3653e2a7ee6832c916e2",
+      "sha256": "94de3a43c79e8db540d5bf12a30af04992a2e5251101e5eabbc1ce6d03154688",
       "isOfficial": true,
       "downloadUrls": {
         "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/pdf-toolbox.zip",
@@ -1892,7 +1892,7 @@
     },
     {
       "id": "qr-toolbox",
-      "name": "二维码制作与识别",
+      "name": "二维码工坊",
       "version": "1.1.0",
       "minAppVersion": "1.0.0",
       "category": "utility",
@@ -1997,9 +1997,9 @@
           "size": "${size}"
         }
       },
-      "size": 2546,
-      "md5": "06d10ce7b70478f8e448e98a59cc1f55",
-      "sha256": "cf9bf549101349e771eaf9321fef1c0e7b8fd7218d423656cfca017e315cb312",
+      "size": 2873,
+      "md5": "019f3d58ae2048bd8c06f46c9ad57a2b",
+      "sha256": "cf2ec4e11cc8474035806cfa4ed6a5c690a7addb910f3fe10577f7434285f7cd",
       "isOfficial": true,
       "downloadUrls": {
         "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/qr-toolbox.zip",
@@ -2010,7 +2010,7 @@
     },
     {
       "id": "universal-archive-extractor",
-      "name": "万能压缩与解压工坊",
+      "name": "压缩与解压",
       "version": "1.0.0",
       "minAppVersion": "1.0.0",
       "category": "other",
@@ -2018,7 +2018,7 @@
         "universal"
       ],
       "executionType": "native_tool",
-      "description": "【全平台万能解压与归档母舰】无需安装外部解压缩软件，原生集成 7z (支持 LZMA/LZMA2/Deflate/AES-256 加密)、RAR4/RAR5、Zip、Tar、GZ、BZ2、XZ、APK、EPUB 等主流格式的极速解压与目录树还原；同时支持将选定文件或目录一键打包为 Zip 或 Tar.gz 归档。",
+      "description": "【全平台万能解压与分卷归档】原生支持 7z、RAR4/RAR5、Zip、Tar.Gz、BZ2、XZ 及 .001 / .part1.rar / .z01 分卷压缩包的极速解压，解压后自动归整至压缩包同名文件夹；同时支持单卷与多分卷打包压缩。",
       "icon": "folder_zip",
       "author": "Toolbox 架构实验室",
       "engineType": "native_tool",
@@ -2030,18 +2030,18 @@
           "defaultValue": "extract",
           "options": [
             {
-              "label": "📦 万能解压 (支持 7z / RAR / Zip / Tar / GZ / XZ / APK)",
+              "label": "📦 万能解压 (支持单卷与 .001 / .part1.rar / .z01 分卷，自动解压至同名文件夹)",
               "value": "extract"
             },
             {
-              "label": "🗜️ 压缩归档 (打包为 Zip 或 Tar.gz 文件)",
+              "label": "🗜️ 压缩归档 (支持单文件打包与自定义分卷压缩)",
               "value": "compress"
             }
           ]
         },
         {
           "id": "archiveInput",
-          "label": "选择待解压的文件",
+          "label": "选择待解压的压缩包或分卷文件 (.7z / .rar / .zip / .001 等)",
           "type": "file_picker",
           "required": true,
           "allowMultiple": false,
@@ -2060,7 +2060,10 @@
             "cbr",
             "apk",
             "jar",
-            "epub"
+            "epub",
+            "001",
+            "z01",
+            "r00"
           ],
           "visibleIf": {
             "field": "archiveMode",
@@ -2119,6 +2122,38 @@
             "field": "archiveMode",
             "equals": "compress"
           }
+        },
+        {
+          "id": "splitSizeMb",
+          "label": "分卷拆分大小 (大文件自动切分为 .001, .002 ...)",
+          "type": "select",
+          "defaultValue": "0",
+          "options": [
+            {
+              "label": "📦 不分卷 (生成单个完整压缩包)",
+              "value": "0"
+            },
+            {
+              "label": "✂️ 10 MB / 卷 (适合邮件附件或小文件传输)",
+              "value": "10"
+            },
+            {
+              "label": "✂️ 50 MB / 卷 (适合社交软件分片发送)",
+              "value": "50"
+            },
+            {
+              "label": "✂️ 100 MB / 卷 (通用中等分卷规格)",
+              "value": "100"
+            },
+            {
+              "label": "✂️ 500 MB / 卷 (大体积备份分卷)",
+              "value": "500"
+            }
+          ],
+          "visibleIf": {
+            "field": "archiveMode",
+            "equals": "compress"
+          }
         }
       ],
       "action": {
@@ -2127,12 +2162,13 @@
           "archiveMode": "${archiveMode}",
           "archivePassword": "${archivePassword}",
           "compressFormat": "${compressFormat}",
-          "outputArchiveName": "${outputArchiveName}"
+          "outputArchiveName": "${outputArchiveName}",
+          "splitSizeMb": "${splitSizeMb}"
         }
       },
-      "size": 3401,
-      "md5": "46bf2b13635a5f8592aa20d152b48198",
-      "sha256": "21104d5310d3185a53e31be14fefdc9d1ce6f9cfa6fdbd15cad9e1c5f34189e6",
+      "size": 4538,
+      "md5": "65c4de8731dea80eadf64d04db45f0d4",
+      "sha256": "59fdc62211b88274ddd7deafc5116c7d9b15e04592f189e79f3900ac08a84fb3",
       "isOfficial": true,
       "downloadUrls": {
         "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/universal-archive-extractor.zip",
@@ -2143,7 +2179,7 @@
     },
     {
       "id": "universal-data-codec",
-      "name": "万能信息摘要与多重编解码",
+      "name": "编码与哈希",
       "version": "1.0.0",
       "minAppVersion": "1.0.0",
       "category": "text",
@@ -2153,10 +2189,8 @@
       "executionType": "quickjs",
       "description": "【QuickJS 动态引擎首发】基于沙箱内嵌的高性能 JavaScript 运行时，支持对文本或数据进行实时 MD5、SHA256、Base64 编解码及词频统计。跨 Android/Windows 全平台热加载执行，无须更新客户端本体。",
       "icon": {
-        "type": "image",
-        "data": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAKklEQVR4nOzOMQ0AAAACIGf/0MbwgQQ0Z82ZgICAgICAgICAgICAgIDAAAAA//+82z9mAAAABklEQVQDACReAEH+yyG7AAAAAElFTkSuQmCC",
-        "maxPixels": 512,
-        "maxSizeBytes": 524288
+        "type": "code",
+        "data": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\"><rect x=\"2\" y=\"2\" width=\"20\" height=\"20\" rx=\"5\" fill=\"#0D9488\"/><path fill=\"#FFFFFF\" d=\"M9.5 6.5L11 7l-2 10-1.5-.5 2-10zm5 0L16 7l-2 10-1.5-.5 2-10zM6 9.5h12v1.8H6V9.5zm-.5 3.8h12v1.8h-12v-1.8z\"/></svg>"
       },
       "author": "Toolbox 动态脚本实验室",
       "engineType": "quickjs",
@@ -2215,9 +2249,9 @@
           "script": "async function run({ inputFiles, outputDir, params }) {\n  const text = String(params.sourceText || '');\n  const mode = String(params.mode || 'all');\n  const exportFile = params.exportJson === 'yes';\n\n  Toolbox.log('【QuickJS 引擎】开始执行动态脚本任务...');\n  Toolbox.log('>>> 当前运行平台:', Toolbox.platform);\n  Toolbox.log('>>> 待处理文本长度:', text.length, '字符');\n  Toolbox.setProgress(0.2, '正在分析输入数据...');\n\n  let result = {\n    timestamp: new Date().toISOString(),\n    platform: Toolbox.platform,\n    inputLength: text.length\n  };\n\n  if (mode === 'b64_enc') {\n    Toolbox.setProgress(0.6, '正在执行 Base64 编码...');\n    result.base64 = Toolbox.crypto.base64Encode(text);\n    Toolbox.log('>>> Base64 编码结果:', result.base64);\n  } else if (mode === 'b64_dec') {\n    Toolbox.setProgress(0.6, '正在执行 Base64 解码...');\n    try {\n      result.decoded = Toolbox.crypto.base64Decode(text);\n      Toolbox.log('>>> Base64 解码结果:', result.decoded);\n    } catch (e) {\n      Toolbox.error('Base64 解码失败:', String(e));\n      return { success: false, message: 'Base64 解码失败，请输入合法的 Base64 字符串' };\n    }\n  } else {\n    Toolbox.setProgress(0.4, '正在计算安全散列摘要 (MD5 & SHA256)...');\n    const md5Val = Toolbox.crypto.md5(text);\n    const shaVal = Toolbox.crypto.sha256(text);\n    result.md5 = md5Val;\n    result.sha256 = shaVal;\n    Toolbox.log('>>> MD5 校验和:', md5Val);\n    Toolbox.log('>>> SHA-256 散列:', shaVal);\n\n    if (mode === 'all') {\n      Toolbox.setProgress(0.7, '正在统计文本结构与字数...');\n      result.base64 = Toolbox.crypto.base64Encode(text);\n      result.lines = text.split(/\\r?\\n/).length;\n      result.words = (text.match(/\\b\\w+\\b/g) || []).length;\n      Toolbox.log('>>> 总行数:', result.lines, '| 单词词数:', result.words);\n    }\n  }\n\n  if (exportFile) {\n    Toolbox.setProgress(0.9, '正在生成并落盘输出文件...');\n    const outPath = outputDir + '/codec_report.json';\n    Toolbox.fs.writeFile(outPath, JSON.stringify(result, null, 2));\n    Toolbox.log('>>> 报告文件已持久化落盘至:', outPath);\n  }\n\n  Toolbox.setProgress(1.0, '计算完成！');\n  return {\n    success: true,\n    message: 'QuickJS 脚本执行成功！已完成数据运算与格式化',\n    data: result\n  };\n}"
         }
       },
-      "size": 4555,
-      "md5": "3ea94a3d748fcec725efd862acf411d6",
-      "sha256": "2659c4993da1409f7c1d14ae4e8bf034d4d37cf21617726380caf489db26bc90",
+      "size": 4828,
+      "md5": "892513a56d3b043034468d45c85bada6",
+      "sha256": "39062bcdb87b2a8c660cef5822270ce7fd5ea93ddd9737cfe53225a1b3e6f1c9",
       "isOfficial": true,
       "downloadUrls": {
         "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/universal-data-codec.zip",
@@ -2228,7 +2262,7 @@
     },
     {
       "id": "universal-wasm-runner",
-      "name": "WebAssembly 全能算力工坊",
+      "name": "Wasm 算力工坊",
       "version": "1.0.0",
       "minAppVersion": "1.0.0",
       "category": "other",
@@ -2334,9 +2368,9 @@
         "handler": "wasm_universal",
         "params": {}
       },
-      "size": 3365,
-      "md5": "bfad31ba9e11470287020e90e2cedc2f",
-      "sha256": "54bc501d0369c8a8ab7c36ac23403e6b14af3225800d9b3b6a585420491f180f",
+      "size": 3462,
+      "md5": "68c5a4cc6f6fc177281019395514380e",
+      "sha256": "1ee9efa8b20505f5735590da8e2eb9f2176ebc696f0784704e985fd1397da7d5",
       "isOfficial": true,
       "downloadUrls": {
         "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/universal-wasm-runner.zip",
@@ -2347,11 +2381,11 @@
     },
     {
       "id": "video-audio-toolbox",
-      "name": "音视频综合工具箱",
+      "name": "音视频工具箱",
       "version": "1.2.0",
       "minAppVersion": "1.0.0",
       "category": "media",
-      "description": "基于工业级 FFmpeg 管道的音视频全能工具箱：支持极速零损提取原音轨 (Stream Copy 秒级导出)、高品质转换 MP3/WAV/AAC、HandBrake 级视频智能压缩、完全视频倒放（自适应内存保护）与通用 MP4 格式转换。",
+      "description": "基于 GPU 硬件加速 (NVENC / QSV / AMF / MediaCodec) 与智能线程调度的音视频工具箱：提供实时进度百分比、编码倍速与剩余时间预估，彻底告别满载卡顿。",
       "icon": "movie",
       "author": "Toolbox Team",
       "engineType": "media_pipeline",
@@ -2454,6 +2488,22 @@
             "field": "operation",
             "equals": "audio_convert"
           }
+        },
+        {
+          "id": "hwAccel",
+          "label": "硬件加速与性能调度",
+          "type": "select",
+          "defaultValue": "auto",
+          "options": [
+            {
+              "label": "🚀 自动启用 GPU 硬件加速 (推荐，速度提升 3~8 倍且不卡系统)",
+              "value": "auto"
+            },
+            {
+              "label": "🐢 仅使用 CPU 软件编码 (智能限制核心占用防卡顿)",
+              "value": "off"
+            }
+          ]
         }
       ],
       "action": {
@@ -2461,12 +2511,13 @@
         "params": {
           "op": "${operation}",
           "preset": "${compressPreset}",
-          "format": "${audioTargetFormat}"
+          "format": "${audioTargetFormat}",
+          "hwAccel": "${hwAccel}"
         }
       },
-      "size": 2842,
-      "md5": "59af3167957c723d30b81408b278bdd2",
-      "sha256": "0b46db639ec1df0364b8d8a9bb2cde2eb4ecd2e31444a93d07afb3d6b7f63192",
+      "size": 3836,
+      "md5": "4a6980d408b30c00e431f51aaf4ac8ec",
+      "sha256": "2c0bf71d6a4bdb38ef147397cf810f528ac0e0fbfd7c847771ad1f5de294c6c2",
       "isOfficial": true,
       "downloadUrls": {
         "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/video-audio-toolbox.zip",
@@ -2477,7 +2528,7 @@
     },
     {
       "id": "windows-media-downloader",
-      "name": "Windows 流式抓取与下载器",
+      "name": "Win 媒体下载",
       "version": "1.0.0",
       "minAppVersion": "1.0.0",
       "category": "win_ext",
@@ -2515,9 +2566,9 @@
         ],
         "showTerminal": true
       },
-      "size": 1257,
-      "md5": "3a29e22d09b86d498da873f54d712778",
-      "sha256": "21b26cccea3f96fa98c06e530260d0fcdf710358cefee8aac0de9277b4814a10",
+      "size": 1282,
+      "md5": "39ea2a0ffb854af29eb4881026b6af86",
+      "sha256": "0b14ff35f733d9377538d2780b016088cbcba2bf1ac2e3ceae174050a3984140",
       "isOfficial": true,
       "downloadUrls": {
         "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/windows-media-downloader.zip",
