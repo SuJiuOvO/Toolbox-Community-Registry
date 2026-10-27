@@ -2131,8 +2131,8 @@
         "params": {}
       },
       "size": 76583,
-      "md5": "5f8898253d2c25c7b87cd0649b62073f",
-      "sha256": "32189ea486d64116fde2cb8ac651071fa2f07983d3c33066db9fc8a659e99d97",
+      "md5": "70f7f779b6aaed5c9fdc34263ed9ee36",
+      "sha256": "024467ae3d1f7c0985c6e9dcf858b73a8829f9839d9bd65ab724ba41ade2ce70",
       "isOfficial": true,
       "downloadUrls": {
         "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/petpet-generator.zip",
