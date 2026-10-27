@@ -5,8 +5,8 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Manifest-v2.0-blue.svg" alt="Manifest v2.0" />
-  <img src="https://img.shields.io/badge/Runtimes-Wasm%20%7C%20QuickJS%20%7C%20CLI-6366F1" alt="Runtimes" />
+  <img src="https://img.shields.io/badge/Manifest-v2.2-blue.svg" alt="Manifest v2.2" />
+  <img src="https://img.shields.io/badge/Runtimes-Dual--Adaptive%20%7C%20Wasm%20VFS%20%7C%20QuickJS%20%7C%20CLI-6366F1" alt="Runtimes" />
   <img src="https://img.shields.io/badge/Mirrors-Gitee%20%7C%20jsDelivr%20%7C%20GitHub-4CAF50" alt="Mirrors" />
   <img src="https://img.shields.io/badge/License-MIT-green.svg" alt="License" />
 </p>
@@ -25,14 +25,30 @@
 
 ## 🌟 模块运行时体系与支持范式
 
-百宝箱底座支持 4 大隔离沙箱执行范式，开发者可按需选用：
+百宝箱底座全面支持 5 大隔离沙箱与自适应执行范式，开发者可按需选用：
 
-| 运行时范式 | 核心技术栈 | 跨平台支持 | 适用场景 |
+| 运行时范式 | 核心技术栈 | 跨平台支持 | 适用典型场景与性能表现 |
 | :--- | :--- | :---: | :--- |
-| **WebAssembly (Wasm) 算力沙箱** | C / C++ / Rust / Go | 🌐 Windows / Android 全兼容 | 密集数学计算、密码学、音视频编解码、高性能数据压缩/解压 |
-| **QuickJS 跨平台脚本沙箱** | JavaScript (ES2020) | 🌐 Windows / Android 全兼容 | 文本处理、数据清洗、正则解析、格式转换、规则过滤 |
-| **Windows 独立扩展工坊** | CLI 可执行程序、PowerShell、Python | 🪟 Windows 专享 | 挂接现成的大型命令行工具（如 ffmpeg, yt-dlp, 7z），带流式终端回显 |
-| **客户端内置算法流水线** | 客户端底层图形/文档引擎 | 🌐 Windows / Android 全兼容 | 逆向 Alpha 混合数学无损去水印、图像等比缩放、PDF 矢量拆分合并 |
+| **🚀 双端自适应合一 (Dual-Adaptive)** | Win 原生 EXE + Android WASM | 🌐 双端最优解 | **旗舰推荐**：同插件兼顾 Windows 裸机原生二进制 (0.3s 直出) 与 Android WASM 沙箱 (<1s 完成) |
+| **🦀 WASI VFS 算力沙箱** | C / C++ / Rust (`wasm32-wasip1`) | 🌐 Windows / Android 全兼容 | 依托 WASI Preview 1 虚拟文件系统映射 (`/input`, `/output`, `/tmp`)，流式读写百兆级文件防爆内存 |
+| **⚡ QuickJS 跨平台脚本沙箱** | JavaScript (ES2020) | 🌐 Windows / Android 全兼容 | 纯文本分析、数据清洗、正则解析、轻量算法规则，免编译热插拔 |
+| **🪟 Windows 独立扩展工坊** | CLI 可执行程序、PowerShell、Python | 🪟 Windows 专享 | 挂接现成大型 Windows 命令行工具（如 ffmpeg, yt-dlp, 7z），带流式终端黑框回显与进程中断 |
+| **🖼️ 客户端内置算法流水线** | 客户端底层图形/音视频引擎 | 🌐 Windows / Android 全兼容 | 逆向 Alpha 混合数学去水印、FFmpeg 原生转码（支持 FLAC 无损与 OGG Vorbis 双重回退） |
+
+---
+
+## 🏆 官方精选模块专区 (Featured Plugins)
+
+本仓库已托管并持续维护以下高质量精选功能模块，打开客户端「模块市场」即可一键安装使用：
+
+| 模块名称 | 模块 ID | 架构类型 | 核心能力与技术亮点 |
+| :--- | :--- | :---: | :--- |
+| **网易云 NCM 解密** 🌟 | `ncm-audio-converter` | **🚀 双端自适应** | 专为网易云加密音频设计，100% 还原无损 FLAC / MP3，Windows 跑裸机原生 EXE (0.3s 直出)，Android 跑 WASM 沙箱，自动提取注入专辑封面与元数据标签 |
+| **音视频工具箱 (v1.3.0)** 🎬 | `video-audio-toolbox` | **本地多媒体流水线** | 基于硬件加速 (NVENC/QSV/AMF/MediaCodec) 与多线程流转；新增 **FLAC 原生无损转码** 与 **OGG (Vorbis) 高效转码**（带原生双重回退保障） |
+| **Gemini-Banana 无损去水印** 🍌 | `gemini-banana-watermark` | **本地逆向数学算法** | 纯本地逆向 Alpha 混合解算，逐像素无损恢复原图底色，拒绝涂抹模糊与 AI 虚构 |
+| **万能解压与密码提取工坊** 📦 | `universal-archive-extractor` | **本地归档引擎** | 支持 7z、RAR、ZIP 分卷包自动串联、GBK 乱码探测修复与防双重嵌套展开 |
+| **万能数据摘要与编解码** 🔠 | `universal-data-codec` | **QuickJS 脚本沙箱** | 支持 MD5、SHA1/256/512、Base64、Hex、URL、Unicode 批量编解码 |
+| **WebAssembly 全能算力工坊** 🦀 | `universal-wasm-runner` | **Wasm 微核沙箱** | 支持直接拖拽任意 `.wasm`/`.wat` 字节码文件，自省导出表并沙箱执行 |
 
 ---
 
@@ -40,15 +56,16 @@
 
 为方便所有开发者无障碍开发与接入功能模块，我们准备了详尽的全栈技术开发手册：
 
-👉 **[《Multi-Toolbox 社区功能模块（插件）全栈开发与技术架构指南 (Manifest v2.0)》](docs/PLUGIN_DEVELOPMENT_GUIDE.md)**
+👉 **[《Multi-Toolbox 社区功能模块（插件）全栈开发与技术架构指南 (Manifest v2.2)》](docs/PLUGIN_DEVELOPMENT_GUIDE.md)**
 
 ### 手册核心内容速览：
-- **四大执行模式开发指南**：手把手教您如何用 Rust 编译 `.wasm`、编写 QuickJS 脚本及配置 Windows CLI 扩展。
-- **Manifest v2.0 清单规范完整参考**：
-  - **最新图标系统规范**：支持 SVG 矢量代码直接渲染、图片模式（严格限制大小 $\le$ 512KB 与像素分辨率 $\le$ 512×512）与自动平滑降级。
-  - **动态表单组件系统**：文件选择器（`file_picker`）、滑块（`slider`）、下拉单选（`select`）、数字框（`number`）、文本域（`text`）。
+- **五大执行模式全景解析**：手把手教您如何用 Rust 编译 `wasm32-wasip1` 虚拟文件流沙箱模块、编写 QuickJS 脚本，以及实现**双端自适应合一插件**。
+- **Manifest v2.2 清单规范完整参考**：
+  - **最新双端路由调度**：单个插件同时声明 `nativeRunner` 与 `wasmRunner`，客户端自动路由至双端最优底层。
+  - **动态表单组件系统**：文件选择器（`file_picker`，已内置 Android 专有后缀容错与宿主层文件夹扁平化展开）、滑块（`slider`）、下拉单选（`select`）、数字框（`number`）、文本域（`text`）。
   - **动态联动条件 (`visibleIf`)**：实现复杂参数折叠与多模式切换。
-- **3 个完整实战项目源码**：包含从零编写到上架全过程。
+  - **图标系统规范**：支持 SVG 矢量代码直接渲染、图片模式（严格限制大小 $\le$ 512KB 与像素分辨率 $\le$ 512×512）与自动平滑降级。
+- **4 个完整实战项目源码**：包含从零编写、双目标交叉编译到上架全过程（含 `ncm-audio-converter` 完整解密实战范例）。
 - **本地自动化校验与打包指引**。
 
 ---
@@ -58,13 +75,18 @@
 ```text
 Toolbox-Community-Registry/
   ├── docs/
-  │     └── PLUGIN_DEVELOPMENT_GUIDE.md   # 【核心】模块全栈开发与规范指南
+  │     └── PLUGIN_DEVELOPMENT_GUIDE.md   # 【核心】模块全栈开发与规范指南 (Manifest v2.2)
   ├── plugins/                            # 社区模块源码与清单目录
-  │     ├── gemini-banana-watermark/      # 各模块独立子目录
-  │     │     └── manifest.json           # 模块配置清单
-  │     ├── universal-wasm-runner/
-  │     └── universal-data-codec/
-  ├── packages/                           # 自动化构建输出的 .zip 模块包
+  │     ├── ncm-audio-converter/          # 网易云 NCM 解密 (双端自适应合一)
+  │     │     ├── manifest.json
+  │     │     ├── README.md
+  │     │     └── bin/
+  │     │           ├── ncmdump.exe       # Windows 原生二进制
+  │     │           └── ncmdump.wasm      # WASI Preview 1 字节码
+  │     ├── video-audio-toolbox/          # 音视频工具箱 (支持 FLAC / OGG)
+  │     ├── gemini-banana-watermark/
+  │     └── universal-wasm-runner/
+  ├── packages/                           # 自动化构建输出的标准 .zip 模块包
   ├── registry/
   │     ├── index.json                    # 客户端在线拉取的多源聚合索引
   │     ├── app_version.json              # 客户端本体最新发版检测元数据
@@ -84,7 +106,7 @@ Toolbox-Community-Registry/
 ```mermaid
 flowchart LR
     A["1. Fork 派生本仓库"] --> B["2. plugins/ 新建模块目录"]
-    B --> C["3. 编写 manifest.json 与脚本"]
+    B --> C["3. 编写 manifest.json 与脚本/产物"]
     C --> D["4. 运行 python tools/build_registry.py"]
     D --> E["5. 提交 PR 发起合入申请"]
 ```
@@ -98,8 +120,8 @@ flowchart LR
 mkdir plugins/my-awesome-tool
 ```
 
-### 第三步：编写 `manifest.json`
-根据 [Manifest v2.0 规范](docs/PLUGIN_DEVELOPMENT_GUIDE.md) 编写配置文件，并可附带 SVG 矢量代码图标或脚本：
+### 第三步：编写 `manifest.json` 与代码
+根据 [Manifest v2.2 规范](docs/PLUGIN_DEVELOPMENT_GUIDE.md) 编写配置文件，并可附带 SVG 矢量代码图标或脚本：
 ```json
 {
   "id": "my-awesome-tool",
@@ -114,7 +136,7 @@ mkdir plugins/my-awesome-tool
   "engineType": "quickjs",
   "icon": {
     "type": "code",
-    "data": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\"><circle cx=\"12\" cy=\"12\" r=\"10\" fill=\"#3B82F6\"/></svg>"
+    "data": "<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#3B82F6"/></svg>"
   },
   "inputs": [
     {

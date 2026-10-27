@@ -1,0 +1,56 @@
+{
+  "id": "ncm-audio-converter",
+  "name": "网易云 NCM 解密",
+  "version": "2.2.0",
+  "minAppVersion": "1.0.0",
+  "category": "media",
+  "platforms": [
+    "windows",
+    "android"
+  ],
+  "executionType": "wasm",
+  "engineType": "wasm",
+  "author": "taurusxin / 社区移植",
+  "description": "【双端自适应合一】Windows 端自动调度本地原生极速程序 (0.3s 直出)，Android 端无缝运行 WASM 算力微内核沙箱 (<1s 完成)。专为网易云专属加密 NCM 格式设计，100% 还原原始无损 FLAC 或高保真 MP3 音轨，自动嵌入元数据与高清封面，支持全选批量与整目录展开。",
+  "icon": {
+    "type": "code",
+    "data": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\"><defs><linearGradient id=\"ncmGrad\" x1=\"0%\" y1=\"0%\" x2=\"100%\" y2=\"100%\"><stop offset=\"0%\" stop-color=\"#E11D48\"/><stop offset=\"100%\" stop-color=\"#9333EA\"/></linearGradient></defs><rect x=\"2\" y=\"2\" width=\"20\" height=\"20\" rx=\"5\" fill=\"url(#ncmGrad)\"/><circle cx=\"11\" cy=\"12\" r=\"7\" fill=\"none\" stroke=\"#FFFFFF\" stroke-width=\"1.2\" stroke-opacity=\"0.3\"/><circle cx=\"11\" cy=\"12\" r=\"4.5\" fill=\"none\" stroke=\"#FFFFFF\" stroke-width=\"1.2\" stroke-opacity=\"0.5\"/><circle cx=\"11\" cy=\"12\" r=\"2\" fill=\"#FFFFFF\"/><path d=\"M16 6v7.5a2 2 0 1 1-1.5-1.93V8h3V6h-1.5z\" fill=\"#FFFFFF\"/><rect x=\"15\" y=\"14\" width=\"7\" height=\"6\" rx=\"1.5\" fill=\"#10B981\"/><path d=\"M17 14v-1.8a1.5 1.5 0 0 1 3 0V14\" fill=\"none\" stroke=\"#10B981\" stroke-width=\"1.3\" stroke-linecap=\"round\"/><circle cx=\"18.5\" cy=\"17\" r=\"0.8\" fill=\"#FFFFFF\"/></svg>"
+  },
+  "nativeRunner": {
+    "entry": "bin/ncmdump.exe",
+    "args": [
+      "-o",
+      "{outputDir}",
+      "{inputs}"
+    ],
+    "showTerminal": true
+  },
+  "wasmRunner": {
+    "entry": "bin/ncmdump.wasm",
+    "executionMode": "wasi_cli",
+    "args": [
+      "-i",
+      "{input}",
+      "-o",
+      "{outputDir}"
+    ],
+    "batchMode": true,
+    "showTerminal": true
+  },
+  "inputs": [
+    {
+      "id": "musicFiles",
+      "label": "选择待解锁的 NCM 音乐文件 (支持批量多选与整目录)",
+      "type": "file_picker",
+      "required": true,
+      "allowMultiple": true,
+      "allowedExtensions": [
+        "ncm"
+      ]
+    }
+  ],
+  "action": {
+    "handler": "wasm_universal",
+    "params": {}
+  }
+}
