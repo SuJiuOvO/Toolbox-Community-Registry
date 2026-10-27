@@ -1957,6 +1957,191 @@
       "downloadUrl": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/pdf-toolbox.zip"
     },
     {
+      "id": "petpet-generator",
+      "name": "摸头 GIF 生成器",
+      "version": "1.2.1",
+      "minAppVersion": "1.0.0",
+      "category": "media",
+      "platforms": [
+        "universal"
+      ],
+      "executionType": "quickjs",
+      "engineType": "quickjs",
+      "author": "Community & A.Tools Reference",
+      "description": "【摸头表情包制作神器】全面对标 A.Tools 完整参数体系。将任意头像一键制作成摸头 (Petpet / Rua) 动态 GIF。直通目标分辨率管线，大尺寸输出纤毫毕现绝无马赛克；基于客户端原生 Alpha 隔离调色板量化器，实现真正的真·透明背景（人物黑发/眼瞳绝不穿孔）；支持微调模式 (X/Y偏移)、头像与手势独立翻转、速度/尺寸/挤压力度全自由调节，全内存链式极速秒级渲染，离线安全无残留。",
+      "icon": {
+        "type": "code",
+        "data": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\"><defs><linearGradient id=\"petGrad\" x1=\"0%\" y1=\"0%\" x2=\"100%\" y2=\"100%\"><stop offset=\"0%\" stop-color=\"#F59E0B\"/><stop offset=\"100%\" stop-color=\"#EC4899\"/></linearGradient></defs><rect x=\"2\" y=\"2\" width=\"20\" height=\"20\" rx=\"5\" fill=\"url(#petGrad)\"/><circle cx=\"12\" cy=\"14\" r=\"5\" fill=\"#FFFFFF\" fill-opacity=\"0.9\"/><path d=\"M8 10c1-2 5-3 8-1s2 3 1 4\" stroke=\"#FFFFFF\" stroke-width=\"2\" stroke-linecap=\"round\" fill=\"none\"/></svg>"
+      },
+      "inputs": [
+        {
+          "id": "sourceImage",
+          "label": "选择头像或待揉捏图片 (支持批量多选)",
+          "type": "file_picker",
+          "required": true,
+          "allowMultiple": true,
+          "allowedExtensions": [
+            "png",
+            "jpg",
+            "jpeg",
+            "webp",
+            "gif",
+            "bmp"
+          ]
+        },
+        {
+          "id": "shape",
+          "label": "头像外形裁切",
+          "type": "select",
+          "defaultValue": "circle",
+          "options": [
+            {
+              "label": "⚪ 圆形裁切 (推荐，最适宜社交头像)",
+              "value": "circle"
+            },
+            {
+              "label": "⬜ 方形原图 (适合立绘、宠物原图)",
+              "value": "square"
+            }
+          ]
+        },
+        {
+          "id": "scale",
+          "label": "图片大小 (缩放比例 %)",
+          "type": "slider",
+          "defaultValue": 100,
+          "min": 50,
+          "max": 150,
+          "step": 5
+        },
+        {
+          "id": "squish",
+          "label": "挤压力度 (0.0 不变形，1.0 经典，2.0 极限超弹)",
+          "type": "slider",
+          "defaultValue": 1.0,
+          "min": 0.0,
+          "max": 2.0,
+          "step": 0.1
+        },
+        {
+          "id": "delayMs",
+          "label": "速度 (单帧间隔毫秒，越小越快，默认 50ms)",
+          "type": "slider",
+          "defaultValue": 50,
+          "min": 20,
+          "max": 150,
+          "step": 5
+        },
+        {
+          "id": "fineTune",
+          "label": "开启微调模式",
+          "type": "switch",
+          "defaultValue": false,
+          "description": "展开水平与垂直微调滑块，可精确对齐不同发型或头型"
+        },
+        {
+          "id": "offsetX",
+          "label": "水平微调偏移 (X)",
+          "type": "slider",
+          "defaultValue": 0,
+          "min": -30,
+          "max": 30,
+          "step": 1,
+          "visibleIf": {
+            "field": "fineTune",
+            "equals": true
+          }
+        },
+        {
+          "id": "offsetY",
+          "label": "垂直微调偏移 (Y)",
+          "type": "slider",
+          "defaultValue": 0,
+          "min": -30,
+          "max": 30,
+          "step": 1,
+          "visibleIf": {
+            "field": "fineTune",
+            "equals": true
+          }
+        },
+        {
+          "id": "flipAvatar",
+          "label": "翻转图片 (左右水平镜像)",
+          "type": "switch",
+          "defaultValue": false,
+          "description": "将被揉捏的头像进行左右水平翻转"
+        },
+        {
+          "id": "flipHand",
+          "label": "翻转手势 / 从右侧摸头",
+          "type": "switch",
+          "defaultValue": false,
+          "description": "镜像整个手势动线，小手改为从右上方探出"
+        },
+        {
+          "id": "transparentBg",
+          "label": "透明背景",
+          "type": "switch",
+          "defaultValue": true,
+          "description": "保持动图背景完全透明 (关闭后可自定义纯色背景色)"
+        },
+        {
+          "id": "bgColor",
+          "label": "背景颜色 (Hex 色值)",
+          "type": "text",
+          "defaultValue": "#FFFFFF",
+          "visibleIf": {
+            "field": "transparentBg",
+            "equals": false
+          },
+          "description": "输入十六进制颜色代码，例如 #FFFFFF (纯白) 或 #F3F4F6 (浅灰)"
+        },
+        {
+          "id": "resolution",
+          "label": "GIF 大小 (导出分辨率)",
+          "type": "select",
+          "defaultValue": "128",
+          "options": [
+            {
+              "label": "112 px (经典原版尺寸)",
+              "value": "112"
+            },
+            {
+              "label": "128 px (高清适中 - 推荐微信/QQ表情)",
+              "value": "128"
+            },
+            {
+              "label": "160 px (高清大图)",
+              "value": "160"
+            },
+            {
+              "label": "200 px (超清大图)",
+              "value": "200"
+            },
+            {
+              "label": "256 px (极致超清)",
+              "value": "256"
+            }
+          ]
+        }
+      ],
+      "action": {
+        "handler": "quickjs_runner",
+        "params": {}
+      },
+      "size": 76583,
+      "md5": "5f8898253d2c25c7b87cd0649b62073f",
+      "sha256": "32189ea486d64116fde2cb8ac651071fa2f07983d3c33066db9fc8a659e99d97",
+      "isOfficial": true,
+      "downloadUrls": {
+        "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/petpet-generator.zip",
+        "github_cdn": "https://cdn.jsdelivr.net/gh/SuJiuOvO/Toolbox-Community-Registry@main/packages/petpet-generator.zip",
+        "github": "https://raw.githubusercontent.com/SuJiuOvO/Toolbox-Community-Registry/main/packages/petpet-generator.zip"
+      },
+      "downloadUrl": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/petpet-generator.zip"
+    },
+    {
       "id": "qr-toolbox",
       "name": "二维码工坊",
       "version": "1.1.0",
