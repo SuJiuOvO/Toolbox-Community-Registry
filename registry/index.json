@@ -709,9 +709,9 @@
           "message": "🤖 Android 运行环境：Excel 支持【原生 WPS/Office 导出】与【本地离线轻量转换】；PPT 与 Word 调起手机 WPS 或 Office 导出，跳转前将显示详细操作指引。"
         }
       ],
-      "size": 20763,
-      "md5": "a66679a7dbff7185eed0098a526a98a8",
-      "sha256": "d7237e28957dad7621e75e0a488fc668e6e20c089d592e12a8965604b8403fe6",
+      "size": 20074,
+      "md5": "27a3882b5476125533893916ca0b954f",
+      "sha256": "995ea936c7e1f992d8277d6341b1a78c21d06d9db8bbe515603aad812e4186d5",
       "isOfficial": true,
       "downloadUrls": {
         "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/doc-converter.zip",
@@ -763,9 +763,9 @@
           "fileName": "${fileName}"
         }
       },
-      "size": 1417,
-      "md5": "1b1653c1a9f4b08109c3f9f32901e860",
-      "sha256": "4924ed5c5ffd855fcac438a4daa36488dd871ce87442503b1c19d9056d111bfe",
+      "size": 1373,
+      "md5": "1c7507b37784bf3b8052d25c902bd502",
+      "sha256": "d1c26be7047f74f91a218494734bc3a7ab042ee98df0fccd0fb0af33bc4bfcd5",
       "isOfficial": true,
       "downloadUrls": {
         "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/downloader-toolbox.zip",
@@ -907,9 +907,9 @@
           "format": "${format}"
         }
       },
-      "size": 14076,
-      "md5": "f25c184334e1ff54a9038259386b3f16",
-      "sha256": "ff245550ab473afbd7bd04c92a805e27f406ba19d40181397aecfa41eefb263d",
+      "size": 13942,
+      "md5": "016409d3090e80bb2ab433ba84aff14d",
+      "sha256": "f5e568d9854958f51113cd4c7d14160bca4a2d7e669d5892e7586fa7f8d9c4a8",
       "isOfficial": true,
       "downloadUrls": {
         "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/gemini-banana-watermark.zip",
@@ -1182,9 +1182,9 @@
           "exportZip": "${exportZip}"
         }
       },
-      "size": 6591,
-      "md5": "7ca41501502d1ed5263e9675d2326d1a",
-      "sha256": "6a40311460adfa8da708bec219901c5407bb14a8e1abcfb84b4d49d1751de116",
+      "size": 6326,
+      "md5": "3c5dc3d3c92121b85278c11fb500616b",
+      "sha256": "baab09ebfa8a1fdf4fbccbd98a1f298f2aa55d2ba7d76108a215fc21af0d7d56",
       "isOfficial": true,
       "downloadUrls": {
         "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/gif-toolbox.zip",
@@ -1293,9 +1293,9 @@
           "tolerance": "${tolerance}"
         }
       },
-      "size": 2815,
-      "md5": "4ac196c0c1b50cc356483d0d38aa5bc2",
-      "sha256": "788c719b0c7d75f109bea833e165d8aa0dd74620ddff9c2226321d7ac557be7e",
+      "size": 2714,
+      "md5": "20f48fe03412f958573cc707d907d034",
+      "sha256": "30098f0916a7c370843c69d7f5c56da47803797368b8b492fd3c704d7d185142",
       "isOfficial": true,
       "downloadUrls": {
         "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/id-photo-bg.zip",
@@ -1395,9 +1395,9 @@
           "maxEdge": "${maxEdge}"
         }
       },
-      "size": 2589,
-      "md5": "1a96067d69bf96521ca2a8505bc12f86",
-      "sha256": "8afa80c9fbe3e94a3a95ae8d4bb248972149eb9e70b2315e9c859af809f71a92",
+      "size": 2497,
+      "md5": "3edfc54961b8a1bf527c8a1688c59b4a",
+      "sha256": "f421cd38320d77e88c778ef3dd928b3b1cc1f480b3899f2afcbb22f89b8005a0",
       "isOfficial": true,
       "downloadUrls": {
         "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/image-compress.zip",
@@ -1486,9 +1486,9 @@
           "height": "${targetHeight}"
         }
       },
-      "size": 2216,
-      "md5": "2ef0ef5343445ab4520a29cce2b5210c",
-      "sha256": "16eaa3ad95525cb633a087046fd045cbc4b5707682302b940a6c69373d107d97",
+      "size": 2135,
+      "md5": "2f1e28da25a40dfbcf7474ef45f246c3",
+      "sha256": "4461a4b0ce7c1991d0ca5d0ce59a1ea0900b1c54a6c2de257ee13b5f3a27a90a",
       "isOfficial": true,
       "downloadUrls": {
         "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/image-resize.zip",
@@ -1664,9 +1664,9 @@
           "exportFormat": "${exportFormat}"
         }
       },
-      "size": 4617,
-      "md5": "15665c175d1eb2d8f45f2b596a128aef",
-      "sha256": "ef8bb309fa24a36ea9efa8fc6242c1e908276e42e46e370b9c468825ac5efc28",
+      "size": 4449,
+      "md5": "e4f281a704ed5fe71bd7026e520d8a7d",
+      "sha256": "84b7765eb1245307abb4c4eeb7ec29462274a24e7befce1db81f44e3fb71acbe",
       "isOfficial": true,
       "downloadUrls": {
         "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/livephoto-toolbox.zip",
@@ -1730,9 +1730,9 @@
         "handler": "wasm_universal",
         "params": {}
       },
-      "size": 764777,
-      "md5": "52456cec62d98b84e931589d8a21ce85",
-      "sha256": "e9f0656cbddcca3e877e2c176a781b9f346aeb6cebb0bc02cc56610ea43ea423",
+      "size": 764721,
+      "md5": "d2e1c0e587e4341f8eacddc0387c0557",
+      "sha256": "d7d49361ead18dc5737e4d0996f478b95681344c1dbd0c527717fed88e79a8a8",
       "isOfficial": true,
       "downloadUrls": {
         "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/ncm-audio-converter.zip",
@@ -2057,9 +2057,9 @@
           "compressStrategy": "${compressStrategy}"
         }
       },
-      "size": 8153,
-      "md5": "1c18d32033bd3653e2a7ee6832c916e2",
-      "sha256": "94de3a43c79e8db540d5bf12a30af04992a2e5251101e5eabbc1ce6d03154688",
+      "size": 7836,
+      "md5": "f4e9d08ca9657a22607b1a13053f577e",
+      "sha256": "c2eeedb043f96a0c02890ab3350ee72435577c2e46f50064eabeae0e91f2c485",
       "isOfficial": true,
       "downloadUrls": {
         "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/pdf-toolbox.zip",
@@ -2243,8 +2243,8 @@
         "params": {}
       },
       "size": 76583,
-      "md5": "5f8898253d2c25c7b87cd0649b62073f",
-      "sha256": "32189ea486d64116fde2cb8ac651071fa2f07983d3c33066db9fc8a659e99d97",
+      "md5": "70f7f779b6aaed5c9fdc34263ed9ee36",
+      "sha256": "024467ae3d1f7c0985c6e9dcf858b73a8829f9839d9bd65ab724ba41ade2ce70",
       "isOfficial": true,
       "downloadUrls": {
         "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/petpet-generator.zip",
@@ -2360,9 +2360,9 @@
           "size": "${size}"
         }
       },
-      "size": 2873,
-      "md5": "019f3d58ae2048bd8c06f46c9ad57a2b",
-      "sha256": "cf2ec4e11cc8474035806cfa4ed6a5c690a7addb910f3fe10577f7434285f7cd",
+      "size": 2765,
+      "md5": "9c14b114f9e5eac63be2f4f0e475de1b",
+      "sha256": "6e2e2cea300f71906b7337b207ecdd71324a74660d8ba088824e7e8e33598077",
       "isOfficial": true,
       "downloadUrls": {
         "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/qr-toolbox.zip",
@@ -2538,9 +2538,9 @@
       "permissions": [
         "storage_manage"
       ],
-      "size": 4978,
-      "md5": "0b3c9fe2de2821dc08c3208ea12d1bc6",
-      "sha256": "bae748fec05500e2a6973996232e26d1b6e780861cb3fc899ed1bc6feb4527f8",
+      "size": 4811,
+      "md5": "bf8424957254ef50c108cb84109b747d",
+      "sha256": "c3fe4ece64ee14d79fec693aaa91bea10ca65e1963057d591546f5ecaf97e103",
       "isOfficial": true,
       "downloadUrls": {
         "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/universal-archive-extractor.zip",
@@ -2621,9 +2621,9 @@
           "script": "async function run({ inputFiles, outputDir, params }) {\n  const text = String(params.sourceText || '');\n  const mode = String(params.mode || 'all');\n  const exportFile = params.exportJson === 'yes';\n\n  Toolbox.log('【QuickJS 引擎】开始执行动态脚本任务...');\n  Toolbox.log('>>> 当前运行平台:', Toolbox.platform);\n  Toolbox.log('>>> 待处理文本长度:', text.length, '字符');\n  Toolbox.setProgress(0.2, '正在分析输入数据...');\n\n  let result = {\n    timestamp: new Date().toISOString(),\n    platform: Toolbox.platform,\n    inputLength: text.length\n  };\n\n  if (mode === 'b64_enc') {\n    Toolbox.setProgress(0.6, '正在执行 Base64 编码...');\n    result.base64 = Toolbox.crypto.base64Encode(text);\n    Toolbox.log('>>> Base64 编码结果:', result.base64);\n  } else if (mode === 'b64_dec') {\n    Toolbox.setProgress(0.6, '正在执行 Base64 解码...');\n    try {\n      result.decoded = Toolbox.crypto.base64Decode(text);\n      Toolbox.log('>>> Base64 解码结果:', result.decoded);\n    } catch (e) {\n      Toolbox.error('Base64 解码失败:', String(e));\n      return { success: false, message: 'Base64 解码失败，请输入合法的 Base64 字符串' };\n    }\n  } else {\n    Toolbox.setProgress(0.4, '正在计算安全散列摘要 (MD5 & SHA256)...');\n    const md5Val = Toolbox.crypto.md5(text);\n    const shaVal = Toolbox.crypto.sha256(text);\n    result.md5 = md5Val;\n    result.sha256 = shaVal;\n    Toolbox.log('>>> MD5 校验和:', md5Val);\n    Toolbox.log('>>> SHA-256 散列:', shaVal);\n\n    if (mode === 'all') {\n      Toolbox.setProgress(0.7, '正在统计文本结构与字数...');\n      result.base64 = Toolbox.crypto.base64Encode(text);\n      result.lines = text.split(/\\r?\\n/).length;\n      result.words = (text.match(/\\b\\w+\\b/g) || []).length;\n      Toolbox.log('>>> 总行数:', result.lines, '| 单词词数:', result.words);\n    }\n  }\n\n  if (exportFile) {\n    Toolbox.setProgress(0.9, '正在生成并落盘输出文件...');\n    const outPath = outputDir + '/codec_report.json';\n    Toolbox.fs.writeFile(outPath, JSON.stringify(result, null, 2));\n    Toolbox.log('>>> 报告文件已持久化落盘至:', outPath);\n  }\n\n  Toolbox.setProgress(1.0, '计算完成！');\n  return {\n    success: true,\n    message: 'QuickJS 脚本执行成功！已完成数据运算与格式化',\n    data: result\n  };\n}"
         }
       },
-      "size": 4828,
-      "md5": "892513a56d3b043034468d45c85bada6",
-      "sha256": "39062bcdb87b2a8c660cef5822270ce7fd5ea93ddd9737cfe53225a1b3e6f1c9",
+      "size": 4755,
+      "md5": "fb8a65da26487c604e35c5d55044275f",
+      "sha256": "71dd2d0781be25bca0ed463f742c02a03fc7691b92227e3b05232c1d1aa123f0",
       "isOfficial": true,
       "downloadUrls": {
         "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/universal-data-codec.zip",
@@ -2740,9 +2740,9 @@
         "handler": "wasm_universal",
         "params": {}
       },
-      "size": 3462,
-      "md5": "68c5a4cc6f6fc177281019395514380e",
-      "sha256": "1ee9efa8b20505f5735590da8e2eb9f2176ebc696f0784704e985fd1397da7d5",
+      "size": 3353,
+      "md5": "b8c79844b75633998ddc4d236bd68eb3",
+      "sha256": "3179d6001d691ea918dc00ea652f2e3fdefdf55ecf808eac7c0cc8536f501a6a",
       "isOfficial": true,
       "downloadUrls": {
         "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/universal-wasm-runner.zip",
@@ -2897,9 +2897,9 @@
           "hwAccel": "${hwAccel}"
         }
       },
-      "size": 4083,
-      "md5": "86cd09a71af830f0c72d8b80678044ba",
-      "sha256": "f7afa34452f51deaf809526d732025e49c0a0795f5ea626ad282e9703173bc3c",
+      "size": 3936,
+      "md5": "c92dbe39cea59b0469f4c25f597925fc",
+      "sha256": "d60498c2d807903ecedf495f71cc6d1fba2b62da27a74c55fec853fd61b1b0e5",
       "isOfficial": true,
       "downloadUrls": {
         "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/video-audio-toolbox.zip",
@@ -2948,9 +2948,9 @@
         ],
         "showTerminal": true
       },
-      "size": 1282,
-      "md5": "39ea2a0ffb854af29eb4881026b6af86",
-      "sha256": "0b14ff35f733d9377538d2780b016088cbcba2bf1ac2e3ceae174050a3984140",
+      "size": 1241,
+      "md5": "1897701748e96f2a460ac8a5de346e24",
+      "sha256": "3c642bc9a303cf38582bade0dfee9afcfe39e56edf0fb48482c4db4a8563ef9a",
       "isOfficial": true,
       "downloadUrls": {
         "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/windows-media-downloader.zip",
