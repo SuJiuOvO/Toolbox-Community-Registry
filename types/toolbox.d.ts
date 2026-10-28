@@ -193,14 +193,18 @@ declare namespace ToolboxAPI {
    * 宿主文件系统 (Toolbox.fs) API
    */
   export interface FileSystemAPI {
-    /** 读取指定文件的 UTF-8 文本或 Base64 编码 */
+    /** 读取指定文件的 UTF-8 文本或 Base64 编码 (向后兼容) */
     readFile(path: string, isBase64?: boolean): string;
+    /** 以 Base64 字符串形式读取指定文件的二进制数据 */
+    readBytes(path: string): string;
     /** 以 Uint8Array 二进制字节数组形式直接读取文件（处理音视频与图片推荐） */
-    readBytes(path: string): Uint8Array;
+    readBinary(path: string): Uint8Array;
     /** 读取指定文件的 UTF-8 纯文本 */
     readText(path: string): string;
-    /** 写入文本或 Base64 编码的二进制到指定路径 */
-    writeFile(path: string, content: string, isBase64?: boolean): boolean;
+    /** 写入纯文本、Base64 字符串或 Uint8Array 二进制字节流到指定路径 */
+    writeFile(path: string, content: string | Uint8Array, isBase64?: boolean): boolean;
+    /** 直接写入 Uint8Array 二进制字节数组到指定路径 */
+    writeBinary(path: string, bytes: Uint8Array): boolean;
     /** 检查指定路径的文件或目录是否存在 */
     exists(path: string): boolean;
     /** 列出指定目录下的文件与子目录完整路径列表 */

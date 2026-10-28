@@ -182,9 +182,11 @@ QuickJS 插件沙箱不仅支持普通的文本分析，更提供了完整的高
     - 严禁通过 `../../` 进行目录穿越攻击。若插件确实需要访问全盘任意文件（如全盘查重清理类系统工具），必须在 Manifest 中显式声明 `"permissions": ["filesystem_unrestricted"]`。
 
 - **二进制与文件系统 (`Toolbox.fs`)**：
-  - `Toolbox.fs.readBytes(path)`: 异步读取文件并直接返回 `Uint8Array` 原始二进制字节流，轻松处理图片/音频/压缩包等非文本格式。
+  - `Toolbox.fs.readBinary(path)`: 直接读取文件并返回 `Uint8Array` 原始二进制字节流，轻松处理图片/音频/压缩包等非文本格式。
+  - `Toolbox.fs.writeBinary(path, bytes)`: 直接将 `Uint8Array` 原始二进制字节流写入指定路径。
+  - `Toolbox.fs.readBytes(path)`: 读取文件为 Base64 编码字符串（配合 `Toolbox.utils.base64ToBytes` 使用）。
   - `Toolbox.fs.readFile(path, isBase64)`: 读取文件为 UTF-8 文本字符串（默认）或 Base64 编码字符串（`isBase64: true`）。
-  - `Toolbox.fs.writeFile(path, content, isBase64)`: 写入文本字符串或 Base64 编码的二进制字节流到磁盘。
+  - `Toolbox.fs.writeFile(path, content, isBase64)`: 写入文本字符串、Base64 编码字符串或直接传入 `Uint8Array` 字节流到磁盘。
   - `Toolbox.fs.listFiles(dirPath)` / `Toolbox.fs.readDir(dirPath)` / `Toolbox.fs.list(dirPath)`: 列出指定目录下的文件与子目录列表。若要列出用户选择的输入文件所在父目录下的同级文件，需声明 `fs:read_directory` 或 `fs:read_parent_dir` 权限。
   - `Toolbox.fs.remove(path)` / `Toolbox.fs.delete(path)`: 安全删除指定的临时文件或递归删除临时目录，方便清理中间帧缓存。
   - `Toolbox.fs.exists(path)`: 判断文件或目录是否存在。
