@@ -1,6 +1,6 @@
-# 🛠️ Multi-Toolbox 社区功能模块（插件）全栈开发与技术架构指南 (Manifest v2.3)
+# 🛠️ Multi-Toolbox 社区功能模块（插件）全栈开发与技术架构指南 (Manifest v2.4)
 
-> **当前规范版本**：`Manifest v2.3` (全面支持 WASI Preview 1 VFS 虚拟文件系统、双端自适应合一架构、QuickJS 二进制/图像管道与免打包本地热调试)  
+> **当前规范版本**：`Manifest v2.4` (全面支持非阻塞异步网络 Host Bridge fetch / getAsync、声明式复合 outputs 流式排布展示、Path Jail 安全围栏、WASI Preview 1 VFS 与免打包本地热调试)  
 > **适用对象**：核心维护人员、第三方工具开发者、系统与脚本工程师（Rust / C++ / WebAssembly / JavaScript / Python / CLI）  
 > **核心哲学**：**客户端极致精简稳定，海量功能按需沙箱热插拔；100% 纯本地离线执行，全面保障用户隐私与数据安全。**
 
@@ -11,7 +11,7 @@
 1. [系统整体架构与沙箱底座全貌](#1-系统整体架构与沙箱底座全貌)
 2. [五大执行模式与运行时深度解析](#2-五大执行模式与运行时深度解析)
    - [2.1 WebAssembly (Wasm) 二进制算力与 WASI Preview 1 虚拟文件系统 (VFS) 沙箱](#21-webassembly-wasm-二进制算力与-wasi-preview-1-虚拟文件系统-vfs-沙箱)
-   - [2.2 QuickJS 跨平台动态脚本沙箱与宿主 Bridge (Binary I/O & Image Pipeline)](#22-quickjs-跨平台动态脚本沙箱-executiontype-quickjs)
+   - [2.2 QuickJS 跨平台动态脚本沙箱与宿主 Bridge (Async Network, Path Jail, Binary I/O & Image Pipeline)](#22-quickjs-跨平台动态脚本沙箱-executiontype-quickjs)
    - [2.3 Windows 开放扩展工坊 (Native CLI / Script)](#23-windows-开放扩展工坊-executiontype-native_executable--script)
    - [2.4 🚀 双端自适应合一架构 (Dual-Adaptive: Win 原生 + Android WASM)](#24--双端自适应合一架构-dual-adaptive-win-原生--android-wasm)
    - [2.5 客户端内置原生算法与多媒体流水线 (Audio & Image Pipeline)](#25-客户端内置原生算法与多媒体流水线-executiontype-internal)
@@ -156,7 +156,31 @@ flowchart TD
   - 最终结果直接以 `return` 语句返回字符串呈现给用户。
 
 #### 核心 API 与宿主双向通信能力 (Host Bridge)：
-QuickJS 插件沙箱不仅支持普通的文本分析，更提供了完整的高性能底层文件与图形处理 API：
+QuickJS 插件沙箱不仅支持普通的文本分析，更提供了完整的高性能底层文件、网络、存储与图形处理 API：
+
+- **现代标准异步非阻塞网络通信 (`Toolbox.http` / 全局 `fetch`)**：
+  - `fetch(url, options)` / `Toolbox.http.fetch(url, options)`：完全遵循现代 Web 标准 Fetch API 规范的 Promise 接口。
+    - 支持 `const data = await res.json()`、`const text = await res.text()`；
+    - 支持便捷属性 `res.ok`（`true` 表示 200~299 状态码）、`res.status` / `res.statusCode`、`res.headers`、`res.body`；
+    - **非阻塞零卡顿**：网络 I/O 完全在后台并发调度，绝不占用 UI 主线程，彻底杜绝界面假死现象！
+  - `Toolbox.http.getAsync(url, headers)`：标准 Promise 异步 GET 网络请求，返回包装了 `json()`、`text()` 与 `ok` 的响应对象。
+  - `Toolbox.http.postAsync(url, body, headers)`：标准 Promise 异步 POST 网络请求。
+  - `Toolbox.http.get(url, headers)` / `Toolbox.http.post(url, body, headers)`：向后兼容旧版插件的同步调用接口。
+  - ⚠️ **沙箱权限强约束**：插件发起任何外部网络请求前，**必须**在 `manifest.json` 的顶层显式声明 `"permissions": ["network"]`。若未申请权限，沙箱拦截器将即刻阻断请求并抛出受控安全异常，彻底杜绝静默数据外发。
+
+- **插件专属隔离持久化存储 (`Toolbox.storage`)**：
+  - 每个插件享有完全独立、沙箱隔离的本地 JSON 键值存储空间，跨生命周期持久化保存配置、用户 Token 或历史状态：
+    - `Toolbox.storage.get(key, defaultValue)`：读取存储值，若不存在则返回缺省值。
+    - `Toolbox.storage.set(key, value)`：持久化写入值（支持字符串、数字、布尔值或复杂 JSON 字典/列表）。
+    - `Toolbox.storage.remove(key)` / `Toolbox.storage.delete(key)`：删除指定键。
+    - `Toolbox.storage.getAll()`：获取当前插件存储的所有键值对字典对象。
+
+- **路径越权安全围栏 (Path Jail)**：
+  - 宿主文件系统访问受严格的安全路径白名单限制：
+    - 读操作限制在用户传入的 `inputFiles`、输出目录 `outputDir`、插件私有目录 `localDir` 及数据目录 `pluginDataDir` 范围内；
+    - 写操作（`writeFile`、`remove`、`mkdir`）仅允许向 `outputDir`、系统临时缓存目录和 `pluginDataDir` 写入；
+    - 严禁通过 `../../` 进行目录穿越攻击。若插件确实需要访问全盘任意文件（如全盘查重清理类系统工具），必须在 Manifest 中显式声明 `"permissions": ["filesystem_unrestricted"]`。
+
 - **二进制与文件系统 (`Toolbox.fs`)**：
   - `Toolbox.fs.readBytes(path)`: 异步读取文件并直接返回 `Uint8Array` 原始二进制字节流，轻松处理图片/音频/压缩包等非文本格式。
   - `Toolbox.fs.readFile(path, isBase64)`: 读取文件为 UTF-8 文本字符串（默认）或 Base64 编码字符串（`isBase64: true`）。
@@ -398,6 +422,88 @@ async function run({ inputFiles, outputDir, params }) {
   ]
 }
 ```
+
+---
+
+### 3.6 复合输出结果声明模型 (`outputs`)
+
+以往插件如果计算得到多组数据或分析结论，往往只能将内容塞入单行状态信息中。Manifest v2.4 引入了强大的声明式复合输出展示体系：
+
+```json
+"outputs": [
+  {
+    "id": "summary",
+    "type": "copyable_text",
+    "label": "分析摘要概览",
+    "description": "核心计算结论速览"
+  },
+  {
+    "id": "metrics",
+    "type": "key_value_table",
+    "label": "关键性能与量化指标",
+    "description": "以键值表格清晰呈现各维度数据"
+  },
+  {
+    "id": "report",
+    "type": "markdown",
+    "label": "详细 Markdown 诊断报告"
+  },
+  {
+    "id": "raw_json",
+    "type": "json_tree",
+    "label": "原始结构化数据 (JSON)"
+  }
+]
+```
+
+#### 支持的展示类型 (`type`)：
+| 输出类型 `type` | 渲染形态与交互体验 | 适用数据形态 |
+| :--- | :--- | :--- |
+| `copyable_text` | 等宽字体文本展示框，内置一键复制按钮与行号排版 | 纯文本、哈希校验码、Base64 密文、生成的代码片段 |
+| `key_value_table` | 高对比度键值表格，键列紧凑高亮、值列支持任意长文本自适应 | 性能指标、字典映射、元数据属性（Map 对象） |
+| `markdown` | 渲染多级标题、列表、粗体、代码块与链接 | 结构化诊断报告、排版说明、格式化日志 |
+| `json_tree` | 自动格式化（缩进 2 空格）的 JSON 代码卡片，支持一键完整拷贝 | 复杂嵌套的 API 响应、调试配置、全量分析 Dump |
+
+#### 插件数据映射与流式顺序排布：
+当配置了多个 `outputs` 时，JavaScript 脚本在 `return` 时返回 `data` 对象，**其键名与 `output.id` 严格对应**：
+```javascript
+return {
+  success: true,
+  message: '数据分析完成',
+  data: {
+    summary: '总耗时 42ms，已成功处理 1,200 条记录',
+    metrics: {
+      'rps': 28500,
+      'memory_mb': 14.2,
+      'error_rate': '0.00%'
+    },
+    raw_json: {
+      status: 'OK',
+      timestamp: Date.now()
+    }
+  }
+};
+```
+宿主底座将按清单中声明的顺序，依次流式排布为独立的卡片群，每个卡片右上角均提供高易用性的“一键复制”操作！
+
+---
+
+### 3.7 插件安全权限声明模型 (`permissions`)
+
+Multi-Toolbox 对第三方插件执行最小权限原则（Principle of Least Privilege）：
+
+```json
+"permissions": [
+  "network",
+  "filesystem_unrestricted"
+]
+```
+
+- **`network`**：
+  - 授权插件调用 `fetch`、`Toolbox.http.getAsync`、`Toolbox.http.postAsync` 等网络请求 API。
+  - 若未声明，所有网络调用均在沙箱边界直接被拦截并抛出受控安全错误。
+- **`filesystem_unrestricted`**：
+  - 授权插件突破 Path Jail 目录围栏，访问用户选定目录以外的全盘任意绝对路径（适用于全盘扫描、系统垃圾清理、大文件查重等特权工具）。
 
 ---
 
