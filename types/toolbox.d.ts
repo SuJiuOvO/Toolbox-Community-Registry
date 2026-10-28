@@ -203,8 +203,12 @@ declare namespace ToolboxAPI {
     writeFile(path: string, content: string, isBase64?: boolean): boolean;
     /** 检查指定路径的文件或目录是否存在 */
     exists(path: string): boolean;
-    /** 列出指定目录下的文件与子目录名称 */
+    /** 列出指定目录下的文件与子目录完整路径列表 */
     listFiles(path: string): string[];
+    /** 列出指定目录下的文件与子目录完整路径列表 (listFiles 别名) */
+    readDir(path: string): string[];
+    /** 列出指定目录下的文件与子目录完整路径列表 (listFiles 别名) */
+    list(path: string): string[];
     /** 递归创建目录 */
     mkdir(path: string): boolean;
     /** 删除指定文件或递归删除目录 */

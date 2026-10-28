@@ -111,9 +111,9 @@
       "type": "array",
       "items": {
         "type": "string",
-        "enum": ["network", "filesystem_unrestricted"]
+        "enum": ["network", "filesystem_unrestricted", "fs:unrestricted", "fs:read_directory", "fs:read_parent_dir"]
       },
-      "description": "插件安全沙箱特权声明。若需要发起外部 HTTP/HTTPS 网络请求，必须声明 \"network\"；若需突破 Path Jail 访问全盘任意文件，必须声明 \"filesystem_unrestricted\"。"
+      "description": "插件安全沙箱特权声明。若需要发起外部 HTTP/HTTPS 网络请求，必须声明 \"network\"；若需访问选中文件同级目录，需声明 \"fs:read_directory\"；若需突破 Path Jail 访问全盘任意文件，必须声明 \"filesystem_unrestricted\"。"
     },
     "inputs": {
       "type": "array",
@@ -209,9 +209,10 @@
               "copyable_text",
               "key_value_table",
               "markdown",
-              "json_tree"
+              "json_tree",
+              "image_compare"
             ],
-            "description": "输出渲染类型: copyable_text(带行号等宽拷贝框), key_value_table(高对比度键值表格), markdown(富文本排版渲染), json_tree(缩进两格的格式化JSON)。"
+            "description": "输出渲染类型: copyable_text(带行号等宽拷贝框), key_value_table(高对比度键值表格), markdown(富文本排版渲染), json_tree(缩进两格的格式化JSON), image_compare(前后图片交互式滑动对比卡片)。"
           },
           "label": {
             "type": "string",
