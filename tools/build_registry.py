@@ -53,6 +53,21 @@ for plugin_id in sorted(os.listdir(PLUGINS_DIR)):
         if icon_type == "image" and icon_data.startswith("data:image/") and len(icon_data) > max_bytes * 2:
             raise ValueError(f"Plugin {plugin_id} inline image exceeds size limit")
 
+    # 4. 校验受控权限规范 (Manifest v2.4)
+    perms = manifest.get("permissions")
+    if perms is not None:
+        if not isinstance(perms, list) or not all(isinstance(p, str) for p in perms):
+            raise ValueError(f"Plugin {plugin_id} invalid permissions: {perms}, must be list of strings")
+
+    # 5. 校验结果输出声明规范 (Manifest v2.4)
+    outputs = manifest.get("outputs")
+    if outputs is not None:
+        if not isinstance(outputs, list):
+            raise ValueError(f"Plugin {plugin_id} outputs must be a list")
+        for out in outputs:
+            if not isinstance(out, dict) or "id" not in out or "label" not in out:
+                raise ValueError(f"Plugin {plugin_id} output item missing 'id' or 'label': {out}")
+
     zip_path = os.path.join(PACKAGES_DIR, f"{plugin_id}.zip")
     with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as z:
         for root, _, files in os.walk(plugin_path):

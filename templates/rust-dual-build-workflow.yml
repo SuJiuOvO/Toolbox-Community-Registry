@@ -1,0 +1,100 @@
+name: 🚀 Build Dual-Adaptive Plugin Artifacts (Windows EXE + Android WASM)
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  build-wasm:
+    name: 🦀 Build WASM Artifact (wasm32-wasip1)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Install Rust Toolchain & WASI Target
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-wasip1
+
+      - name: Compile WebAssembly Binary
+        run: |
+          cargo build --release --target wasm32-wasip1
+          mkdir -p dist/bin
+          # 自动拷贝产物至分发目录
+          find target/wasm32-wasip1/release/ -maxdepth 1 -name "*.wasm" -exec cp {} dist/bin/ \;
+
+      - name: Upload WASM Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: wasm-artifact
+          path: dist/bin/*.wasm
+
+  build-windows:
+    name: 🪟 Build Windows Native Binary (x86_64-pc-windows-msvc)
+    runs-on: windows-latest
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Install Rust Toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: x86_64-pc-windows-msvc
+
+      - name: Compile Native Windows EXE
+        run: |
+          cargo build --release --target x86_64-pc-windows-msvc
+          if (!(Test-Path "dist\bin")) { New-Item -ItemType Directory -Force -Path "dist\bin" }
+          Copy-Item target\x86_64-pc-windows-msvc\release\*.exe dist\bin\ -Force
+
+      - name: Upload Windows Native Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-artifact
+          path: dist\bin\*.exe
+
+  package-plugin:
+    name: 📦 Package Ready-To-Publish Plugin ZIP
+    needs: [build-wasm, build-windows]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Download WASM Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: wasm-artifact
+          path: package/bin
+
+      - name: Download Windows Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: windows-artifact
+          path: package/bin
+
+      - name: Assemble Plugin Package
+        run: |
+          # 拷贝 manifest.json 与静态资产
+          [ -f manifest.json ] && cp manifest.json package/
+          [ -f README.md ] && cp README.md package/ || true
+          [ -d assets ] && cp -r assets package/ || true
+          
+          # 打包为标准 ZIP (排除冗余源码与 Markdown)
+          cd package
+          zip -r ../plugin-release.zip * -x "*.md"
+          cd ..
+          
+          echo "=== 产物计算 ==="
+          ls -lh plugin-release.zip
+          sha256sum plugin-release.zip
+
+      - name: Upload Ready Plugin ZIP
+        uses: actions/upload-artifact@v4
+        with:
+          name: final-plugin-zip
+          path: plugin-release.zip
