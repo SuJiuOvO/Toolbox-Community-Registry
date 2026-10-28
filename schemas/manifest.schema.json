@@ -57,7 +57,11 @@
       "type": "array",
       "items": {
         "type": "string",
-        "enum": ["windows", "android", "universal"]
+        "enum": [
+          "windows",
+          "android",
+          "universal"
+        ]
       },
       "minItems": 1,
       "description": "支持的目标操作系统列表。双端通用可声明为 [\"universal\"] 或 [\"windows\", \"android\"]。"
@@ -93,11 +97,18 @@
     },
     "icon": {
       "type": "object",
-      "required": ["type", "data"],
+      "required": [
+        "type",
+        "data"
+      ],
       "properties": {
         "type": {
           "type": "string",
-          "enum": ["code", "image", "file"],
+          "enum": [
+            "code",
+            "image",
+            "file"
+          ],
           "description": "图标类型: code(首选推荐，内联SVG矢量XML代码), image(Base64编码PNG/JPG图片), file(相对路径图片)"
         },
         "data": {
@@ -111,7 +122,17 @@
       "type": "array",
       "items": {
         "type": "string",
-        "enum": ["network", "filesystem_unrestricted", "fs:unrestricted", "fs:read_directory", "fs:read_parent_dir"]
+        "enum": [
+          "network",
+          "filesystem_unrestricted",
+          "fs:unrestricted",
+          "fs:read_directory",
+          "fs:read_parent_dir",
+          "storage",
+          "storage_manage",
+          "storage_all_files",
+          "fs_all_files"
+        ]
       },
       "description": "插件安全沙箱特权声明。若需要发起外部 HTTP/HTTPS 网络请求，必须声明 \"network\"；若需访问选中文件同级目录，需声明 \"fs:read_directory\"；若需突破 Path Jail 访问全盘任意文件，必须声明 \"filesystem_unrestricted\"。"
     },
@@ -120,7 +141,11 @@
       "description": "动态 Schema 驱动的表单输入项定义列表。",
       "items": {
         "type": "object",
-        "required": ["id", "label", "type"],
+        "required": [
+          "id",
+          "label",
+          "type"
+        ],
         "properties": {
           "id": {
             "type": "string",
@@ -170,7 +195,9 @@
           },
           "allowedExtensions": {
             "type": "array",
-            "items": { "type": "string" },
+            "items": {
+              "type": "string"
+            },
             "description": "file_picker 组件允许选取的文件格式后缀列表（不含点，例如 [\"mp3\", \"flac\", \"ncm\"]）。"
           },
           "options": {
@@ -178,16 +205,62 @@
             "description": "select 下拉单选组件的可选项列表。",
             "items": {
               "type": "object",
-              "required": ["label", "value"],
+              "required": [
+                "label",
+                "value"
+              ],
               "properties": {
-                "label": { "type": "string", "description": "选项展示文本" },
-                "value": { "description": "选项实际对应的值" }
+                "label": {
+                  "type": "string",
+                  "description": "选项展示文本"
+                },
+                "value": {
+                  "description": "选项实际对应的值"
+                }
               }
             }
           },
           "visibleIf": {
             "type": "object",
             "description": "高级动态条件联动展示规则。支持 field, value, in, or, and 等复合逻辑。"
+          },
+          "banners": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/bannerDef"
+            },
+            "description": "表单组件下方的提示横幅列表。"
+          },
+          "rejectedExtensions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/rejectedExtensionDef"
+            },
+            "description": "专有受阻格式拦截与操作指引定义。"
+          },
+          "allowFolder": {
+            "type": "boolean",
+            "description": "file_picker 组件是否展示【添加文件夹】按钮。"
+          },
+          "pickButtonText": {
+            "type": "string",
+            "description": "自定义文件选择按钮文本。"
+          },
+          "selectionSummary": {
+            "type": "string",
+            "description": "自定义选中条目汇总文本模板 (支持 {count} 占位符)。"
+          },
+          "isArchive": {
+            "type": "boolean",
+            "description": "是否为压缩归档文件选择器 (在 Android 端启用特殊分卷兼容与专有图标)。"
+          },
+          "preserveDirectoryEntries": {
+            "type": "boolean",
+            "description": "是否保留文件夹原始目录结构而不递归扁平化展开为散列文件。"
+          },
+          "preserveDirectoryEntriesIf": {
+            "type": "object",
+            "description": "是否保留目录结构的动态条件规则。"
           }
         }
       }
@@ -197,7 +270,11 @@
       "description": "声明式复合计算结果与富文本卡片排布规范 (Manifest v2.4 引入)。",
       "items": {
         "type": "object",
-        "required": ["id", "type", "label"],
+        "required": [
+          "id",
+          "type",
+          "label"
+        ],
         "properties": {
           "id": {
             "type": "string",
@@ -241,7 +318,9 @@
     },
     "nativeRunner": {
       "type": "object",
-      "required": ["entry"],
+      "required": [
+        "entry"
+      ],
       "properties": {
         "entry": {
           "type": "string",
@@ -249,7 +328,9 @@
         },
         "args": {
           "type": "array",
-          "items": { "type": "string" },
+          "items": {
+            "type": "string"
+          },
           "description": "命令行启动参数列表，支持 ${inputFiles}、${outputDir} 与 ${fieldName} 动态替换。"
         },
         "showTerminal": {
@@ -270,7 +351,9 @@
     },
     "wasmRunner": {
       "type": "object",
-      "required": ["entry"],
+      "required": [
+        "entry"
+      ],
       "properties": {
         "entry": {
           "type": "string",
@@ -278,13 +361,18 @@
         },
         "executionMode": {
           "type": "string",
-          "enum": ["wasi_cli", "direct_call"],
+          "enum": [
+            "wasi_cli",
+            "direct_call"
+          ],
           "default": "wasi_cli",
           "description": "WASM 执行模式: wasi_cli(推荐，映射 VFS 虚拟文件系统的大文件流式 I/O) 或 direct_call(内存导出函数调用)。"
         },
         "args": {
           "type": "array",
-          "items": { "type": "string" },
+          "items": {
+            "type": "string"
+          },
           "description": "传递给 wasm _start 的命令行参数模板列表。"
         },
         "batchMode": {
@@ -310,6 +398,81 @@
         }
       },
       "description": "双端自适应 (Dual-Adaptive) 或 Android/通用 WASM 沙箱配置块。"
+    },
+    "banners": {
+      "type": "array",
+      "description": "声明式顶级提示横幅列表，展示于工具表单最上方，支持多平台区分与动态条件显隐。",
+      "items": {
+        "$ref": "#/definitions/bannerDef"
+      }
+    }
+  },
+  "definitions": {
+    "bannerDef": {
+      "type": "object",
+      "required": [
+        "message"
+      ],
+      "properties": {
+        "message": {
+          "type": "string",
+          "description": "提示横幅内容"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "info",
+            "warning",
+            "success",
+            "tip"
+          ],
+          "default": "info",
+          "description": "横幅颜色样式"
+        },
+        "platform": {
+          "type": "string",
+          "enum": [
+            "all",
+            "universal",
+            "windows",
+            "android"
+          ],
+          "default": "all",
+          "description": "适用的操作系统平台"
+        },
+        "icon": {
+          "type": "string",
+          "description": "横幅左侧图标标识"
+        },
+        "visibleIf": {
+          "type": "object",
+          "description": "动态联动显隐条件"
+        }
+      }
+    },
+    "rejectedExtensionDef": {
+      "type": "object",
+      "required": [
+        "extensions",
+        "message"
+      ],
+      "properties": {
+        "extensions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "受阻格式后缀列表 (如 [\".dwg\", \".dwf\"])"
+        },
+        "title": {
+          "type": "string",
+          "description": "拦截提示弹窗标题"
+        },
+        "message": {
+          "type": "string",
+          "description": "拦截引导说明与操作指导"
+        }
+      }
     }
   }
 }
