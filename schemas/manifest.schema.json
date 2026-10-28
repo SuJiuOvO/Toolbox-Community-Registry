@@ -1,0 +1,314 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://raw.githubusercontent.com/SuJiuOvO/Toolbox-Community-Registry/main/schemas/manifest.schema.json",
+  "title": "Multi-Toolbox Plugin Manifest Schema (v2.4)",
+  "description": "Multi-Toolbox 动态功能模块与插件清单规范模式文件，用于 IDE 实时智能语法提示与校验。",
+  "type": "object",
+  "required": [
+    "id",
+    "name",
+    "version",
+    "category",
+    "description",
+    "author",
+    "platforms"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "JSON Schema 模式定义文件 URL"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+$",
+      "description": "插件唯一英文标识符，必须与插件目录名完全一致，仅允许小写字母、数字和连字符(-)。例如: ncm-audio-converter"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 60,
+      "description": "插件的人类友好显示名称（支持中英文）。例如: 网易云音乐 NCM 极速批量转码"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+",
+      "description": "插件版本号，遵循语义化版本规范 (Semantic Versioning)。例如: 1.0.0"
+    },
+    "minAppVersion": {
+      "type": "string",
+      "description": "运行当前插件所需的客户端最低 App 版本号。例如: 1.0.0"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "media",
+        "text",
+        "dev",
+        "system",
+        "image",
+        "audio",
+        "video",
+        "archive",
+        "other"
+      ],
+      "description": "插件分类标签，决定在插件市场与分类筛选中的排布展示。"
+    },
+    "platforms": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["windows", "android", "universal"]
+      },
+      "minItems": 1,
+      "description": "支持的目标操作系统列表。双端通用可声明为 [\"universal\"] 或 [\"windows\", \"android\"]。"
+    },
+    "executionType": {
+      "type": "string",
+      "enum": [
+        "wasm",
+        "quickjs",
+        "native_executable",
+        "script",
+        "internal"
+      ],
+      "description": "插件执行中枢引擎类型: wasm(WebAssembly沙箱), quickjs(轻量JS沙箱), native_executable(Windows原生可执行文件), internal(宿主内置多媒体流水线)。"
+    },
+    "engineType": {
+      "type": "string",
+      "enum": [
+        "wasm",
+        "quickjs",
+        "windows_extension",
+        "internal"
+      ],
+      "description": "历史兼容别名字段，建议优先使用 executionType。"
+    },
+    "description": {
+      "type": "string",
+      "description": "插件的详细功能与算法特性介绍，关键词会被客户端插件管理与市场实时检索。"
+    },
+    "author": {
+      "type": "string",
+      "description": "作者署名或组织名称。"
+    },
+    "icon": {
+      "type": "object",
+      "required": ["type", "data"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["code", "image", "file"],
+          "description": "图标类型: code(首选推荐，内联SVG矢量XML代码), image(Base64编码PNG/JPG图片), file(相对路径图片)"
+        },
+        "data": {
+          "type": "string",
+          "description": "图标数据内容。type=code 时为纯文本 SVG 矢量 XML，type=image 时为 data:image/png;base64,... 字符串。"
+        }
+      },
+      "description": "插件图标定义，支持高保真无损缩放的 SVG 矢量代码模式。"
+    },
+    "permissions": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["network", "filesystem_unrestricted"]
+      },
+      "description": "插件安全沙箱特权声明。若需要发起外部 HTTP/HTTPS 网络请求，必须声明 \"network\"；若需突破 Path Jail 访问全盘任意文件，必须声明 \"filesystem_unrestricted\"。"
+    },
+    "inputs": {
+      "type": "array",
+      "description": "动态 Schema 驱动的表单输入项定义列表。",
+      "items": {
+        "type": "object",
+        "required": ["id", "label", "type"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "表单字段的唯一键名，在脚本中通过 params[id] 或模板变量 ${id} 提取。"
+          },
+          "label": {
+            "type": "string",
+            "description": "表单组件的展示标题。"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "file_picker",
+              "text",
+              "number",
+              "slider",
+              "switch",
+              "select",
+              "color_picker",
+              "folder_picker"
+            ],
+            "description": "组件类型: file_picker(文件/目录选择器), text(文本框), number(数字微调), slider(连续滑块), switch(二元开关), select(下拉单选), color_picker(拾色器), folder_picker(输出目录选择器)。"
+          },
+          "required": {
+            "type": "boolean",
+            "default": false,
+            "description": "是否为必填项。未填报时客户端会拦截执行并进行气泡提示。"
+          },
+          "defaultValue": {
+            "description": "表单项初始化默认值。"
+          },
+          "placeholder": {
+            "type": "string",
+            "description": "输入框占位提示文本。"
+          },
+          "min": {
+            "type": "number",
+            "description": "数值或滑块最小值限制。"
+          },
+          "max": {
+            "type": "number",
+            "description": "数值或滑块最大值限制。"
+          },
+          "step": {
+            "type": "number",
+            "description": "滑块或数字微调器的步长。"
+          },
+          "allowedExtensions": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "file_picker 组件允许选取的文件格式后缀列表（不含点，例如 [\"mp3\", \"flac\", \"ncm\"]）。"
+          },
+          "options": {
+            "type": "array",
+            "description": "select 下拉单选组件的可选项列表。",
+            "items": {
+              "type": "object",
+              "required": ["label", "value"],
+              "properties": {
+                "label": { "type": "string", "description": "选项展示文本" },
+                "value": { "description": "选项实际对应的值" }
+              }
+            }
+          },
+          "visibleIf": {
+            "type": "object",
+            "description": "高级动态条件联动展示规则。支持 field, value, in, or, and 等复合逻辑。"
+          }
+        }
+      }
+    },
+    "outputs": {
+      "type": "array",
+      "description": "声明式复合计算结果与富文本卡片排布规范 (Manifest v2.4 引入)。",
+      "items": {
+        "type": "object",
+        "required": ["id", "type", "label"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "输出字段 ID，与 JS 返回的 data[id] 键名严格匹配。"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "copyable_text",
+              "key_value_table",
+              "markdown",
+              "json_tree"
+            ],
+            "description": "输出渲染类型: copyable_text(带行号等宽拷贝框), key_value_table(高对比度键值表格), markdown(富文本排版渲染), json_tree(缩进两格的格式化JSON)。"
+          },
+          "label": {
+            "type": "string",
+            "description": "结果卡片的标题文本。"
+          },
+          "description": {
+            "type": "string",
+            "description": "结果卡片的辅助说明提示。"
+          }
+        }
+      }
+    },
+    "action": {
+      "type": "object",
+      "properties": {
+        "handler": {
+          "type": "string",
+          "description": "动作处理器标识: wasm_runner, wasm_universal, quickjs_eval, image_pipeline, archive_universal, native_process 等。"
+        },
+        "params": {
+          "type": "object",
+          "description": "传递给动作处理器的参数映射模板，支持占位符 ${fieldName} 替换。"
+        }
+      },
+      "description": "默认或通用的执行动作配置。"
+    },
+    "nativeRunner": {
+      "type": "object",
+      "required": ["entry"],
+      "properties": {
+        "entry": {
+          "type": "string",
+          "description": "Windows 原生可执行文件相对路径。例如: bin/ffmpeg.exe 或 script.bat"
+        },
+        "args": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "命令行启动参数列表，支持 ${inputFiles}、${outputDir} 与 ${fieldName} 动态替换。"
+        },
+        "showTerminal": {
+          "type": "boolean",
+          "default": false,
+          "description": "是否在界面下方展示流式终端黑色控制台与实时标准输出/错误流。"
+        },
+        "downloadUrls": {
+          "type": "object",
+          "description": "按需静默下载二进制的镜像下载源 (gitee, github, jsdelivr)。"
+        },
+        "sha256": {
+          "type": "string",
+          "description": "下载二进制文件的 SHA-256 完整性哈希校验值。"
+        }
+      },
+      "description": "双端自适应 (Dual-Adaptive) 或 Windows 专用原生可执行程序配置块。"
+    },
+    "wasmRunner": {
+      "type": "object",
+      "required": ["entry"],
+      "properties": {
+        "entry": {
+          "type": "string",
+          "description": "WASM 模块文件相对路径。例如: ncm_dumper.wasm"
+        },
+        "executionMode": {
+          "type": "string",
+          "enum": ["wasi_cli", "direct_call"],
+          "default": "wasi_cli",
+          "description": "WASM 执行模式: wasi_cli(推荐，映射 VFS 虚拟文件系统的大文件流式 I/O) 或 direct_call(内存导出函数调用)。"
+        },
+        "args": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "传递给 wasm _start 的命令行参数模板列表。"
+        },
+        "batchMode": {
+          "type": "boolean",
+          "default": false,
+          "description": "是否对多个输入文件逐一启动独立 WASM 实例批处理循环。"
+        },
+        "functionName": {
+          "type": "string",
+          "description": "direct_call 模式下调用的导出函数名。"
+        },
+        "env": {
+          "type": "object",
+          "description": "注入 WASI 沙箱的环境变量字典。"
+        },
+        "downloadUrls": {
+          "type": "object",
+          "description": "按需静默下载 WASM 模块的镜像地址。"
+        },
+        "sha256": {
+          "type": "string",
+          "description": "WASM 模块文件的 SHA-256 完整性哈希校验值。"
+        }
+      },
+      "description": "双端自适应 (Dual-Adaptive) 或 Android/通用 WASM 沙箱配置块。"
+    }
+  }
+}

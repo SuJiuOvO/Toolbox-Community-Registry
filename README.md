@@ -75,7 +75,11 @@
 ```text
 Toolbox-Community-Registry/
   ├── docs/
-  │     └── PLUGIN_DEVELOPMENT_GUIDE.md   # 【核心】模块全栈开发与规范指南 (Manifest v2.2)
+  │     └── PLUGIN_DEVELOPMENT_GUIDE.md   # 【核心】模块全栈开发与规范指南 (Manifest v2.4)
+  ├── schemas/
+  │     └── manifest.schema.json          # 【IDE 支持】官方 JSON Schema，VS Code 实时补全与校验
+  ├── types/
+  │     └── toolbox.d.ts                  # 【TS 声明】Toolbox QuickJS 宿主 API 官方 TypeScript 类型定义
   ├── plugins/                            # 社区模块源码与清单目录
   │     ├── ncm-audio-converter/          # 网易云 NCM 解密 (双端自适应合一)
   │     │     ├── manifest.json
