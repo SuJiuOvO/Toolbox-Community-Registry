@@ -1,7 +1,7 @@
 {
   "id": "petpet-generator",
   "name": "摸头 GIF 生成器",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "minAppVersion": "1.0.0",
   "category": "media",
   "platforms": [
@@ -130,14 +130,40 @@
     },
     {
       "id": "bgColor",
-      "label": "背景颜色 (Hex 色值)",
-      "type": "text",
+      "label": "背景底色",
+      "type": "color_picker",
       "defaultValue": "#FFFFFF",
+      "options": [
+        {
+          "label": "纯白底",
+          "value": "#FFFFFF"
+        },
+        {
+          "label": "素雅浅灰",
+          "value": "#F3F4F6"
+        },
+        {
+          "label": "天蓝底",
+          "value": "#38BDF8"
+        },
+        {
+          "label": "樱花粉",
+          "value": "#F472B6"
+        },
+        {
+          "label": "活力黄",
+          "value": "#FBBF24"
+        },
+        {
+          "label": "纯黑底",
+          "value": "#000000"
+        }
+      ],
       "visibleIf": {
         "field": "transparentBg",
         "equals": false
       },
-      "description": "输入十六进制颜色代码，例如 #FFFFFF (纯白) 或 #F3F4F6 (浅灰)"
+      "description": "自定义背景颜色，支持预设色块或点击调色盘自由选取"
     },
     {
       "id": "resolution",
