@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Manifest-v2.2-blue.svg" alt="Manifest v2.2" />
+  <img src="https://img.shields.io/badge/Manifest-v2.5-blue.svg" alt="Manifest v2.5" />
   <img src="https://img.shields.io/badge/Runtimes-Dual--Adaptive%20%7C%20Wasm%20VFS%20%7C%20QuickJS%20%7C%20CLI-6366F1" alt="Runtimes" />
   <img src="https://img.shields.io/badge/Mirrors-Gitee%20%7C%20jsDelivr%20%7C%20GitHub-4CAF50" alt="Mirrors" />
   <img src="https://img.shields.io/badge/License-MIT-green.svg" alt="License" />
@@ -56,11 +56,11 @@
 
 为方便所有开发者无障碍开发与接入功能模块，我们准备了详尽的全栈技术开发手册：
 
-👉 **[《Multi-Toolbox 社区功能模块（插件）全栈开发与技术架构指南 (Manifest v2.2)》](docs/PLUGIN_DEVELOPMENT_GUIDE.md)**
+👉 **[《Multi-Toolbox 社区功能模块（插件）全栈开发与技术架构指南 (Manifest v2.5)》](docs/PLUGIN_DEVELOPMENT_GUIDE.md)**
 
 ### 手册核心内容速览：
 - **五大执行模式全景解析**：手把手教您如何用 Rust 编译 `wasm32-wasip1` 虚拟文件流沙箱模块、编写 QuickJS 脚本，以及实现**双端自适应合一插件**。
-- **Manifest v2.2 清单规范完整参考**：
+- **Manifest v2.5 清单规范完整参考**：
   - **最新双端路由调度**：单个插件同时声明 `nativeRunner` 与 `wasmRunner`，客户端自动路由至双端最优底层。
   - **动态表单组件系统**：文件选择器（`file_picker`，已内置 Android 专有后缀容错与宿主层文件夹扁平化展开）、滑块（`slider`）、下拉单选（`select`）、数字框（`number`）、文本域（`text`）。
   - **动态联动条件 (`visibleIf`)**：实现复杂参数折叠与多模式切换。
@@ -75,7 +75,7 @@
 ```text
 Toolbox-Community-Registry/
   ├── docs/
-  │     └── PLUGIN_DEVELOPMENT_GUIDE.md   # 【核心】模块全栈开发与规范指南 (Manifest v2.4)
+  │     └── PLUGIN_DEVELOPMENT_GUIDE.md   # 【核心】模块全栈开发与规范指南 (Manifest v2.5)
   ├── schemas/
   │     └── manifest.schema.json          # 【IDE 支持】官方 JSON Schema，VS Code 实时补全与校验
   ├── types/
@@ -125,7 +125,7 @@ mkdir plugins/my-awesome-tool
 ```
 
 ### 第三步：编写 `manifest.json` 与代码
-根据 [Manifest v2.2 规范](docs/PLUGIN_DEVELOPMENT_GUIDE.md) 编写配置文件，并可附带 SVG 矢量代码图标或脚本：
+根据 [Manifest v2.5 规范](docs/PLUGIN_DEVELOPMENT_GUIDE.md) 编写配置文件，并可附带 SVG 矢量代码图标或脚本：
 ```json
 {
   "id": "my-awesome-tool",
@@ -140,7 +140,7 @@ mkdir plugins/my-awesome-tool
   "engineType": "quickjs",
   "icon": {
     "type": "code",
-    "data": "<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#3B82F6"/></svg>"
+    "data": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\"><circle cx=\"12\" cy=\"12\" r=\"10\" fill=\"currentColor\" fill-opacity=\"0.22\"/><path d=\"M8 12h8\" stroke=\"currentColor\" stroke-width=\"2\"/></svg>"
   },
   "inputs": [
     {
@@ -151,20 +151,29 @@ mkdir plugins/my-awesome-tool
     }
   ],
   "action": {
-    "handler": "quickjs_runner",
-    "params": {
-      "scriptFile": "index.js"
-    }
+    "handler": "quickjs_eval",
+    "params": {}
   }
 }
 ```
 
+在同一目录创建 `entry.js`，通过 `run(ctx)` 获取表单参数并返回结果：
+```javascript
+async function run(ctx) {
+  return { success: true, text: ctx.params.sourceText || '' };
+}
+```
+客户端依次查找 `entry.js`、`index.js`、`main.js`、`tool.js`，也支持 `action.params.script` 内联源码；不读取 `action.entry` 或 `scriptFile`。
+
 ### 第四步：本地一键构建与规范审查
-运行内置自动化工具，验证配置格式与图标合规性：
+安装校验依赖并运行测试、Schema 校验和打包：
 ```bash
+python -m pip install -r requirements.txt
+python -m unittest discover -s tests -v
+python tools/build_registry.py --validate-only
 python tools/build_registry.py
 ```
-> 若验证无误，脚本会自动打包生成 `packages/my-awesome-tool.zip` 并更新 `registry/index.json`。
+> `--validate-only` 不写入产物。正式构建在全部清单验证成功后才生成 `packages/my-awesome-tool.zip` 并更新 `registry/index.json`；重复构建保持包内容与哈希稳定。
 
 ### 第五步：提交 Pull Request (PR)
 将修改提交并向 `main` 分支发起 Pull Request。

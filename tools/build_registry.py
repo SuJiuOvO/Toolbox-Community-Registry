@@ -1,113 +1,155 @@
-import os
-import json
-import zipfile
-import hashlib
-
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-PLUGINS_DIR = os.path.join(BASE_DIR, "plugins")
-PACKAGES_DIR = os.path.join(BASE_DIR, "packages")
-REGISTRY_DIR = os.path.join(BASE_DIR, "registry")
-
-os.makedirs(PACKAGES_DIR, exist_ok=True)
-os.makedirs(REGISTRY_DIR, exist_ok=True)
-
-GITHUB_USER = "SuJiuOvO"
-GITHUB_REPO = "Toolbox-Community-Registry"
-GITEE_USER = "sujiuovo"
-GITEE_REPO = "toolbox-community-registry"
-
-index_plugins = []
-
-for plugin_id in sorted(os.listdir(PLUGINS_DIR)):
-    plugin_path = os.path.join(PLUGINS_DIR, plugin_id)
-    manifest_file = os.path.join(plugin_path, "manifest.json")
-    if not os.path.isfile(manifest_file):
-        continue
-
-    with open(manifest_file, "r", encoding="utf-8") as f:
-        manifest = json.load(f)
-
-    # 1. 校验必填字段
-    for req in ["id", "name", "version", "category", "description"]:
-        if req not in manifest:
-            raise ValueError(f"Plugin {plugin_id} missing required field: {req}")
-
-    if manifest["id"] != plugin_id:
-        raise ValueError(f"Plugin folder '{plugin_id}' does not match manifest id '{manifest['id']}'")
-
-    # 2. 校验平台配置
-    platforms = manifest.get("platforms", ["universal"])
-    if not isinstance(platforms, list) or not all(p in ["universal", "windows", "android"] for p in platforms):
-        raise ValueError(f"Plugin {plugin_id} invalid platforms: {platforms}")
-
-    # 3. 校验图标字段规范 (Manifest v2.0)
-    raw_icon = manifest.get("icon")
-    if isinstance(raw_icon, dict):
-        icon_type = raw_icon.get("type", "image")
-        if icon_type not in ["image", "code", "material", "default"]:
-            raise ValueError(f"Plugin {plugin_id} invalid icon type '{icon_type}', must be image/code/material/default")
-        icon_data = raw_icon.get("data") or raw_icon.get("content") or ""
-        max_bytes = raw_icon.get("maxSizeBytes", 512 * 1024)
-        if icon_type == "code" and len(icon_data) > 64 * 1024:
-            raise ValueError(f"Plugin {plugin_id} SVG code exceeds 64KB limit")
-        if icon_type == "image" and icon_data.startswith("data:image/") and len(icon_data) > max_bytes * 2:
-            raise ValueError(f"Plugin {plugin_id} inline image exceeds size limit")
-
-    # 4. 校验受控权限规范 (Manifest v2.4)
-    perms = manifest.get("permissions")
-    if perms is not None:
-        if not isinstance(perms, list) or not all(isinstance(p, str) for p in perms):
-            raise ValueError(f"Plugin {plugin_id} invalid permissions: {perms}, must be list of strings")
-
-    # 5. 校验结果输出声明规范 (Manifest v2.4)
-    outputs = manifest.get("outputs")
-    if outputs is not None:
-        if not isinstance(outputs, list):
-            raise ValueError(f"Plugin {plugin_id} outputs must be a list")
-        for out in outputs:
-            if not isinstance(out, dict) or "id" not in out or "label" not in out:
-                raise ValueError(f"Plugin {plugin_id} output item missing 'id' or 'label': {out}")
-
-    zip_path = os.path.join(PACKAGES_DIR, f"{plugin_id}.zip")
-    with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as z:
-        for root, _, files in os.walk(plugin_path):
-            for file in sorted(files):
-                if file.endswith(".md"):
-                    continue
-                file_full = os.path.join(root, file)
-                rel_path = os.path.relpath(file_full, plugin_path).replace("\\", "/")
-                parts = rel_path.split("/")
-                if "target" in parts or any(p.startswith(".") and p != ".gitkeep" for p in parts):
-                    continue
-                with open(file_full, "rb") as f_in:
-                    file_bytes = f_in.read()
-                zinfo = zipfile.ZipInfo(rel_path, date_time=(2026, 1, 1, 0, 0, 0))
-                z.writestr(zinfo, file_bytes)
-
-    with open(zip_path, "rb") as zf:
-        data = zf.read()
-        md5_val = hashlib.md5(data).hexdigest()
-        sha256_val = hashlib.sha256(data).hexdigest()
-
-    entry = dict(manifest)
-    entry["size"] = len(data)
-    entry["md5"] = md5_val
-    entry["sha256"] = sha256_val
-    entry["isOfficial"] = manifest.get("isOfficial", True)
-    entry["downloadUrls"] = {
-        "gitee": f"https://gitee.com/{GITEE_USER}/{GITEE_REPO}/raw/main/packages/{plugin_id}.zip",
-        "github_cdn": f"https://cdn.jsdelivr.net/gh/{GITHUB_USER}/{GITHUB_REPO}@main/packages/{plugin_id}.zip",
-        "github": f"https://raw.githubusercontent.com/{GITHUB_USER}/{GITHUB_REPO}/main/packages/{plugin_id}.zip"
-    }
-    entry["downloadUrl"] = entry["downloadUrls"]["gitee"]
-    index_plugins.append(entry)
-
-registry_path = os.path.join(REGISTRY_DIR, "index.json")
-with open(registry_path, "r", encoding="utf-8") as f:
-    current = json.load(f)
-
-current["plugins"] = index_plugins
-with open(registry_path, "w", encoding="utf-8") as f:
-    json.dump(current, f, ensure_ascii=False, indent=2)
-
-print(f"Successfully validated and processed {len(index_plugins)} plugins.")
+"""Validate all manifests before producing deterministic registry packages."""
+
+import argparse
+import hashlib
+import io
+import json
+import os
+from pathlib import Path
+import zipfile
+
+from jsonschema import Draft7Validator
+
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+GITHUB_USER = "SuJiuOvO"
+GITHUB_REPO = "Toolbox-Community-Registry"
+GITEE_USER = "sujiuovo"
+GITEE_REPO = "toolbox-community-registry"
+QUICKJS_ENTRIES = ("entry.js", "index.js", "main.js", "tool.js")
+# Normalize source/config files only; executable and media bytes are preserved.
+TEXT_SUFFIXES = {".json", ".js", ".ts", ".rs", ".toml", ".lock", ".sh", ".bat", ".cmd", ".ps1", ".py", ".yaml", ".yml"}
+
+
+def load_validator(schema_path: Path) -> Draft7Validator:
+    schema = json.loads(schema_path.read_text(encoding="utf-8"))
+    Draft7Validator.check_schema(schema)
+    return Draft7Validator(schema)
+
+
+def validate_manifest(manifest: dict, plugin_path: Path, validator: Draft7Validator) -> None:
+    errors = sorted(validator.iter_errors(manifest), key=lambda error: str(list(error.path)))
+    if errors:
+        details = "; ".join(
+            f"{'.'.join(str(part) for part in error.path) or '<root>'}: {error.message}"
+            for error in errors
+        )
+        raise ValueError(f"Plugin {plugin_path.name} failed manifest schema: {details}")
+    if manifest["id"] != plugin_path.name:
+        raise ValueError(
+            f"Plugin folder '{plugin_path.name}' does not match manifest id '{manifest['id']}'"
+        )
+
+    icon = manifest.get("icon")
+    if isinstance(icon, dict):
+        icon_data = icon.get("data", "")
+        if icon.get("type") == "code" and len(icon_data.encode("utf-8")) > 64 * 1024:
+            raise ValueError(f"Plugin {plugin_path.name} SVG code exceeds 64KB limit")
+        if icon.get("type") in ("image", "file") and icon_data.startswith("data:image/"):
+            if len(icon_data) > icon.get("maxSizeBytes", 512 * 1024) * 2:
+                raise ValueError(f"Plugin {plugin_path.name} inline image exceeds size limit")
+
+    # Match PluginManifest.isQuickJsPlugin and QuickJsBridgeService source lookup.
+    execution_type = manifest.get("executionType", "")
+    is_quickjs = (
+        execution_type == "quickjs"
+        or (execution_type == "script" and not manifest.get("nativeRunner"))
+        or manifest.get("engineType") == "quickjs"
+    )
+    if is_quickjs:
+        params = manifest.get("action", {}).get("params", {})
+        if "scriptFile" in params:
+            raise ValueError(
+                f"Plugin {plugin_path.name} action.params.scriptFile is ignored by the client; "
+                "use params.script or entry.js/index.js/main.js/tool.js"
+            )
+        script = params.get("script")
+        if not (isinstance(script, str) and script.strip()) and not any(
+            (plugin_path / name).is_file() for name in QUICKJS_ENTRIES
+        ):
+            raise ValueError(f"Plugin {plugin_path.name} has no QuickJS source (params.script or entry.js)")
+
+
+def package_plugin(plugin_path: Path) -> bytes:
+    buffer = io.BytesIO()
+    with zipfile.ZipFile(buffer, "w") as archive:
+        for root, directories, files in os.walk(plugin_path):
+            directories[:] = sorted(
+                directory for directory in directories
+                if directory != "target" and not directory.startswith(".")
+            )
+            for name in sorted(files):
+                if name.endswith(".md") or (name.startswith(".") and name != ".gitkeep"):
+                    continue
+                path = Path(root) / name
+                data = path.read_bytes()
+                if path.suffix.lower() in TEXT_SUFFIXES:
+                    data = data.replace(b"\r\n", b"\n")
+                info = zipfile.ZipInfo(path.relative_to(plugin_path).as_posix(), (2026, 1, 1, 0, 0, 0))
+                # Keep the established CI package format, independent of the host OS.
+                info.create_system = 3
+                info.external_attr = 0o600 << 16
+                info.compress_type = zipfile.ZIP_STORED
+                archive.writestr(info, data)
+    return buffer.getvalue()
+
+
+def write_if_changed(path: Path, data: bytes) -> None:
+    if path.is_file() and path.read_bytes() == data:
+        return
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_bytes(data)
+
+
+def build_registry(base_dir: Path = BASE_DIR, *, validate_only: bool = False) -> int:
+    base_dir = Path(base_dir)
+    validator = load_validator(base_dir / "schemas" / "manifest.schema.json")
+    plugins = []
+    for plugin_path in sorted((base_dir / "plugins").iterdir()):
+        manifest_path = plugin_path / "manifest.json"
+        if not manifest_path.is_file():
+            continue
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        validate_manifest(manifest, plugin_path, validator)
+        plugins.append((plugin_path, manifest))
+    if validate_only:
+        return len(plugins)
+
+    # Stage every artifact in memory; a validation/packaging failure writes nothing.
+    outputs = []
+    index_plugins = []
+    for plugin_path, manifest in plugins:
+        plugin_id = manifest["id"]
+        data = package_plugin(plugin_path)
+        outputs.append((base_dir / "packages" / f"{plugin_id}.zip", data))
+        entry = dict(manifest)
+        entry.update(size=len(data), md5=hashlib.md5(data).hexdigest(), sha256=hashlib.sha256(data).hexdigest())
+        entry["isOfficial"] = manifest.get("isOfficial", True)
+        entry["downloadUrls"] = {
+            "gitee": f"https://gitee.com/{GITEE_USER}/{GITEE_REPO}/raw/main/packages/{plugin_id}.zip",
+            "github_cdn": f"https://cdn.jsdelivr.net/gh/{GITHUB_USER}/{GITHUB_REPO}@main/packages/{plugin_id}.zip",
+            "github": f"https://raw.githubusercontent.com/{GITHUB_USER}/{GITHUB_REPO}/main/packages/{plugin_id}.zip",
+        }
+        entry["downloadUrl"] = entry["downloadUrls"]["gitee"]
+        index_plugins.append(entry)
+
+    index_path = base_dir / "registry" / "index.json"
+    current = json.loads(index_path.read_text(encoding="utf-8"))
+    current["plugins"] = index_plugins
+    outputs.append((index_path, json.dumps(current, ensure_ascii=False, indent=2).encode("utf-8")))
+    for path, data in outputs:
+        write_if_changed(path, data)
+    return len(plugins)
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--validate-only", action="store_true", help="Validate without writing packages or index")
+    args = parser.parse_args()
+    count = build_registry(validate_only=args.validate_only)
+    verb = "validated" if args.validate_only else "validated and processed"
+    print(f"Successfully {verb} {count} plugins.")
+
+
+if __name__ == "__main__":
+    main()

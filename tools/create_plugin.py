@@ -20,10 +20,21 @@ if hasattr(sys.stdout, "reconfigure"):
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PLUGINS_DIR = os.path.join(BASE_DIR, "plugins")
+CATEGORIES = ("image", "media", "text", "dev", "system", "audio", "video", "archive", "document", "network", "utility", "other", "win_ext")
+
+
+def template_icon(path: str) -> dict:
+    return {
+        "type": "code",
+        "data": '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">'
+        '<rect x="3" y="3" width="18" height="18" rx="5" fill="currentColor" fill-opacity="0.22"/>'
+        f'<path d="{path}" fill="none" stroke="currentColor" stroke-width="1.8" '
+        'stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    }
 
 
 def validate_plugin_id(plugin_id: str) -> bool:
-    return bool(re.match(r"^[a-z0-9]+(-[a-z0-9]+)*$", plugin_id))
+    return bool(re.fullmatch(r"[a-z0-9]+(-[a-z0-9]+)*", plugin_id))
 
 
 def create_quickjs_template(target_dir: str, plugin_id: str, name: str, category: str, desc: str):
@@ -35,10 +46,7 @@ def create_quickjs_template(target_dir: str, plugin_id: str, name: str, category
         "category": category,
         "description": desc,
         "author": "Community Developer",
-        "icon": {
-            "type": "material",
-            "name": "extension"
-        },
+        "icon": template_icon("M9 8l-4 4 4 4m6-8 4 4-4 4m-2-9-2 14"),
         "engineType": "quickjs",
         "executionType": "quickjs",
         "platforms": ["universal"],
@@ -50,7 +58,7 @@ def create_quickjs_template(target_dir: str, plugin_id: str, name: str, category
                 "type": "file_picker",
                 "required": True,
                 "allowMultiple": False,
-                "allowedExtensions": ["txt", "json", "png", "jpg"]
+                "allowedExtensions": ["txt", "json"]
             },
             {
                 "id": "paramMode",
@@ -72,7 +80,6 @@ def create_quickjs_template(target_dir: str, plugin_id: str, name: str, category
         ],
         "action": {
             "handler": "quickjs_eval",
-            "entry": "entry.js",
             "params": {}
         }
     }
@@ -80,12 +87,12 @@ def create_quickjs_template(target_dir: str, plugin_id: str, name: str, category
     entry_js = f"""/// <reference path="../../types/toolbox.d.ts" />
 
 /**
- * {name} ({plugin_id})
+ * Plugin: {plugin_id}
  * 基于 Multi-Toolbox QuickJS 宿主沙箱引擎
  */
 
 async function run(ctx) {{
-  Toolbox.log('【{name}】开始执行任务...');
+  Toolbox.log('开始执行任务...');
   Toolbox.log('>>> 当前宿主平台:', Toolbox.platform);
   Toolbox.log('>>> 输入文件列表:', ctx.inputFiles);
   Toolbox.log('>>> 表单参数映射:', ctx.params);
@@ -109,7 +116,7 @@ async function run(ctx) {{
   Toolbox.setProgress(1.0, '处理完毕');
   return {{
     success: true,
-    message: '{name} 执行成功！',
+    message: '插件执行成功！',
     text: `已成功处理文件: ${{inputFile}}\\n大小: ${{fileContent.length}} 字符`,
     data: {{
       summary: `文件处理完毕，当前模式: ${{ctx.params.paramMode || 'default'}}`
@@ -133,14 +140,14 @@ async function run(ctx) {{
 4. 保存代码后即可在客户端内实时免重启热调试。
 """
 
-    with open(os.path.join(target_dir, "manifest.json"), "w", encoding="utf-8") as f:
+    with open(os.path.join(target_dir, "manifest.json"), "w", encoding="utf-8", newline="\n") as f:
         json.dump(manifest, f, indent=2, ensure_ascii=False)
         f.write("\n")
 
-    with open(os.path.join(target_dir, "entry.js"), "w", encoding="utf-8") as f:
+    with open(os.path.join(target_dir, "entry.js"), "w", encoding="utf-8", newline="\n") as f:
         f.write(entry_js)
 
-    with open(os.path.join(target_dir, "README.md"), "w", encoding="utf-8") as f:
+    with open(os.path.join(target_dir, "README.md"), "w", encoding="utf-8", newline="\n") as f:
         f.write(readme_md)
 
 
@@ -156,17 +163,14 @@ def create_wasm_rust_template(target_dir: str, plugin_id: str, name: str, catego
         "category": category,
         "description": desc,
         "author": "Community Developer",
-        "icon": {
-            "type": "material",
-            "name": "memory"
-        },
+        "icon": template_icon("M8 8h8v8H8zM9 3v2m6-2v2M9 19v2m6-2v2M3 9h2m-2 6h2M19 9h2m-2 6h2"),
         "engineType": "wasm",
         "executionType": "wasm",
         "platforms": ["universal"],
         "wasmRunner": {
             "entry": f"bin/{plugin_id_snake}.wasm",
             "executionMode": "wasi_cli",
-            "args": ["-i", "{input}", "-o", "{outputDir}"],
+            "args": [plugin_id_snake, "-i", "{input}", "-o", "{outputDir}"],
             "batchMode": True,
             "showTerminal": True
         },
@@ -176,7 +180,8 @@ def create_wasm_rust_template(target_dir: str, plugin_id: str, name: str, catego
                 "label": "选择待处理文件 (支持批量多选与整目录)",
                 "type": "file_picker",
                 "required": True,
-                "allowMultiple": True
+                "allowMultiple": True,
+                "allowFolder": True
             }
         ],
         "action": {
@@ -193,11 +198,12 @@ edition = "2021"
 [dependencies]
 """
 
-    main_rs = f"""// {name} ({plugin_id})
+    main_rs = f"""// Plugin: {plugin_id}
 // Multi-Toolbox WASI 跨平台高性能算力微内核
 
 use std::env;
 use std::fs;
+use std::io;
 use std::path::Path;
 
 fn main() {{
@@ -244,23 +250,28 @@ fn main() {{
 
     let out_dir = Path::new(&output_dir);
     if !out_dir.exists() {{
-        let _ = fs::create_dir_all(out_dir);
+        if let Err(e) = fs::create_dir_all(out_dir) {{
+            eprintln!("创建输出目录失败: {{}}", e);
+            std::process::exit(1);
+        }}
     }}
 
     let dest_file = out_dir.join(format!("{{}}_processed.{{}}", file_stem, extension));
 
-    match fs::read(&input_path) {{
-        Ok(data) => {{
-            println!(">>> 成功读取 {{}} 字节数据，正在执行核心算力算法...", data.len());
-            // 在此处编写核心算法、多媒体解析或数据变换逻辑
-            if let Err(e) = fs::write(&dest_file, &data) {{
-                eprintln!("写入产物失败: {{}}", e);
-                std::process::exit(1);
-            }}
+    // io::copy 使用固定大小的缓冲区，避免将整个大文件读入内存。
+    // 可在此处将流式复制替换为自己的转换算法。
+    let result = (|| -> io::Result<u64> {{
+        let mut source = fs::File::open(in_path)?;
+        let mut destination = fs::File::create(&dest_file)?;
+        io::copy(&mut source, &mut destination)
+    }})();
+    match result {{
+        Ok(byte_count) => {{
+            println!(">>> 已流式处理 {{}} 字节数据", byte_count);
             println!("[+] 处理完成，产物已输出至: {{:?}}", dest_file);
         }}
         Err(e) => {{
-            eprintln!("读取输入文件失败: {{}}", e);
+            eprintln!("处理输入文件失败: {{}}", e);
             std::process::exit(1);
         }}
     }}
@@ -268,20 +279,29 @@ fn main() {{
 """
 
     build_bat = f"""@echo off
+setlocal
+pushd "%~dp0"
 echo [1/2] 正在编译 Rust WASI 模块 (target: wasm32-wasip1)...
 cargo build --target wasm32-wasip1 --release
 if %ERRORLEVEL% neq 0 (
     echo 编译失败！请确保已安装 Rust 工具链并添加 WASI 目标：
     echo   rustup target add wasm32-wasip1
-    exit /b %ERRORLEVEL%
+    popd
+    exit /b 1
 )
 if not exist bin mkdir bin
 copy /Y "target\\wasm32-wasip1\\release\\{plugin_id_snake}.wasm" "bin\\{plugin_id_snake}.wasm"
+if errorlevel 1 (
+    popd
+    exit /b 1
+)
 echo [2/2] 编译完成！产物已复制至 bin\\{plugin_id_snake}.wasm
+popd
 """
 
     build_sh = f"""#!/bin/bash
 set -e
+cd -- "$(dirname -- "$0")"
 echo "[1/2] 正在编译 Rust WASI 模块 (target: wasm32-wasip1)..."
 cargo build --target wasm32-wasip1 --release
 mkdir -p bin
@@ -304,7 +324,7 @@ echo "[2/2] 编译完成！产物已复制至 bin/{plugin_id_snake}.wasm"
    ```
 2. 执行一键构建脚本生成 `.wasm` 产物：
    - Windows: 运行 `build.bat`
-   - Linux / macOS: 运行 `./build.sh`
+   - Linux / macOS: 运行 `bash build.sh`
 3. 编译输出产物将自动放置于 `bin/{plugin_id_snake}.wasm`。
 
 ## 本地调试指南
@@ -317,26 +337,26 @@ echo "[2/2] 编译完成！产物已复制至 bin/{plugin_id_snake}.wasm"
     os.makedirs(os.path.join(target_dir, "src"), exist_ok=True)
     os.makedirs(os.path.join(target_dir, "bin"), exist_ok=True)
 
-    with open(os.path.join(target_dir, "manifest.json"), "w", encoding="utf-8") as f:
+    with open(os.path.join(target_dir, "manifest.json"), "w", encoding="utf-8", newline="\n") as f:
         json.dump(manifest, f, indent=2, ensure_ascii=False)
         f.write("\n")
 
-    with open(os.path.join(target_dir, "Cargo.toml"), "w", encoding="utf-8") as f:
+    with open(os.path.join(target_dir, "Cargo.toml"), "w", encoding="utf-8", newline="\n") as f:
         f.write(cargo_toml)
 
-    with open(os.path.join(target_dir, "src", "main.rs"), "w", encoding="utf-8") as f:
+    with open(os.path.join(target_dir, "src", "main.rs"), "w", encoding="utf-8", newline="\n") as f:
         f.write(main_rs)
 
-    with open(os.path.join(target_dir, "build.bat"), "w", encoding="utf-8") as f:
+    with open(os.path.join(target_dir, "build.bat"), "w", encoding="utf-8", newline="\r\n") as f:
         f.write(build_bat)
 
-    with open(os.path.join(target_dir, "build.sh"), "w", encoding="utf-8") as f:
+    with open(os.path.join(target_dir, "build.sh"), "w", encoding="utf-8", newline="\n") as f:
         f.write(build_sh)
 
     with open(os.path.join(target_dir, "bin", ".gitkeep"), "w", encoding="utf-8") as f:
         f.write("")
 
-    with open(os.path.join(target_dir, "README.md"), "w", encoding="utf-8") as f:
+    with open(os.path.join(target_dir, "README.md"), "w", encoding="utf-8", newline="\n") as f:
         f.write(readme_md)
 
 
@@ -347,14 +367,10 @@ def create_win_ext_template(target_dir: str, plugin_id: str, name: str, category
         "name": name,
         "version": "1.0.0",
         "minAppVersion": "1.0.0",
-        "category": "win_ext" if category == "other" else category,
+        "category": "system" if category == "other" else category,
         "description": desc,
         "author": "Community Developer",
-        "icon": {
-            "type": "material",
-            "name": "terminal"
-        },
-        "engineType": "win_native_runner",
+        "icon": template_icon("M7 8l4 4-4 4m6 0h4"),
         "executionType": "native_executable",
         "platforms": ["windows"],
         "nativeRunner": {
@@ -395,14 +411,14 @@ def create_win_ext_template(target_dir: str, plugin_id: str, name: str, category
 
     os.makedirs(os.path.join(target_dir, "bin"), exist_ok=True)
 
-    with open(os.path.join(target_dir, "manifest.json"), "w", encoding="utf-8") as f:
+    with open(os.path.join(target_dir, "manifest.json"), "w", encoding="utf-8", newline="\n") as f:
         json.dump(manifest, f, indent=2, ensure_ascii=False)
         f.write("\n")
 
     with open(os.path.join(target_dir, "bin", ".gitkeep"), "w", encoding="utf-8") as f:
         f.write("")
 
-    with open(os.path.join(target_dir, "README.md"), "w", encoding="utf-8") as f:
+    with open(os.path.join(target_dir, "README.md"), "w", encoding="utf-8", newline="\n") as f:
         f.write(readme_md)
 
 
@@ -410,8 +426,8 @@ def main():
     parser = argparse.ArgumentParser(description="Multi-Toolbox 插件脚手架生成工具")
     parser.add_argument("--id", dest="plugin_id", help="插件唯一标识符 (全小写字母、数字与连字符，如 image-watermark-cleaner)")
     parser.add_argument("--name", dest="name", help="插件显示名称 (如 智能水印清除器)")
-    parser.add_argument("--type", dest="engine_type", default="quickjs", choices=["quickjs", "wasm", "win_ext"], help="执行引擎类型 (默认: quickjs)")
-    parser.add_argument("--category", dest="category", default="other", choices=["image", "media", "text", "crypto", "dev", "win_ext", "other"], help="插件分类")
+    parser.add_argument("--type", dest="engine_type", default="quickjs", choices=["quickjs", "wasm", "win_ext", "native_executable"], help="执行引擎类型 (默认: quickjs；native_executable 是 win_ext 的别名)")
+    parser.add_argument("--category", dest="category", default="other", choices=CATEGORIES, help="插件分类")
     parser.add_argument("--desc", dest="desc", default="Multi-Toolbox 社区实用功能模块", help="插件功能描述")
 
     args = parser.parse_args()
@@ -434,6 +450,16 @@ def main():
             name = input("请输入插件显示名称 (如 我的实用工具): ").strip() or plugin_id
         else:
             name = plugin_id
+
+    if not 2 <= len(name) <= 60:
+        parser.error("插件显示名称必须为 2 到 60 个字符")
+
+    # Rust crate 名称不能以数字开头，即使插件 ID 本身允许数字。
+    if args.engine_type == "wasm" and not plugin_id[0].isalpha():
+        parser.error("WASM 插件 ID 必须以英文字母开头，以兼容 Rust crate 名称")
+
+    if args.engine_type == "native_executable":
+        args.engine_type = "win_ext"
 
     target_dir = os.path.join(PLUGINS_DIR, plugin_id)
     if os.path.exists(target_dir):
@@ -461,7 +487,7 @@ def main():
             "bin/          (WASM 输出目录)",
             "README.md     (Rust WASI 编译指引与 Dev Link 说明)"
         ]
-        dev_hint = f"1. 运行 build.bat 或 ./build.sh 编译出 bin/{plugin_id.replace('-', '_')}.wasm；\n   2. 在客户端使用「本地目录关联」挂载此文件夹进行实时测试；\n   3. 完成后运行 python tools/build_registry.py 打包发布。"
+        dev_hint = f"1. 运行 build.bat 或 bash build.sh 编译出 bin/{plugin_id.replace('-', '_')}.wasm；\n   2. 在客户端使用「本地目录关联」挂载此文件夹进行实时测试；\n   3. 完成后运行 python tools/build_registry.py 打包发布。"
     elif args.engine_type == "win_ext":
         create_win_ext_template(target_dir, plugin_id, name, args.category, args.desc)
         file_list = [

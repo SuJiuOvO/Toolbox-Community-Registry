@@ -1,6 +1,6 @@
-# 🛠️ Multi-Toolbox 社区功能模块（插件）全栈开发与技术架构指南 (Manifest v2.4)
+# 🛠️ Multi-Toolbox 社区功能模块（插件）全栈开发与技术架构指南 (Manifest v2.5)
 
-> **当前规范版本**：`Manifest v2.4` (全面支持非阻塞异步网络 Host Bridge fetch / getAsync、声明式复合 outputs 流式排布展示、Path Jail 安全围栏、WASI Preview 1 VFS 与免打包本地热调试)  
+> **当前规范版本**：`Manifest v2.5` (声明式 banners / rejectedExtensions、交互式拾色与图片对比、非阻塞异步网络 Host Bridge、Path Jail 安全围栏、WASI Preview 1 VFS 与免打包本地热调试)
 > **适用对象**：核心维护人员、第三方工具开发者、系统与脚本工程师（Rust / C++ / WebAssembly / JavaScript / Python / CLI）  
 > **核心哲学**：**客户端极致精简稳定，海量功能按需沙箱热插拔；100% 纯本地离线执行，全面保障用户隐私与数据安全。**
 
@@ -130,7 +130,7 @@ flowchart TD
   "wasmRunner": {
     "entry": "bin/tool.wasm",
     "executionMode": "wasi_cli",
-    "args": ["-i", "{input}", "-o", "{outputDir}"],
+    "args": ["tool", "-i", "{input}", "-o", "{outputDir}"],
     "batchMode": true,
     "showTerminal": true
   },
@@ -179,12 +179,12 @@ QuickJS 插件沙箱不仅支持普通的文本分析，更提供了完整的高
   - 宿主文件系统访问受严格的安全路径白名单限制：
     - 读操作限制在用户传入的 `inputFiles`、输出目录 `outputDir`、插件私有目录 `localDir` 及数据目录 `pluginDataDir` 范围内；
     - 写操作（`writeFile`、`remove`、`mkdir`）仅允许向 `outputDir`、系统临时缓存目录和 `pluginDataDir` 写入；
-    - 严禁通过 `../../` 进行目录穿越攻击。若插件确实需要访问全盘任意文件（如全盘查重清理类系统工具），必须在 Manifest 中显式声明 `"permissions": ["filesystem_unrestricted"]`。
+    - 严禁通过 `../../` 进行目录穿越攻击。若插件确实需要访问全盘任意文件（如全盘查重清理类系统工具），必须在 Manifest 中显式声明 `"permissions": ["fs:unrestricted"]`。
 
 - **二进制与文件系统 (`Toolbox.fs`)**：
-  - `Toolbox.fs.readBinary(path)`: 直接读取文件并返回 `Uint8Array` 原始二进制字节流，轻松处理图片/音频/压缩包等非文本格式。
+  - `Toolbox.fs.readBinary(path)`: 同步读取文件并返回 `Uint8Array` 原始二进制字节数组，适合处理图片/音频/压缩包等非文本格式。
   - `Toolbox.fs.writeBinary(path, bytes)`: 直接将 `Uint8Array` 原始二进制字节流写入指定路径。
-  - `Toolbox.fs.readBytes(path)`: 读取文件为 Base64 编码字符串（配合 `Toolbox.utils.base64ToBytes` 使用）。
+  - `Toolbox.fs.readBytes(path)`: 同步读取文件为 Base64 编码字符串（配合 `Toolbox.utils.base64ToBytes` 使用），不返回字节数组或 Promise。
   - `Toolbox.fs.readFile(path, isBase64)`: 读取文件为 UTF-8 文本字符串（默认）或 Base64 编码字符串（`isBase64: true`）。
   - `Toolbox.fs.writeFile(path, content, isBase64)`: 写入文本字符串、Base64 编码字符串或直接传入 `Uint8Array` 字节流到磁盘。
   - `Toolbox.fs.listFiles(dirPath)` / `Toolbox.fs.readDir(dirPath)` / `Toolbox.fs.list(dirPath)`: 列出指定目录下的文件与子目录列表。若要列出用户选择的输入文件所在父目录下的同级文件，需声明 `fs:read_directory` 或 `fs:read_parent_dir` 权限。
@@ -200,7 +200,7 @@ QuickJS 插件沙箱不仅支持普通的文本分析，更提供了完整的高
 ```javascript
 async function run({ inputFiles, outputDir, params }) {
   Toolbox.log('读取输入文件二进制头...');
-  const bytes = await Toolbox.fs.readBytes(inputFiles[0]);
+  const bytes = Toolbox.fs.readBinary(inputFiles[0]);
   
   // 检查 Magic Bytes (如 PNG 头 0x89 0x50)
   if (bytes[0] === 0x89 && bytes[1] === 0x50) {
@@ -257,7 +257,7 @@ async function run({ inputFiles, outputDir, params }) {
   "wasmRunner": {
     "entry": "bin/tool.wasm",
     "executionMode": "wasi_cli",
-    "args": ["-i", "{input}", "-o", "{outputDir}"],
+    "args": ["tool", "-i", "{input}", "-o", "{outputDir}"],
     "batchMode": true
   }
 }
@@ -500,7 +500,7 @@ Multi-Toolbox 对第三方插件执行最小权限原则（Principle of Least Pr
 "permissions": [
   "network",
   "fs:read_directory",
-  "filesystem_unrestricted"
+  "fs:unrestricted"
 ]
 ```
 
@@ -513,7 +513,7 @@ Multi-Toolbox 对第三方插件执行最小权限原则（Principle of Least Pr
 - **`storage_manage` / `storage`**：
   - 授权插件在 Android 移动端申请【所有文件访问管理权限 (MANAGE_EXTERNAL_STORAGE)】。
   - 适用于万能解压缩、全盘文档检索等需要深度扫描公共下载目录或根目录文件系统的工具，客户端在执行前将自动进行权限预检并提示授权。
-- **`filesystem_unrestricted`**：
+- **`fs:unrestricted`**（兼容 `fs_unrestricted`）：
   - 授权插件突破 Path Jail 目录围栏，访问用户选定目录以外的全盘任意绝对路径（适用于全盘扫描、系统垃圾清理、大文件查重等特权工具）。
 
 ---
@@ -570,7 +570,7 @@ Multi-Toolbox 对第三方插件执行最小权限原则（Principle of Least Pr
 
 ```bash
 # 快速生成 QuickJS 脚本插件模板 (推荐)
-python tools/create_plugin.py --id my-awesome-tool --name "我的牛逼工具" --type quickjs --category image
+python tools/create_plugin.py --id my-awesome-tool --name "我的实用工具" --type quickjs --category text
 
 # 生成 WebAssembly (WASI) 算力插件模板
 python tools/create_plugin.py --id my-wasm-calc --name "WASM 算力模块" --type wasm --category dev
@@ -579,11 +579,15 @@ python tools/create_plugin.py --id my-wasm-calc --name "WASM 算力模块" --typ
 python tools/create_plugin.py --id my-win-cli --name "Win 自动化工坊" --type native_executable --category system
 ```
 
+`native_executable` 是 `win_ext` 的 CLI 别名，两者生成相同的 Windows 原生模板。分类支持 `image/media/text/dev/system/audio/video/archive/document/network/utility/other/win_ext`；WASM 工程 ID 必须以小写字母开头。
+
 #### 脚手架自动生成的标准工程体系：
 - 自动写入 `$schema: "../../schemas/manifest.schema.json"`，在 VS Code 中享受全字段智能补全与实时格式验证；
-- 自动生成合规高辨识度的 SVG 矢量内联图标；
-- 自动生成带 TypeScript 类型注解的 `entry.js`（包含 `/// <reference path="../../types/toolbox.d.ts" />`），所有宿主 API 均有鼠标悬停文档与补全；
-- 自动生成标准规范的 `README.md`，可直接提交 PR！
+- 三类模板均使用 `icon.data` 中的 `currentColor` 双色 SVG，随客户端明暗主题适配；
+- QuickJS 生成带类型引用的 `entry.js`，通过 `async run(ctx)` 接收输入文件与表单参数，示例读取 TXT/JSON 文本；客户端按约定文件名加载，不读取 `action.entry` 或 `scriptFile`；
+- WASM 生成 `Cargo.toml`、`src/main.rs`、`build.bat`、`build.sh`，使用 `io::copy` 流式处理文件；执行 `build.bat` 或 `bash build.sh` 将模块输出至 `bin/`。`wasmRunner.args` 是完整 WASI argv，第一项为程序名，后面才是 `-i`、`-o`；
+- Windows 模板声明 `native_executable`、`nativeRunner` 与 `windows` 平台，请先将自己的 CLI 放入 `bin/` 并调整参数；
+- 自动生成各引擎对应的 `README.md`。完成实现、编译和客户端调试后再打包提交。
 
 ---
 
@@ -630,25 +634,23 @@ python tools/create_plugin.py --id my-win-cli --name "Win 自动化工坊" --typ
     }
   ],
   "action": {
-    "handler": "quickjs_runner",
-    "params": {
-      "scriptFile": "analyzer.js"
-    }
+    "handler": "quickjs_eval",
+    "params": {}
   }
 }
 ```
 
-#### 第三步：编写核心脚本 `plugins/text-analyzer/analyzer.js`
+#### 第三步：编写核心脚本 `plugins/text-analyzer/entry.js`
 ```javascript
-// inputs 对象由宿主环境自动注入
-const text = (inputs.sourceText || '').trim();
-const topLimit = parseInt(inputs.topN || 10, 10);
+async function run(ctx) {
+const text = (ctx.params.sourceText || '').trim();
+const topLimit = parseInt(ctx.params.topN || 10, 10);
 
 if (!text) {
-  return "【错误】未提供有效的待分析文本内容！";
+  return { success: false, message: '未提供有效的待分析文本内容' };
 }
 
-console.log("正在对 " + text.length + " 个字符进行分词统计...");
+Toolbox.log("正在对 " + text.length + " 个字符进行分词统计...");
 
 // 简单分词逻辑 (支持中英文单词与连续汉字统计)
 const words = text.match(/[\u4e00-\u9fa5]{2,}|[a-zA-Z]{3,}/g) || [];
@@ -675,8 +677,8 @@ sortedList.forEach(([word, count], idx) => {
   result += ` [${idx + 1}] ${word} : 出现 ${count} 次 (${percent}%)\n`;
 });
 
-// 输出结果直接由 return 返回呈现
-return result;
+return { success: true, text: result };
+}
 ```
 
 ---
@@ -936,14 +938,19 @@ plugins/ncm-audio-converter/
 
 在 `Toolbox-Community-Registry-Repo/` 根目录下执行：
 ```bash
+python -m pip install -r requirements.txt
+python -m unittest discover -s tests -v
+python tools/build_registry.py --validate-only
 python tools/build_registry.py
 ```
 
+`--validate-only` 不修改包或索引。安装 Rust `wasm32-wasip1` 目标和 Node.js 后，可设置环境变量 `TOOLBOX_TEST_WASI=1` 再运行测试，实际编译脚手架并按清单参数执行 WASI 文件处理。
+
 ### 校验项清单：
 1. **文件夹与 ID 一致性**：`plugins/<plugin_id>/` 目录名与 `manifest.json` 中的 `"id"` 必须完全对齐。
-2. **必填元数据校验**：必须包含 `id`、`name`、`version`、`category`、`description` 字段。
-3. **图标安全校验**：SVG 代码大小 $\le$ 64KB；图片数据 $\le$ 512KB。
-4. **包体压缩**：脚本自动生成 `packages/<plugin_id>.zip` 并生成标准哈希。
+2. **完整 Schema 校验**：使用 `schemas/manifest.schema.json` 校验必填元数据及 inputs、outputs、action、权限、执行器等嵌套字段，兼容现有插件的历史别名与缺省平台配置。
+3. **图标与脚本校验**：SVG UTF-8 大小 $\le$ 64KB；检查内联图片大小、QuickJS 源码入口，拒绝客户端忽略的 `action.entry` 和 `scriptFile`。
+4. **确定性包体**：全部清单通过后才生成 ZIP 和哈希。源码配置统一 LF、目录排序与 ZIP 元数据固定，二进制保持原始字节；重复构建不重写相同输出。
 5. **多源镜像索引聚合**：自动更新 `registry/index.json`，补充 Gitee、jsDelivr CDN 与 GitHub 直连三重下载源。
 
 ---

@@ -2,9 +2,9 @@ name: Build Community Registry & Packages
 
 on:
   push:
-    branches: [ main, master ]
+    branches: [ main ]
   pull_request:
-    branches: [ main, master ]
+    branches: [ main ]
   workflow_dispatch:
 
 permissions:
@@ -24,19 +24,25 @@ jobs:
         with:
           python-version: '3.12'
 
+      - name: Install Validation Dependencies
+        run: python -m pip install -r requirements.txt
+
+      - name: Test Scaffolds & Registry Validation
+        run: python -m unittest discover -s tests -v
+
       - name: Build Plugins & Regenerate Index
         run: |
           python tools/build_registry.py
 
       - name: Commit & Push Changes
-        if: github.event_name == 'push'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add packages/ registry/index.json
           if ! git diff --staged --quiet; then
             git commit -m "chore(auto): build packages and regenerate index.json [skip ci]"
-            git push origin HEAD:${{ github.ref_name }} || echo "Warning: git push failed, please verify repository workflow write permissions"
+            git push origin main
           else
             echo "No changes to commit"
           fi

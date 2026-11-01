@@ -195,9 +195,9 @@ declare namespace ToolboxAPI {
   export interface FileSystemAPI {
     /** 读取指定文件的 UTF-8 文本或 Base64 编码 (向后兼容) */
     readFile(path: string, isBase64?: boolean): string;
-    /** 以 Base64 字符串形式读取指定文件的二进制数据 */
+    /** 同步读取文件为 Base64 字符串；不是字节数组或 Promise */
     readBytes(path: string): string;
-    /** 以 Uint8Array 二进制字节数组形式直接读取文件（处理音视频与图片推荐） */
+    /** 同步读取文件为 Uint8Array 字节数组（处理音视频与图片推荐） */
     readBinary(path: string): Uint8Array;
     /** 读取指定文件的 UTF-8 纯文本 */
     readText(path: string): string;
