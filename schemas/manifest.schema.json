@@ -335,7 +335,7 @@
         "handler": {
           "type": "string",
           "minLength": 1,
-          "description": "动作处理器标识。QuickJS 使用 quickjs_eval，WASM 使用 wasm_universal；原生工具由 nativeRunner 路由，无需 action。"
+          "description": "动作处理器标识。QuickJS 使用 quickjs_eval，WASM 使用 wasm_universal；客户端 1.1.0 的 internal 交互页面使用 handheld_bulletin、windows_uninstaller、ssh_terminal，必须声明 minAppVersion 1.1.0；原生工具由 nativeRunner 路由。"
         },
         "params": {
           "type": "object",

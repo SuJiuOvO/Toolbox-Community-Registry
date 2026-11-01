@@ -1194,6 +1194,47 @@
       "downloadUrl": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/gif-toolbox.zip"
     },
     {
+      "id": "handheld-bulletin",
+      "name": "手持弹幕举牌",
+      "version": "1.0.0",
+      "minAppVersion": "1.1.0",
+      "category": "utility",
+      "platforms": [
+        "windows",
+        "android"
+      ],
+      "executionType": "internal",
+      "engineType": "internal",
+      "description": "高自由度手持弹幕与应援举牌：多行文字、五种移动方向、字号/速度/字距/行高、RGB 自定义颜色、霓虹/描边/LED 点阵、镜像与旋转、慢速闪烁、接机/应援等预设。Android 横屏沉浸显示，Windows 独立全屏，展示期间屏幕常亮，设置只保存在本机。需要 1.1.0 及以上客户端交互页面。",
+      "author": "Toolbox Team",
+      "icon": {
+        "type": "code",
+        "data": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\"><rect x=\"2\" y=\"4\" width=\"20\" height=\"14\" rx=\"3\" fill=\"currentColor\" fill-opacity=\".18\"/><path d=\"M7 9h2m6 0h2M7 13h10M10 18v3m4-3v3\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" fill=\"none\"/></svg>"
+      },
+      "permissions": [],
+      "inputs": [],
+      "action": {
+        "handler": "handheld_bulletin",
+        "params": {}
+      },
+      "banners": [
+        {
+          "message": "此插件需要 1.1.0 及以上客户端。打开后进入专用编辑器；点击开始全屏举牌，轻触显示控制栏。",
+          "type": "info"
+        }
+      ],
+      "size": 1453,
+      "md5": "0ebc815173fb1eb7fe8152cdd19b71d4",
+      "sha256": "295c8be115effd61bfd546f4e83c483dede45ae7c83fae600acab99e38969774",
+      "isOfficial": true,
+      "downloadUrls": {
+        "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/handheld-bulletin.zip",
+        "github_cdn": "https://cdn.jsdelivr.net/gh/SuJiuOvO/Toolbox-Community-Registry@main/packages/handheld-bulletin.zip",
+        "github": "https://raw.githubusercontent.com/SuJiuOvO/Toolbox-Community-Registry/main/packages/handheld-bulletin.zip"
+      },
+      "downloadUrl": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/handheld-bulletin.zip"
+    },
+    {
       "id": "id-photo-bg",
       "name": "证件照换底",
       "version": "1.2.0",
@@ -2479,6 +2520,43 @@
       "downloadUrl": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/qr-toolbox.zip"
     },
     {
+      "id": "ssh-terminal",
+      "name": "SSH 安全终端",
+      "version": "1.0.0",
+      "minAppVersion": "1.1.0",
+      "category": "network",
+      "platforms": [
+        "windows",
+        "android"
+      ],
+      "executionType": "internal",
+      "engineType": "internal",
+      "description": "Windows / Android 双端交互式 SSH 终端，支持密码、PEM / OpenSSH 私钥和私钥口令认证，首次连接 SHA256 主机指纹核对、已知主机校验、连接配置保存、ANSI 终端与移动端快捷键。认证信息不落盘。需要 1.1.0 及以上客户端提供交互式页面。",
+      "author": "Toolbox Team",
+      "permissions": [
+        "network"
+      ],
+      "icon": {
+        "type": "code",
+        "data": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\"><rect x=\"2\" y=\"4\" width=\"20\" height=\"16\" rx=\"4\" fill=\"#101C30\"/><path d=\"m6 9 3 3-3 3m6 0h5\" fill=\"none\" stroke=\"#57DBBF\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>"
+      },
+      "inputs": [],
+      "action": {
+        "handler": "ssh_terminal",
+        "params": {}
+      },
+      "size": 1172,
+      "md5": "5df3315c2e6aa7ad4345932979e36cdf",
+      "sha256": "3460e6438bc157053bfe9aa8f0e7ad3aeddd197413e3c2ef590cfeccb57d44a8",
+      "isOfficial": true,
+      "downloadUrls": {
+        "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/ssh-terminal.zip",
+        "github_cdn": "https://cdn.jsdelivr.net/gh/SuJiuOvO/Toolbox-Community-Registry@main/packages/ssh-terminal.zip",
+        "github": "https://raw.githubusercontent.com/SuJiuOvO/Toolbox-Community-Registry/main/packages/ssh-terminal.zip"
+      },
+      "downloadUrl": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/ssh-terminal.zip"
+    },
+    {
       "id": "universal-archive-extractor",
       "name": "压缩与解压",
       "version": "1.0.0",
@@ -3101,6 +3179,47 @@
         "github": "https://raw.githubusercontent.com/SuJiuOvO/Toolbox-Community-Registry/main/packages/windows-media-downloader.zip"
       },
       "downloadUrl": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/windows-media-downloader.zip"
+    },
+    {
+      "id": "windows-uninstaller",
+      "name": "Windows 软件卸载助手",
+      "version": "1.0.0",
+      "minAppVersion": "1.1.0",
+      "category": "system",
+      "platforms": [
+        "windows"
+      ],
+      "executionType": "internal",
+      "engineType": "internal",
+      "description": "Windows 桌面软件卸载助手：读取 32/64 位和当前用户/所有用户卸载注册表，搜索、按大小或日期排序、查看登记信息、启动官方卸载器、可选管理员权限和原安装目录/注册项的只读残留预览。不包含强制清理或 Microsoft Store 应用管理。",
+      "author": "Toolbox Team",
+      "permissions": [],
+      "icon": {
+        "type": "code",
+        "data": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.7\"><rect x=\"3\" y=\"3\" width=\"18\" height=\"13\" rx=\"2\"/><path d=\"M8 21h8m-4-5v5M8 8l3 3m0-3-3 3m6-3h3m-3 3h3\"/></svg>"
+      },
+      "inputs": [],
+      "action": {
+        "handler": "windows_uninstaller",
+        "params": {}
+      },
+      "banners": [
+        {
+          "type": "info",
+          "platform": "windows",
+          "message": "需要客户端 1.1.0 的交互式页面支持；残留仅供预览，不会自动清理。"
+        }
+      ],
+      "size": 1273,
+      "md5": "7637ad3cecbec2f2d0197ecf66e6832e",
+      "sha256": "fbd0863a2a614945ae3ec4023aaa0ed99e393fd2c33ffc398d6c69b548af6116",
+      "isOfficial": true,
+      "downloadUrls": {
+        "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/windows-uninstaller.zip",
+        "github_cdn": "https://cdn.jsdelivr.net/gh/SuJiuOvO/Toolbox-Community-Registry@main/packages/windows-uninstaller.zip",
+        "github": "https://raw.githubusercontent.com/SuJiuOvO/Toolbox-Community-Registry/main/packages/windows-uninstaller.zip"
+      },
+      "downloadUrl": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/windows-uninstaller.zip"
     }
   ]
 }
