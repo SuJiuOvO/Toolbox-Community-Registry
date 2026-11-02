@@ -1,0 +1,72 @@
+{
+  "$schema": "../../schemas/manifest.schema.json",
+  "id": "image-pixel-richtext",
+  "name": "图片像素富文本转换",
+  "version": "1.0.0",
+  "minAppVersion": "1.0.0",
+  "category": "image",
+  "platforms": [
+    "windows",
+    "android"
+  ],
+  "executionType": "wasm",
+  "engineType": "wasm",
+  "author": "Toolbox Community",
+  "description": "离线读取常见图片并按像素生成 Unity / TextMeshPro 风格富文本。每个像素转换为颜色标签和方块字符，同时生成纯文本摘要和彩色 PNG 预览，支持批量、透明阈值与等比缩放。",
+  "icon": {
+    "type": "code",
+    "data": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\"><rect x=\"3\" y=\"3\" width=\"18\" height=\"18\" rx=\"5\" fill=\"currentColor\" fill-opacity=\"0.22\"/><path d=\"M6 7h12v10H6z\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\"/><path d=\"M8 14l2.4-2.5 2 2 1.5-1.5L16 14.2V15H8z\" fill=\"currentColor\"/><circle cx=\"9.3\" cy=\"9.6\" r=\"1.1\" fill=\"currentColor\"/></svg>"
+  },
+  "wasmRunner": {
+    "entry": "bin/image_pixel_richtext.wasm",
+    "executionMode": "wasi_cli",
+    "args": [
+      "image-pixel-richtext",
+      "-i",
+      "{input}",
+      "-o",
+      "{outputDir}",
+      "--max-width",
+      "{maxWidth}",
+      "--alpha-threshold",
+      "{alphaThreshold}"
+    ],
+    "batchMode": true,
+    "showTerminal": false
+  },
+  "inputs": [
+    {
+      "id": "sourceImage",
+      "label": "选择图片（支持 PNG / JPEG / WebP / BMP / GIF）",
+      "type": "file_picker",
+      "required": true,
+      "allowMultiple": true,
+      "allowedExtensions": [
+        "png",
+        "jpg",
+        "jpeg",
+        "webp",
+        "bmp",
+        "gif"
+      ]
+    },
+    {
+      "id": "maxWidth",
+      "label": "输出最大宽度（像素）",
+      "type": "number",
+      "defaultValue": 128,
+      "description": "按比例缩小图片，避免富文本文件过大；不会放大原图。"
+    },
+    {
+      "id": "alphaThreshold",
+      "label": "透明像素阈值（0-255）",
+      "type": "number",
+      "defaultValue": 16,
+      "description": "Alpha 小于此值的像素输出为空格；不透明图片不受影响。"
+    }
+  ],
+  "action": {
+    "handler": "wasm_universal",
+    "params": {}
+  }
+}

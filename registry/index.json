@@ -1456,6 +1456,88 @@
       "downloadUrl": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/image-compress.zip"
     },
     {
+      "$schema": "../../schemas/manifest.schema.json",
+      "id": "image-pixel-richtext",
+      "name": "图片像素富文本转换",
+      "version": "1.0.0",
+      "minAppVersion": "1.0.0",
+      "category": "image",
+      "platforms": [
+        "windows",
+        "android"
+      ],
+      "executionType": "wasm",
+      "engineType": "wasm",
+      "author": "Toolbox Community",
+      "description": "离线读取常见图片并按像素生成 Unity / TextMeshPro 风格富文本。每个像素转换为颜色标签和方块字符，同时生成纯文本摘要和彩色 PNG 预览，支持批量、透明阈值与等比缩放。",
+      "icon": {
+        "type": "code",
+        "data": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\"><rect x=\"3\" y=\"3\" width=\"18\" height=\"18\" rx=\"5\" fill=\"currentColor\" fill-opacity=\"0.22\"/><path d=\"M6 7h12v10H6z\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\"/><path d=\"M8 14l2.4-2.5 2 2 1.5-1.5L16 14.2V15H8z\" fill=\"currentColor\"/><circle cx=\"9.3\" cy=\"9.6\" r=\"1.1\" fill=\"currentColor\"/></svg>"
+      },
+      "wasmRunner": {
+        "entry": "bin/image_pixel_richtext.wasm",
+        "executionMode": "wasi_cli",
+        "args": [
+          "image-pixel-richtext",
+          "-i",
+          "{input}",
+          "-o",
+          "{outputDir}",
+          "--max-width",
+          "{maxWidth}",
+          "--alpha-threshold",
+          "{alphaThreshold}"
+        ],
+        "batchMode": true,
+        "showTerminal": false
+      },
+      "inputs": [
+        {
+          "id": "sourceImage",
+          "label": "选择图片（支持 PNG / JPEG / WebP / BMP / GIF）",
+          "type": "file_picker",
+          "required": true,
+          "allowMultiple": true,
+          "allowedExtensions": [
+            "png",
+            "jpg",
+            "jpeg",
+            "webp",
+            "bmp",
+            "gif"
+          ]
+        },
+        {
+          "id": "maxWidth",
+          "label": "输出最大宽度（像素）",
+          "type": "number",
+          "defaultValue": 128,
+          "description": "按比例缩小图片，避免富文本文件过大；不会放大原图。"
+        },
+        {
+          "id": "alphaThreshold",
+          "label": "透明像素阈值（0-255）",
+          "type": "number",
+          "defaultValue": 16,
+          "description": "Alpha 小于此值的像素输出为空格；不透明图片不受影响。"
+        }
+      ],
+      "action": {
+        "handler": "wasm_universal",
+        "params": {}
+      },
+      "size": 643182,
+      "md5": "74df30ba99330676e5149e85a6811a13",
+      "sha256": "b7da485c2d93a628f32c03fa8dd5adb4982704909918a1a301c9b04595400b97",
+      "isOfficial": true,
+      "downloadUrls": {
+        "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/image-pixel-richtext.zip",
+        "github_cdn": "https://cdn.jsdelivr.net/gh/SuJiuOvO/Toolbox-Community-Registry@main/packages/image-pixel-richtext.zip",
+        "github": "https://raw.githubusercontent.com/SuJiuOvO/Toolbox-Community-Registry/main/packages/image-pixel-richtext.zip"
+      },
+      "downloadUrl": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/image-pixel-richtext.zip"
+    },
+    {
       "id": "image-resize",
       "name": "图片尺寸修改",
       "version": "1.1.0",
@@ -2518,6 +2600,95 @@
         "github": "https://raw.githubusercontent.com/SuJiuOvO/Toolbox-Community-Registry/main/packages/qr-toolbox.zip"
       },
       "downloadUrl": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/qr-toolbox.zip"
+    },
+    {
+      "$schema": "../../schemas/manifest.schema.json",
+      "id": "richtext-pixel-viewer",
+      "name": "富文本像素预览器",
+      "version": "1.0.0",
+      "minAppVersion": "1.0.0",
+      "category": "text",
+      "platforms": [
+        "windows",
+        "android"
+      ],
+      "executionType": "wasm",
+      "engineType": "wasm",
+      "author": "Toolbox Community",
+      "description": "独立安装的富文本像素画预览器。粘贴 Unity / TextMeshPro 风格的 color、size、line-height 与 br 标签，在 WASI 沙箱内解析颜色栈并生成可缩放的彩色 PNG 预览，全程离线。",
+      "icon": {
+        "type": "code",
+        "data": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\"><rect x=\"3\" y=\"3\" width=\"18\" height=\"18\" rx=\"5\" fill=\"currentColor\" fill-opacity=\"0.22\"/><path d=\"M6.5 7.5h11v2h-4.5v7h-2v-7H6.5z\" fill=\"currentColor\"/><path d=\"M15.5 13.5l1.2 1.2 1.8-1.8\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>"
+      },
+      "wasmRunner": {
+        "entry": "bin/richtext_pixel_viewer.wasm",
+        "executionMode": "wasi_cli",
+        "args": [
+          "richtext-pixel-viewer",
+          "--text",
+          "{richText}",
+          "-o",
+          "{outputDir}",
+          "--scale",
+          "{scale}",
+          "--background",
+          "{background}"
+        ],
+        "batchMode": false,
+        "showTerminal": false
+      },
+      "inputs": [
+        {
+          "id": "richText",
+          "label": "粘贴富文本像素画",
+          "type": "textarea",
+          "required": true,
+          "description": "支持 <color=#RRGGBB>、</color>、<size>、<line-height>、<br>，使用 █ 或 ■ 绘制像素，空格表示透明像素。"
+        },
+        {
+          "id": "scale",
+          "label": "预览放大倍数",
+          "type": "slider",
+          "defaultValue": 4,
+          "min": 1,
+          "max": 12,
+          "step": 1
+        },
+        {
+          "id": "background",
+          "label": "预览背景",
+          "type": "select",
+          "defaultValue": "dark",
+          "options": [
+            {
+              "label": "深色（默认，透明像素显示为深色）",
+              "value": "dark"
+            },
+            {
+              "label": "透明（导出带 Alpha 的 PNG）",
+              "value": "transparent"
+            },
+            {
+              "label": "浅色（适合亮色像素画）",
+              "value": "light"
+            }
+          ]
+        }
+      ],
+      "action": {
+        "handler": "wasm_universal",
+        "params": {}
+      },
+      "size": 172110,
+      "md5": "8c69ee93bcbe0851ed357252b58f93cd",
+      "sha256": "6dfe718bb9a0ea59ea31591fb63949a6f7226d0458a19b55c3f3a29adff6987a",
+      "isOfficial": true,
+      "downloadUrls": {
+        "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/richtext-pixel-viewer.zip",
+        "github_cdn": "https://cdn.jsdelivr.net/gh/SuJiuOvO/Toolbox-Community-Registry@main/packages/richtext-pixel-viewer.zip",
+        "github": "https://raw.githubusercontent.com/SuJiuOvO/Toolbox-Community-Registry/main/packages/richtext-pixel-viewer.zip"
+      },
+      "downloadUrl": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/richtext-pixel-viewer.zip"
     },
     {
       "id": "ssh-terminal",
