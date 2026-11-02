@@ -2702,7 +2702,7 @@
     {
       "id": "ssh-terminal",
       "name": "SSH 安全终端",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "minAppVersion": "1.1.0",
       "category": "network",
       "platforms": [
@@ -2718,16 +2718,16 @@
       ],
       "icon": {
         "type": "code",
-        "data": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\"><rect x=\"2\" y=\"4\" width=\"20\" height=\"16\" rx=\"4\" fill=\"#101C30\"/><path d=\"m6 9 3 3-3 3m6 0h5\" fill=\"none\" stroke=\"#57DBBF\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>"
+        "data": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\"><rect x=\"2.5\" y=\"3.5\" width=\"19\" height=\"17\" rx=\"4.5\" fill=\"currentColor\" fill-opacity=\"0.18\"/><circle cx=\"5.3\" cy=\"6\" r=\"0.55\" fill=\"currentColor\"/><circle cx=\"7.2\" cy=\"6\" r=\"0.55\" fill=\"currentColor\"/><circle cx=\"9.1\" cy=\"6\" r=\"0.55\" fill=\"currentColor\"/><path d=\"m6.8 10 3 3-3 3m5.4 0h4.9\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M17.2 10.2V9.1a1.8 1.8 0 0 1 3.6 0v1.1\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\"/><rect x=\"16.5\" y=\"10.2\" width=\"5\" height=\"4.1\" rx=\"1.2\" fill=\"currentColor\"/></svg>"
       },
       "inputs": [],
       "action": {
         "handler": "ssh_terminal",
         "params": {}
       },
-      "size": 1172,
-      "md5": "5df3315c2e6aa7ad4345932979e36cdf",
-      "sha256": "3460e6438bc157053bfe9aa8f0e7ad3aeddd197413e3c2ef590cfeccb57d44a8",
+      "size": 1630,
+      "md5": "ae1ef7a62e1749ccd64442e0bd2c4e06",
+      "sha256": "2423c768fe46783eb38f1ab92b13be9aece6ab69e592615b20ddcfc68dd89f1b",
       "isOfficial": true,
       "downloadUrls": {
         "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/ssh-terminal.zip",
@@ -3310,6 +3310,160 @@
       "downloadUrl": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/video-audio-toolbox.zip"
     },
     {
+      "id": "windows-fast-file-shuttle",
+      "name": "小文件极速搬运",
+      "version": "1.0.0",
+      "minAppVersion": "1.0.0",
+      "category": "win_ext",
+      "platforms": [
+        "windows"
+      ],
+      "executionType": "native_executable",
+      "engineType": "win_native_runner",
+      "description": "【Windows 原生】面向海量小文件的并行复制与移动工具。绕过资源管理器逐项 Shell 操作，多线程递归处理目录，同卷移动优先使用原子重命名，跨卷移动先复制校验再删除；支持跳过、覆盖、自动重命名冲突策略与实时进度。",
+      "author": "Toolbox Team",
+      "icon": {
+        "type": "code",
+        "data": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"none\"><rect x=\"3\" y=\"3\" width=\"18\" height=\"18\" rx=\"5\" fill=\"{secondary}\"/><path d=\"M7 8.5h6.5a3.5 3.5 0 0 1 0 7H10\" stroke=\"{primary}\" stroke-width=\"1.8\" stroke-linecap=\"round\"/><path d=\"m10 12-3 3.5 3 3.5\" stroke=\"{primary}\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M16 5.5v5m0 0 2.2-2.2M16 10.5l-2.2-2.2\" stroke=\"{primary}\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>"
+      },
+      "inputs": [
+        {
+          "id": "sourceDir",
+          "label": "源文件夹（点击“添加文件夹”，只选一个目录）",
+          "description": "将在目标文件夹内创建与源文件夹同名的副本；所选目录内的符号链接和目录联接会被跳过，防止循环扫描。",
+          "type": "file_picker",
+          "required": true,
+          "allowMultiple": true,
+          "allowFolder": true,
+          "preserveDirectoryEntries": true,
+          "pickButtonText": "添加文件（本工具不支持，请使用右侧“添加文件夹”）",
+          "selectionSummary": "已选择 {count} 项；执行时必须恰好为 1 个文件夹"
+        },
+        {
+          "id": "targetDir",
+          "label": "目标文件夹（点击“添加文件夹”，只选一个已有目录）",
+          "description": "源文件夹会作为子目录复制或移动到此处。程序拒绝源目录与目标目录互相包含。",
+          "type": "file_picker",
+          "required": true,
+          "allowMultiple": true,
+          "allowFolder": true,
+          "preserveDirectoryEntries": true,
+          "pickButtonText": "添加文件（本工具不支持，请使用右侧“添加文件夹”）",
+          "selectionSummary": "已选择 {count} 项；执行时必须恰好为 1 个目标文件夹"
+        },
+        {
+          "id": "transferMode",
+          "label": "操作模式",
+          "type": "select",
+          "defaultValue": "move",
+          "options": [
+            {
+              "label": "移动（成功后删除已处理的源文件）",
+              "value": "move"
+            },
+            {
+              "label": "复制（保留源文件夹）",
+              "value": "copy"
+            }
+          ]
+        },
+        {
+          "id": "conflictPolicy",
+          "label": "目标存在同名文件时",
+          "type": "select",
+          "defaultValue": "skip",
+          "options": [
+            {
+              "label": "跳过（最安全，默认）",
+              "value": "skip"
+            },
+            {
+              "label": "自动重命名（保留两端文件）",
+              "value": "rename"
+            },
+            {
+              "label": "覆盖目标文件",
+              "value": "overwrite"
+            }
+          ]
+        },
+        {
+          "id": "threads",
+          "label": "并行工作线程",
+          "type": "select",
+          "defaultValue": "8",
+          "options": [
+            {
+              "label": "自动（最多 16 线程）",
+              "value": "0"
+            },
+            {
+              "label": "4 线程（机械硬盘较稳妥）",
+              "value": "4"
+            },
+            {
+              "label": "8 线程（推荐）",
+              "value": "8"
+            },
+            {
+              "label": "16 线程（NVMe / 小文件密集）",
+              "value": "16"
+            }
+          ]
+        },
+        {
+          "id": "dryRun",
+          "label": "仅预演（扫描并统计，不改动文件）",
+          "type": "switch",
+          "defaultValue": false,
+          "description": "开启后只展示文件数量、体积和计划，不创建、覆盖或删除任何文件。"
+        }
+      ],
+      "nativeRunner": {
+        "entry": "bin/windows-fast-file-shuttle.exe",
+        "args": [
+          "--source",
+          "{sourceDir}",
+          "--target",
+          "{targetDir}",
+          "--mode",
+          "{transferMode}",
+          "--conflict",
+          "{conflictPolicy}",
+          "--threads",
+          "{threads}",
+          "--dry-run",
+          "{dryRun}"
+        ],
+        "showTerminal": true
+      },
+      "banners": [
+        {
+          "type": "warning",
+          "platform": "windows",
+          "message": "移动成功后源文件会被删除。默认“跳过”冲突且默认源/目标必须各选一个文件夹；正式操作前可先勾选“仅预演”。"
+        },
+        {
+          "type": "info",
+          "platform": "windows",
+          "message": "目标中会创建“源文件夹同名目录”。同卷移动优先使用文件系统重命名；跨卷移动只有在复制校验成功后才删除源文件。"
+        }
+      ],
+      "permissions": [
+        "fs:unrestricted"
+      ],
+      "size": 1143076,
+      "md5": "102681771db0bad19106082391d742ea",
+      "sha256": "c064f7b4aa97624c78fb18d31cfe5d3163e0611b1a97fb34dc46082f0a574a7a",
+      "isOfficial": true,
+      "downloadUrls": {
+        "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/windows-fast-file-shuttle.zip",
+        "github_cdn": "https://cdn.jsdelivr.net/gh/SuJiuOvO/Toolbox-Community-Registry@main/packages/windows-fast-file-shuttle.zip",
+        "github": "https://raw.githubusercontent.com/SuJiuOvO/Toolbox-Community-Registry/main/packages/windows-fast-file-shuttle.zip"
+      },
+      "downloadUrl": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/windows-fast-file-shuttle.zip"
+    },
+    {
       "id": "windows-media-downloader",
       "name": "Win 媒体下载",
       "version": "1.0.0",
@@ -3362,8 +3516,8 @@
     },
     {
       "id": "windows-uninstaller",
-      "name": "Windows 软件卸载助手",
-      "version": "1.0.0",
+      "name": "软件卸载",
+      "version": "1.0.1",
       "minAppVersion": "1.1.0",
       "category": "system",
       "platforms": [
@@ -3371,7 +3525,7 @@
       ],
       "executionType": "internal",
       "engineType": "internal",
-      "description": "Windows 桌面软件卸载助手：读取 32/64 位和当前用户/所有用户卸载注册表，搜索、按大小或日期排序、查看登记信息、启动官方卸载器、可选管理员权限和原安装目录/注册项的只读残留预览。不包含强制清理或 Microsoft Store 应用管理。",
+      "description": "Windows 桌面软件卸载：读取 32/64 位和当前用户/所有用户卸载注册表，支持搜索排序、官方卸载器和管理员权限。卸载后可扫描常见残留，默认不勾选，经用户确认后永久清理；不包含 Microsoft Store 应用管理。",
       "author": "Toolbox Team",
       "permissions": [],
       "icon": {
@@ -3385,14 +3539,14 @@
       },
       "banners": [
         {
-          "type": "info",
+          "type": "warning",
           "platform": "windows",
-          "message": "需要客户端 1.1.0 的交互式页面支持；残留仅供预览，不会自动清理。"
+          "message": "卸载完成后会扫描常见残留；默认不勾选，只有你确认的项目才会永久删除。"
         }
       ],
-      "size": 1273,
-      "md5": "7637ad3cecbec2f2d0197ecf66e6832e",
-      "sha256": "fbd0863a2a614945ae3ec4023aaa0ed99e393fd2c33ffc398d6c69b548af6116",
+      "size": 1239,
+      "md5": "29d3dad0975191705d0355dcaff8210c",
+      "sha256": "4dc89e3f448266769e95a8e0cc2a737fb41322dd63a7dc82bf3ef5ad44f2a689",
       "isOfficial": true,
       "downloadUrls": {
         "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/windows-uninstaller.zip",

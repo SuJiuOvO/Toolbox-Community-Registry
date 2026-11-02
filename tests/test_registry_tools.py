@@ -109,6 +109,20 @@ class RegistryToolsTests(unittest.TestCase):
             with self.subTest(plugin=path.parent.name):
                 build_registry.validate_manifest(json.loads(path.read_text(encoding="utf-8")), path.parent, VALIDATOR)
 
+    def test_fast_file_shuttle_has_bundled_native_runner_and_smoke_test(self):
+        path = ROOT / "plugins" / "windows-fast-file-shuttle"
+        manifest = json.loads((path / "manifest.json").read_text(encoding="utf-8"))
+        build_registry.validate_manifest(manifest, path, VALIDATOR)
+
+        runner = manifest["nativeRunner"]
+        self.assertTrue((path / runner["entry"]).is_file())
+        self.assertIn("--dry-run", runner["args"])
+        self.assertEqual(
+            runner["args"][runner["args"].index("--dry-run") + 1],
+            "{dryRun}",
+        )
+        self.assertTrue((path / "tests" / "smoke.ps1").is_file())
+
     def test_invalid_later_manifest_leaves_all_outputs_untouched(self):
         self.scaffold(plugin_id="a-valid")
         path, manifest = self.scaffold(plugin_id="z-invalid")
