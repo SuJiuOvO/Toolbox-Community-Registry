@@ -422,11 +422,280 @@ def create_win_ext_template(target_dir: str, plugin_id: str, name: str, category
         f.write(readme_md)
 
 
+def create_dual_adaptive_template(target_dir: str, plugin_id: str, name: str, category: str, desc: str):
+    plugin_id_snake = plugin_id.replace("-", "_")
+
+    manifest = {
+        "$schema": "../../schemas/manifest.schema.json",
+        "id": plugin_id,
+        "name": name,
+        "version": "1.0.0",
+        "minAppVersion": "1.0.0",
+        "category": category,
+        "description": desc,
+        "author": "Community Developer",
+        "icon": template_icon("M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"),
+        "executionType": "wasm",
+        "platforms": ["windows", "android"],
+        "nativeRunner": {
+            "entry": f"bin/{plugin_id}.exe",
+            "args": ["-o", "{outputDir}", "{inputs}"],
+            "showTerminal": True
+        },
+        "wasmRunner": {
+            "entry": f"bin/{plugin_id_snake}.wasm",
+            "executionMode": "wasi_cli",
+            "args": [plugin_id_snake, "-i", "{input}", "-o", "{outputDir}"],
+            "batchMode": True,
+            "showTerminal": True
+        },
+        "inputs": [
+            {
+                "id": "sourceFiles",
+                "label": "选择待处理文件 (支持批量多选与整目录)",
+                "type": "file_picker",
+                "required": True,
+                "allowMultiple": True,
+                "allowFolder": True
+            }
+        ],
+        "action": {
+            "handler": "wasm_universal",
+            "params": {}
+        }
+    }
+
+    cargo_toml = f"""[package]
+name = "{plugin_id_snake}"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+"""
+
+    main_rs = f"""// Plugin: {plugin_id}
+// Multi-Toolbox 双端自适应合一算力微内核 (Windows 原生 EXE + Android WASI 沙箱)
+
+use std::env;
+use std::fs;
+use std::io;
+use std::path::Path;
+
+fn main() {{
+    println!("=== Multi-Toolbox 双端自适应算力内核已启动 ===");
+    let args: Vec<String> = env::args().collect();
+    let mut input_paths: Vec<String> = Vec::new();
+    let mut output_dir = String::new();
+
+    let mut i = 1;
+    while i < args.len() {{
+        match args[i].as_str() {{
+            "-i" | "--input" => {{
+                if i + 1 < args.len() {{
+                    input_paths.push(args[i + 1].clone());
+                    i += 1;
+                }}
+            }}
+            "-o" | "--output" => {{
+                if i + 1 < args.len() {{
+                    output_dir = args[i + 1].clone();
+                    i += 1;
+                }}
+            }}
+            other => {{
+                if !other.starts_with('-') {{
+                    input_paths.push(other.to_string());
+                }}
+            }}
+        }}
+        i += 1;
+    }}
+
+    if input_paths.is_empty() || output_dir.is_empty() {{
+        eprintln!("用法错误: 缺少必要参数！");
+        eprintln!("  双端自适应 CLI 规范:");
+        eprintln!("    单文件/WASI 模式: {plugin_id_snake} -i <输入文件> -o <输出目录>");
+        eprintln!("    多文件/原生 模式: {plugin_id_snake} -o <输出目录> <文件1> [文件2 ...]");
+        std::process::exit(1);
+    }}
+
+    let out_dir = Path::new(&output_dir);
+    if !out_dir.exists() {{
+        if let Err(e) = fs::create_dir_all(out_dir) {{
+            eprintln!("创建输出目录失败: {{}}", e);
+            std::process::exit(1);
+        }}
+    }}
+
+    println!(">>> 待处理输入文件数量: {{}}", input_paths.len());
+    println!(">>> 目标输出目录: {{:?}}", out_dir);
+
+    for in_str in &input_paths {{
+        let in_path = Path::new(in_str);
+        if !in_path.exists() {{
+            eprintln!("输入文件不存在: {{}}", in_str);
+            std::process::exit(1);
+        }}
+
+        let file_stem = in_path.file_stem().and_then(|s| s.to_str()).unwrap_or("output");
+        let extension = in_path.extension().and_then(|s| s.to_str()).unwrap_or("txt");
+        let dest_file = out_dir.join(format!("{{}}_processed.{{}}", file_stem, extension));
+
+        let result = (|| -> io::Result<u64> {{
+            let mut source = fs::File::open(in_path)?;
+            let mut destination = fs::File::create(&dest_file)?;
+            io::copy(&mut source, &mut destination)
+        }})();
+
+        match result {{
+            Ok(byte_count) => {{
+                println!(">>> 已处理: {{:?}} ({{}} 字节) -> {{:?}}", in_path, byte_count, dest_file);
+            }}
+            Err(e) => {{
+                eprintln!("处理文件失败 ({{:?}}): {{}}", in_path, e);
+                std::process::exit(1);
+            }}
+        }}
+    }}
+
+    println!("[+] 全部文件处理完成！");
+}}
+"""
+
+    build_win_bat = f"""@echo off
+setlocal
+pushd "%~dp0"
+echo [1/2] 正在编译 Windows 原生可执行文件 (target: native release)...
+cargo build --release
+if %ERRORLEVEL% neq 0 (
+    echo Windows 原生编译失败！请确保已安装 Rust 工具链。
+    popd
+    exit /b 1
+)
+if not exist bin mkdir bin
+copy /Y "target\\release\\{plugin_id_snake}.exe" "bin\\{plugin_id}.exe"
+if errorlevel 1 (
+    popd
+    exit /b 1
+)
+echo [2/2] 编译完成！产物已复制至 bin\\{plugin_id}.exe
+popd
+"""
+
+    build_wasm_bat = f"""@echo off
+setlocal
+pushd "%~dp0"
+echo [1/2] 正在编译 Rust WASI 模块 (target: wasm32-wasip1)...
+cargo build --target wasm32-wasip1 --release
+if %ERRORLEVEL% neq 0 (
+    echo WASI 编译失败！请确保已安装 Rust 工具链并添加 WASI 目标：
+    echo   rustup target add wasm32-wasip1
+    popd
+    exit /b 1
+)
+if not exist bin mkdir bin
+copy /Y "target\\wasm32-wasip1\\release\\{plugin_id_snake}.wasm" "bin\\{plugin_id_snake}.wasm"
+if errorlevel 1 (
+    popd
+    exit /b 1
+)
+echo [2/2] 编译完成！产物已复制至 bin\\{plugin_id_snake}.wasm
+popd
+"""
+
+    build_bat = f"""@echo off
+setlocal
+pushd "%~dp0"
+echo ========================================================
+echo   Multi-Toolbox 双端自适应插件一键构建流水线
+echo   1. Windows 原生二进制: bin\\{plugin_id}.exe
+echo   2. Android / 通用 WASI 模块: bin\\{plugin_id_snake}.wasm
+echo ========================================================
+call "%~dp0build_win.bat"
+if %ERRORLEVEL% neq 0 (
+    echo [警告] Windows 原生构建遇到错误。
+)
+call "%~dp0build_wasm.bat"
+if %ERRORLEVEL% neq 0 (
+    echo [警告] WASI 构建遇到错误。
+)
+popd
+"""
+
+    build_sh = f"""#!/bin/bash
+set -e
+cd -- "$(dirname -- "$0")"
+echo "[1/2] 正在编译 Rust WASI 模块 (target: wasm32-wasip1)..."
+cargo build --target wasm32-wasip1 --release
+mkdir -p bin
+cp "target/wasm32-wasip1/release/{plugin_id_snake}.wasm" "bin/{plugin_id_snake}.wasm"
+echo "[2/2] 编译完成！产物已复制至 bin/{plugin_id_snake}.wasm"
+"""
+
+    readme_md = f"""# {name} (`{plugin_id}`)
+
+{desc}
+
+## 功能特性
+- 支持平台：Windows / Android（🚀 双端自适应合一架构）
+- 执行引擎：
+  - Windows 端：自动调度本地原生极速程序 `bin/{plugin_id}.exe`（裸机性能，极速秒出）；
+  - Android 端：无缝切换至 `bin/{plugin_id_snake}.wasm`（WASI Preview 1 内存沙箱微内核）。
+
+## 构建指南 (Rust 双端编译)
+1. 准备环境：确保已安装 Rust 工具链并添加 `wasm32-wasip1` 编译目标：
+   ```bash
+   rustup target add wasm32-wasip1
+   ```
+2. 构建产物：
+   - **一键双端编译 (Windows)**：运行 `build.bat`，自动在 `bin/` 目录下生成 `.exe` 和 `.wasm`；
+   - **仅编译 Windows 原生**：运行 `build_win.bat`；
+   - **仅编译 Android WASI**：运行 `build_wasm.bat`（或 Linux/macOS 执行 `bash build.sh`）。
+
+## 本地调试指南
+1. 打开 Multi-Toolbox 客户端；
+2. 进入「已安装插件 / 开发者工具」；
+3. 点击「本地目录关联 (Dev Link)」，挂载当前工程目录：`plugins/{plugin_id}`；
+4. Windows 端将直接以原生机器码调度，Android 端将自动以 WASI 隔离沙箱调度，即刻实时验证。
+"""
+
+    os.makedirs(os.path.join(target_dir, "src"), exist_ok=True)
+    os.makedirs(os.path.join(target_dir, "bin"), exist_ok=True)
+
+    with open(os.path.join(target_dir, "manifest.json"), "w", encoding="utf-8", newline="\n") as f:
+        json.dump(manifest, f, indent=2, ensure_ascii=False)
+        f.write("\n")
+
+    with open(os.path.join(target_dir, "Cargo.toml"), "w", encoding="utf-8", newline="\n") as f:
+        f.write(cargo_toml)
+
+    with open(os.path.join(target_dir, "src", "main.rs"), "w", encoding="utf-8", newline="\n") as f:
+        f.write(main_rs)
+
+    with open(os.path.join(target_dir, "build_win.bat"), "w", encoding="utf-8", newline="\r\n") as f:
+        f.write(build_win_bat)
+
+    with open(os.path.join(target_dir, "build_wasm.bat"), "w", encoding="utf-8", newline="\r\n") as f:
+        f.write(build_wasm_bat)
+
+    with open(os.path.join(target_dir, "build.bat"), "w", encoding="utf-8", newline="\r\n") as f:
+        f.write(build_bat)
+
+    with open(os.path.join(target_dir, "build.sh"), "w", encoding="utf-8", newline="\n") as f:
+        f.write(build_sh)
+
+    with open(os.path.join(target_dir, "bin", ".gitkeep"), "w", encoding="utf-8") as f:
+        f.write("")
+
+    with open(os.path.join(target_dir, "README.md"), "w", encoding="utf-8", newline="\n") as f:
+        f.write(readme_md)
+
+
 def main():
     parser = argparse.ArgumentParser(description="Multi-Toolbox 插件脚手架生成工具")
     parser.add_argument("--id", dest="plugin_id", help="插件唯一标识符 (全小写字母、数字与连字符，如 image-watermark-cleaner)")
     parser.add_argument("--name", dest="name", help="插件显示名称 (如 智能水印清除器)")
-    parser.add_argument("--type", dest="engine_type", default="quickjs", choices=["quickjs", "wasm", "win_ext", "native_executable"], help="执行引擎类型 (默认: quickjs；native_executable 是 win_ext 的别名)")
+    parser.add_argument("--type", dest="engine_type", default="quickjs", choices=["quickjs", "wasm", "win_ext", "native_executable", "dual", "dual_adaptive"], help="执行引擎类型 (默认: quickjs；dual/dual_adaptive 为双端自适应合一；native_executable 是 win_ext 的别名)")
     parser.add_argument("--category", dest="category", default="other", choices=CATEGORIES, help="插件分类")
     parser.add_argument("--desc", dest="desc", default="Multi-Toolbox 社区实用功能模块", help="插件功能描述")
 
@@ -455,11 +724,13 @@ def main():
         parser.error("插件显示名称必须为 2 到 60 个字符")
 
     # Rust crate 名称不能以数字开头，即使插件 ID 本身允许数字。
-    if args.engine_type == "wasm" and not plugin_id[0].isalpha():
+    if args.engine_type in ("wasm", "dual") and not plugin_id[0].isalpha():
         parser.error("WASM 插件 ID 必须以英文字母开头，以兼容 Rust crate 名称")
 
     if args.engine_type == "native_executable":
         args.engine_type = "win_ext"
+    if args.engine_type == "dual_adaptive":
+        args.engine_type = "dual"
 
     target_dir = os.path.join(PLUGINS_DIR, plugin_id)
     if os.path.exists(target_dir):
@@ -488,6 +759,20 @@ def main():
             "README.md     (Rust WASI 编译指引与 Dev Link 说明)"
         ]
         dev_hint = f"1. 运行 build.bat 或 bash build.sh 编译出 bin/{plugin_id.replace('-', '_')}.wasm；\n   2. 在客户端使用「本地目录关联」挂载此文件夹进行实时测试；\n   3. 完成后运行 python tools/build_registry.py 打包发布。"
+    elif args.engine_type == "dual":
+        create_dual_adaptive_template(target_dir, plugin_id, name, args.category, args.desc)
+        file_list = [
+            "manifest.json (已配置 nativeRunner 与 wasmRunner 双端自适应合一)",
+            "Cargo.toml    (标准 Rust 双端编译工程文件)",
+            "src/main.rs   (双端自适应 CLI 参数与流式文件处理模板)",
+            "build.bat     (Windows 双端一键编译脚本)",
+            "build_win.bat (仅编译 Windows 原生 .exe 脚本)",
+            "build_wasm.bat(仅编译 Android WASI .wasm 脚本)",
+            "build.sh      (Linux/macOS WASI 构建脚本)",
+            "bin/          (双端二进制输出目录)",
+            "README.md     (双端自适应架构与 Dev Link 调试说明)"
+        ]
+        dev_hint = f"1. 运行 build.bat (或分别运行 build_win.bat / build_wasm.bat) 生成二进制；\n   2. 在客户端使用「本地目录关联」挂载此文件夹：Windows 自动跑原生 EXE，Android 自动跑 WASI 沙箱；\n   3. 完成后运行 python tools/build_registry.py 打包发布。"
     elif args.engine_type == "win_ext":
         create_win_ext_template(target_dir, plugin_id, name, args.category, args.desc)
         file_list = [

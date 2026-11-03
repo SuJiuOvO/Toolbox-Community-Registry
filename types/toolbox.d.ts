@@ -5,7 +5,7 @@
  * 开发者在插件 JavaScript (entry.js) 顶部声明以下三斜线指令即可在 VS Code / WebStorm 中获得完整的智能补全：
  * /// <reference path="../../types/toolbox.d.ts" />
  *
- * @version 2.4.0
+ * @version 2.5.0
  */
 
 declare namespace ToolboxAPI {

@@ -41,7 +41,7 @@ class RegistryToolsTests(unittest.TestCase):
         return path
 
     def test_every_cli_type_and_category_passes_schema(self):
-        for engine in ("quickjs", "wasm", "win_ext", "native_executable"):
+        for engine in ("quickjs", "wasm", "win_ext", "native_executable", "dual", "dual_adaptive"):
             for category in create_plugin.CATEGORIES:
                 with self.subTest(engine=engine, category=category):
                     plugin_id = f"example-{engine.replace('_', '-')}-{category.replace('_', '-')}"
@@ -52,6 +52,13 @@ class RegistryToolsTests(unittest.TestCase):
                         self.assertEqual(manifest["executionType"], "native_executable")
                         self.assertEqual(manifest["platforms"], ["windows"])
                         self.assertNotIn("engineType", manifest)
+                    elif engine in ("dual", "dual_adaptive"):
+                        self.assertEqual(manifest["executionType"], "wasm")
+                        self.assertEqual(manifest["platforms"], ["windows", "android"])
+                        self.assertIn("nativeRunner", manifest)
+                        self.assertIn("wasmRunner", manifest)
+                        self.assertEqual(manifest["wasmRunner"]["args"][0], plugin_id.replace("-", "_"))
+                        self.assertNotIn(b"\r\n", (path / "build.sh").read_bytes())
                     elif engine == "wasm":
                         self.assertEqual(manifest["wasmRunner"]["args"][0], plugin_id.replace("-", "_"))
                         self.assertEqual(manifest["wasmRunner"]["executionMode"], "wasi_cli")
@@ -62,7 +69,7 @@ class RegistryToolsTests(unittest.TestCase):
                         self.assertNotIn("entry", manifest["action"])
 
     def test_cli_rejects_invalid_ids_names_and_duplicate_directory(self):
-        for plugin_id, engine, name in (("Bad_Id", "quickjs", "名称"), ("123-wasm", "wasm", "名称"), ("valid-id", "quickjs", "a"), ("valid-id", "quickjs", "a" * 61)):
+        for plugin_id, engine, name in (("Bad_Id", "quickjs", "名称"), ("123-wasm", "wasm", "名称"), ("123-dual", "dual", "名称"), ("valid-id", "quickjs", "a"), ("valid-id", "quickjs", "a" * 61)):
             with self.subTest(plugin_id=plugin_id, engine=engine, name=name), contextlib.redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
                 self.scaffold(engine, plugin_id, name=name)
         self.assertEqual(list((self.root / "plugins").iterdir()), [])

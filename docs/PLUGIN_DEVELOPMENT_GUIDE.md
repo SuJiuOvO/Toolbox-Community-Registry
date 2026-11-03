@@ -15,7 +15,7 @@
    - [2.3 Windows 开放扩展工坊 (Native CLI / Script)](#23-windows-开放扩展工坊-executiontype-native_executable--script)
    - [2.4 🚀 双端自适应合一架构 (Dual-Adaptive: Win 原生 + Android WASM)](#24--双端自适应合一架构-dual-adaptive-win-原生--android-wasm)
    - [2.5 客户端内置原生算法与多媒体流水线 (Audio & Image Pipeline)](#25-客户端内置原生算法与多媒体流水线-executiontype-internal)
-3. [Manifest v2.3 清单规范全字段完整参考](#3-manifest-v23-清单规范全字段完整参考)
+3. [Manifest v2.5 清单规范全字段完整参考](#3-manifest-v25-清单规范全字段完整参考)
    - [3.1 核心元数据配置](#31-核心元数据配置)
    - [3.2 图标系统完整规范 (图片限制与 SVG 矢量代码渲染)](#32-图标系统完整规范-图片限制与-svg-矢量代码渲染)
    - [3.3 动态表单组件系统 (Inputs)](#33-动态表单组件系统-inputs)
@@ -75,7 +75,7 @@ flowchart TD
 
     Registry -->|三源竞速拉取 index.json| PM
     Registry -->|静默下载模块 .zip| PM
-    PM -->|解析 Manifest v2.2| Runner
+    PM -->|解析 Manifest v2.5| Runner
     Runner --> EngineRouter
     EngineRouter -->|Windows 原生优先| WinRuntime
     EngineRouter -->|Android / 通用算力| WasmVfs
@@ -299,7 +299,7 @@ async function run({ inputFiles, outputDir, params }) {
 
 ---
 
-## 3. Manifest v2.3 清单规范全字段完整参考
+## 3. Manifest v2.5 清单规范全字段完整参考
 
 每个功能模块的唯一配置文件为 `manifest.json`。
 
@@ -921,7 +921,7 @@ plugins/ncm-audio-converter/
 
 ### 5.1 🌟 关联本地开发目录：免打包实时热调试 (Local Dev Link Mode)
 
-在 Manifest v2.3 架构中，客户端全面支持**「本地开发关联模式」**。开发者无需每修改一行代码就打包解压一次：
+在 Manifest v2.5 架构中，客户端全面支持**「本地开发关联模式」**。开发者无需每修改一行代码就打包解压一次：
 
 #### 使用步骤：
 1. **进入管理页面**：在 Multi-Toolbox 客户端打开「已安装插件管理」；

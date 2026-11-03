@@ -297,7 +297,7 @@
     },
     "outputs": {
       "type": "array",
-      "description": "声明式复合计算结果与富文本卡片排布规范 (Manifest v2.4 引入)。",
+      "description": "声明式复合计算结果与富文本卡片排布规范 (Manifest v2.5 规范)。",
       "items": {
         "type": "object",
         "required": [
