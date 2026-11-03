@@ -3312,8 +3312,8 @@
     {
       "id": "windows-fast-file-shuttle",
       "name": "小文件极速搬运",
-      "version": "1.0.0",
-      "minAppVersion": "1.0.0",
+      "version": "1.0.1",
+      "minAppVersion": "1.1.2",
       "category": "win_ext",
       "platforms": [
         "windows"
@@ -3324,31 +3324,33 @@
       "author": "Toolbox Team",
       "icon": {
         "type": "code",
-        "data": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"none\"><rect x=\"3\" y=\"3\" width=\"18\" height=\"18\" rx=\"5\" fill=\"{secondary}\"/><path d=\"M7 8.5h6.5a3.5 3.5 0 0 1 0 7H10\" stroke=\"{primary}\" stroke-width=\"1.8\" stroke-linecap=\"round\"/><path d=\"m10 12-3 3.5 3 3.5\" stroke=\"{primary}\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M16 5.5v5m0 0 2.2-2.2M16 10.5l-2.2-2.2\" stroke=\"{primary}\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>"
+        "data": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"none\"><rect x=\"3\" y=\"3\" width=\"18\" height=\"18\" rx=\"5\" fill=\"currentColor\" fill-opacity=\"0.18\"/><path d=\"M7 8.5h6.5a3.5 3.5 0 0 1 0 7H10\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\"/><path d=\"m10 12-3 3.5 3 3.5\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M16 5.5v5m0 0 2.2-2.2M16 10.5l-2.2-2.2\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>"
       },
       "inputs": [
         {
           "id": "sourceDir",
-          "label": "源文件夹（点击“添加文件夹”，只选一个目录）",
+          "label": "源文件夹（只选一个目录）",
           "description": "将在目标文件夹内创建与源文件夹同名的副本；所选目录内的符号链接和目录联接会被跳过，防止循环扫描。",
           "type": "file_picker",
           "required": true,
-          "allowMultiple": true,
+          "allowMultiple": false,
           "allowFolder": true,
+          "allowFiles": false,
           "preserveDirectoryEntries": true,
-          "pickButtonText": "添加文件（本工具不支持，请使用右侧“添加文件夹”）",
+          "pickButtonText": "选择源文件夹",
           "selectionSummary": "已选择 {count} 项；执行时必须恰好为 1 个文件夹"
         },
         {
           "id": "targetDir",
-          "label": "目标文件夹（点击“添加文件夹”，只选一个已有目录）",
+          "label": "目标文件夹（只选一个已有目录）",
           "description": "源文件夹会作为子目录复制或移动到此处。程序拒绝源目录与目标目录互相包含。",
           "type": "file_picker",
           "required": true,
-          "allowMultiple": true,
+          "allowMultiple": false,
           "allowFolder": true,
+          "allowFiles": false,
           "preserveDirectoryEntries": true,
-          "pickButtonText": "添加文件（本工具不支持，请使用右侧“添加文件夹”）",
+          "pickButtonText": "选择目标文件夹",
           "selectionSummary": "已选择 {count} 项；执行时必须恰好为 1 个目标文件夹"
         },
         {
@@ -3452,9 +3454,9 @@
       "permissions": [
         "fs:unrestricted"
       ],
-      "size": 1143076,
-      "md5": "102681771db0bad19106082391d742ea",
-      "sha256": "c064f7b4aa97624c78fb18d31cfe5d3163e0611b1a97fb34dc46082f0a574a7a",
+      "size": 1142993,
+      "md5": "ee11b625976e9ce4eca3b5ee842bf4da",
+      "sha256": "c41e2e0a6f6330bd25d4abdcb304abd5a5cd8f6fd9b0a73bbc1efb35ff38d86d",
       "isOfficial": true,
       "downloadUrls": {
         "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/windows-fast-file-shuttle.zip",

@@ -267,6 +267,11 @@
             "type": "boolean",
             "description": "file_picker 组件是否展示【添加文件夹】按钮。"
           },
+          "allowFiles": {
+            "type": "boolean",
+            "default": true,
+            "description": "file_picker 组件是否展示文件选择按钮。与 allowFolder 组合可实现仅文件、仅文件夹或两者同时显示。"
+          },
           "pickButtonText": {
             "type": "string",
             "description": "自定义文件选择按钮文本。"

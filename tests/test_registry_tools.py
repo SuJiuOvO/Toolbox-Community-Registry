@@ -116,6 +116,14 @@ class RegistryToolsTests(unittest.TestCase):
 
         runner = manifest["nativeRunner"]
         self.assertTrue((path / runner["entry"]).is_file())
+        self.assertEqual(manifest["version"], "1.0.1")
+        self.assertEqual(manifest["minAppVersion"], "1.1.2")
+        self.assertIn("currentColor", manifest["icon"]["data"])
+        for field in ("sourceDir", "targetDir"):
+            input_def = next(item for item in manifest["inputs"] if item["id"] == field)
+            self.assertFalse(input_def["allowFiles"])
+            self.assertTrue(input_def["allowFolder"])
+            self.assertFalse(input_def["allowMultiple"])
         self.assertIn("--dry-run", runner["args"])
         self.assertEqual(
             runner["args"][runner["args"].index("--dry-run") + 1],
