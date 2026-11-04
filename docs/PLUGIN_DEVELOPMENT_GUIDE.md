@@ -30,6 +30,12 @@
    - [🌟 实战 4：开发一个双端自适应合一插件（网易云 NCM 解密器）](#-实战-4开发一个双端自适应合一插件网易云-ncm-解密器)
 5. [本地开发、热调试、打包与自动化测试规范](#5-本地开发打包与自动化测试规范)
    - [5.1 🌟 关联本地开发目录：免打包实时热调试 (Dev Link Mode)](#51--关联本地开发目录免打包实时热调试-local-dev-link-mode)
+   - [5.2 运行期「开发者调试抽屉 (Dev Drawer)」可观测性中枢](#52-运行期开发者调试抽屉-dev-drawer-可观测性中枢)
+   - [5.3 QuickJS 报错行号偏移补偿与 SourceMap 解析](#53-quickjs-报错行号偏移补偿与-sourcemap-解析)
+   - [5.4 WASI Panic 结构化回显](#54-wasi-panic-结构化回显)
+   - [5.5 分块流式传输与大文件零内存拷贝 (Chunked VFS Transfer)](#55-分块流式传输与大文件零内存拷贝-chunked-vfs-transfer)
+   - [5.6 注册中心 GitHub Actions 跨平台交叉编译矩阵](#56-注册中心-github-actions-跨平台交叉编译矩阵)
+   - [5.7 运行本地自动化构建与一致性校验](#57-运行本地自动化构建与一致性校验)
 6. [社区注册中心提交与合入发布规范 (PR 流程)](#6-社区注册中心提交与合入发布规范-pr-流程)
 
 ---
@@ -933,7 +939,89 @@ plugins/ncm-audio-converter/
 
 ---
 
-### 5.2 运行自动化构建与检查
+### 5.2 运行期「开发者调试抽屉 (Dev Drawer)」可观测性中枢
+
+在 Multi-Toolbox 客户端的任何插件运行器界面右上角，均提供 **`[🐛 开发者调试抽屉]`** 入口。点击即可呼出全方位运行时状态看板：
+- **实时表单参数快照 (Form Values Snapshot)**：以格式化 JSON 直观展示所有动态输入控件的当前求值状态，支持一键复制；
+- **VFS 虚拟目录映射表 (POSIX Mappings)**：清晰对比 `/output`、`/plugin`、`/tmp` 以及每个输入文件的物理宿主路径与沙箱挂载路径；
+- **宿主注入环境变量 (Toolbox.env)**：实时展开查看 QuickJS 沙箱或 WASI 容器捕获的完整系统环境变量；
+- **原生 CLI 一键复现指令 (Native Runner Repro Command)**：自动解析并替换 `{input}`、`{inputs}`、`{outputDir}` 等参数模板，生成可直接在外部 PowerShell 或 CMD 控制台粘贴运行的完整调试指令，方便进行独立断点调试与压力测试。
+
+---
+
+### 5.3 QuickJS 报错行号偏移补偿与 SourceMap 解析
+
+在客户端内嵌 QuickJS 沙箱中，宿主在包装执行插件代码时自动记录前置引导行数 $N$：
+1. **行号偏移标定 (Line Offset Compensation)**：JS 异常报错时，客户端自动执行正则重写：
+   $$\text{OriginalLine} = \text{ReportedLine} - \text{HeaderLinesCount}$$
+   终端与报错提示直接对齐开发者本地源文件（如 `entry.js:12:5` 而非 `<eval>:19:5`）。
+2. **SourceMap 逆向映射**：若脚本末尾附带 `//# sourceMappingURL=data:application/json;base64,...` 或插件目录内包含同名 `.map` 文件，客户端自动解码 VLQ 映射表，不仅精确定位到 TypeScript / ES 源码的文件名与行号，还会高亮回显出错位置的代码上下文片段。
+
+---
+
+### 5.4 WASI Panic 结构化回显
+
+针对基于 Rust / C++ 编译的 WebAssembly WASI Preview 1 模块：
+- 当模块内部触发 `panic!` 时，客户端宿主层智能捕获 `stderr` 输出；
+- 正则提取包含 `panicked at` 的源文件名、代码行号与断言原因；
+- 以 **`🛑 [WASI Panic 结构化回显]`** 格式在终端控制台和错误弹窗首行高亮展示，彻底终结退出状态码为非零时的“黑盒排障”。
+
+---
+
+### 5.5 分块流式传输与大文件零内存拷贝 (Chunked VFS Transfer)
+
+对于百兆级别的大文件处理，为彻底避免 Base64 编码带来的 33% 内存膨胀与 OOM 风险，`Toolbox.fs` 提供了高效的分块流式读写句柄：
+
+```javascript
+async function run({ inputFiles, outputDir }) {
+  const inPath = inputFiles[0];
+  const outPath = outputDir + '/processed.dat';
+
+  // 打开流式读取器（默认每块 64KB，按需自定义）
+  const reader = Toolbox.fs.openChunkReader(inPath, { chunkSize: 65536 });
+  const writer = Toolbox.fs.openChunkWriter(outPath);
+
+  let chunkIndex = 0;
+  while (reader.hasNext()) {
+    const chunk = reader.nextChunk(); // 返回 Uint8Array
+    if (!chunk) break;
+
+    // 对每个分片进行就地计算或加解密
+    processChunk(chunk);
+
+    // 流式刷入目标文件
+    writer.writeChunk(chunk);
+    chunkIndex++;
+  }
+
+  reader.close();
+  const res = writer.close();
+  Toolbox.log(`处理完毕！共流式写入 ${res.fileSize} 字节`);
+  return { success: true };
+}
+```
+
+---
+
+### 5.6 注册中心 GitHub Actions 跨平台交叉编译矩阵
+
+第三方插件开发者向社区注册中心贡献双端自适应或原生/WASM 插件时，**无需在本地配置繁琐的 Rust、MinGW/MSVC 或 WASI 工具链**：
+1. 开发者仅需在 PR 中提交插件源码（包含 `src/Cargo.toml` 与 `src/main.rs`）；
+2. 仓库内嵌 `.github/workflows/build-plugins.yml` 自动化跨平台构建矩阵：
+   - **`windows-latest` 节点**：调度 MSVC / Rust 编译输出 `bin/<id>.exe`；
+   - **`ubuntu-latest` 节点**：安装 `wasm32-wasip1` 交叉编译输出 `bin/<id>.wasm`；
+3. 云端工作流自动将编译产物注入插件包目录，并运行 `tools/compile_plugin_sources.py` 与全部 Schema / 单测校验；
+4. 开发者也可以在本地随时使用如下命令自检编译：
+   ```bash
+   # 仅检查二进制与源码对应关系
+   python tools/compile_plugin_sources.py --validate-only
+   # 模拟构建并打印目标路径
+   python tools/compile_plugin_sources.py --dry-run
+   ```
+
+---
+
+### 5.7 运行本地自动化构建与一致性校验
 
 社区注册表仓库自带本地校验与构建工具 `tools/build_registry.py`。
 

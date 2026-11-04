@@ -1,0 +1,116 @@
+name: Cross-Compilation Matrix for Plugins
+
+on:
+  pull_request:
+    paths:
+      - 'plugins/**/src/**'
+      - 'plugins/**/Cargo.toml'
+      - 'plugins/**/Cargo.lock'
+      - 'tools/compile_plugin_sources.py'
+      - '.github/workflows/build-plugins.yml'
+  workflow_dispatch:
+    inputs:
+      plugin_id:
+        description: 'Specific Plugin ID to build (leave empty for all)'
+        required: false
+        default: ''
+
+jobs:
+  build-windows-binaries:
+    name: Build Windows Native (.exe)
+    runs-on: windows-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Rust Toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Compile Windows Binaries
+        shell: bash
+        run: |
+          if [ -n "${{ github.event.inputs.plugin_id }}" ]; then
+            python tools/compile_plugin_sources.py --plugin "${{ github.event.inputs.plugin_id }}" --target windows
+          else
+            python tools/compile_plugin_sources.py --target windows
+          fi
+
+      - name: Upload Windows Binaries Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-binaries
+          path: plugins/**/bin/*.exe
+          if-no-files-found: ignore
+
+  build-wasm-binaries:
+    name: Build WASI Preview 1 (.wasm)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Rust & wasm32-wasip1
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-wasip1
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Compile WASI Binaries
+        run: |
+          if [ -n "${{ github.event.inputs.plugin_id }}" ]; then
+            python tools/compile_plugin_sources.py --plugin "${{ github.event.inputs.plugin_id }}" --target wasm
+          else
+            python tools/compile_plugin_sources.py --target wasm
+          fi
+
+      - name: Upload WASI Binaries Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: wasm-binaries
+          path: plugins/**/bin/*.wasm
+          if-no-files-found: ignore
+
+  package-and-validate:
+    name: Package & Validate Built Plugins
+    needs: [build-windows-binaries, build-wasm-binaries]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Download Windows Binaries
+        uses: actions/download-artifact@v4
+        with:
+          name: windows-binaries
+          path: plugins
+        continue-on-error: true
+
+      - name: Download WASI Binaries
+        uses: actions/download-artifact@v4
+        with:
+          name: wasm-binaries
+          path: plugins
+        continue-on-error: true
+
+      - name: Install Dependencies
+        run: python -m pip install -r requirements.txt
+
+      - name: Run Scaffolding & Registry Unit Tests
+        run: python -m unittest discover -s tests -v
+
+      - name: Validate Registry Packages
+        run: python tools/build_registry.py --validate-only

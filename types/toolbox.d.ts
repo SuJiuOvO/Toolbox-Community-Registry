@@ -192,6 +192,33 @@ declare namespace ToolboxAPI {
   /**
    * 宿主文件系统 (Toolbox.fs) API
    */
+  /**
+   * 分块流式文件读取句柄 (Chunked Stream Reader)
+   * 支持避免大文件 Base64 内存膨胀，按需 64KB 流式分片载入
+   */
+  export interface ChunkReader {
+    /** 目标文件总字节大小 */
+    readonly fileSize: number;
+    /** 分片字节大小 (默认 65536) */
+    readonly chunkSize: number;
+    /** 是否仍有待读取的数据块 */
+    hasNext(): boolean;
+    /** 读取下一数据块 (默认返回 Uint8Array，传 false 返回 Base64 字符串) */
+    nextChunk(asUint8Array?: boolean): Uint8Array | string | null;
+    /** 释放并关闭读取流句柄 */
+    close(): void;
+  }
+
+  /**
+   * 分块流式文件写入句柄 (Chunked Stream Writer)
+   */
+  export interface ChunkWriter {
+    /** 写入分片数据块 */
+    writeChunk(chunk: Uint8Array | ArrayBuffer | string | number[]): { bytesWritten: number };
+    /** 刷盘并关闭写入流句柄，返回写入成功的总文件大小 */
+    close(): { success: boolean; fileSize: number };
+  }
+
   export interface FileSystemAPI {
     /** 读取指定文件的 UTF-8 文本或 Base64 编码 (向后兼容) */
     readFile(path: string, isBase64?: boolean): string;
@@ -221,6 +248,10 @@ declare namespace ToolboxAPI {
     delete(path: string): boolean;
     /** 获取文件大小 (字节数) */
     fileSize(path: string): number;
+    /** 打开分块流式文件读取句柄（适用于大文件流式解构，彻底规避内存膨胀） */
+    openChunkReader(path: string, options?: { chunkSize?: number }): ChunkReader;
+    /** 打开分块流式文件写入句柄 */
+    openChunkWriter(path: string): ChunkWriter;
   }
 
   /**
