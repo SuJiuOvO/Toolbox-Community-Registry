@@ -4,7 +4,7 @@ import argparse
 import os
 from pathlib import Path
 import sys
-from typing import Dict, Optional
+from typing import Dict, List, Optional
 import requests
 
 
@@ -14,90 +14,87 @@ DEFAULT_TAG = "plugins"
 BASE_URL = "https://gitee.com/api/v5"
 
 
-def get_or_create_release(
+def find_release_id_by_tag(
+    session: requests.Session,
+    owner: str,
+    repo: str,
+    tag: str,
+    token: str,
+) -> Optional[int]:
+    """Locate release ID by tag using releases/tags or by listing all releases."""
+    tag_url = f"{BASE_URL}/repos/{owner}/{repo}/releases/tags/{tag}"
+    try:
+        resp = session.get(tag_url, params={"access_token": token}, timeout=15)
+        if resp.status_code == 200:
+            data = resp.json()
+            if isinstance(data, dict) and data.get("id"):
+                return data["id"]
+    except Exception as e:
+        print(f"[WARN] Failed querying tag endpoint: {e}")
+
+    # Fallback: query releases list
+    try:
+        all_releases = session.get(
+            f"{BASE_URL}/repos/{owner}/{repo}/releases",
+            params={"access_token": token, "per_page": 100},
+            timeout=15,
+        )
+        if all_releases.status_code == 200:
+            items = all_releases.json()
+            if isinstance(items, list):
+                for item in items:
+                    if isinstance(item, dict) and item.get("tag_name") == tag:
+                        return item.get("id")
+    except Exception as e:
+        print(f"[WARN] Failed listing releases: {e}")
+
+    return None
+
+
+def delete_release(
+    session: requests.Session,
+    owner: str,
+    repo: str,
+    release_id: int,
+    token: str,
+) -> bool:
+    """Delete a release container by id."""
+    url = f"{BASE_URL}/repos/{owner}/{repo}/releases/{release_id}"
+    resp = session.delete(url, params={"access_token": token}, timeout=15)
+    return resp.status_code in (200, 204)
+
+
+def create_release(
     session: requests.Session,
     owner: str,
     repo: str,
     tag: str,
     token: str,
 ) -> int:
-    """Get the Gitee release ID for the given tag, or create one if it does not exist."""
-    tag_url = f"{BASE_URL}/repos/{owner}/{repo}/releases/tags/{tag}"
-    resp = session.get(tag_url, params={"access_token": token}, timeout=15)
-    if resp.status_code == 200:
-        data = resp.json()
-        print(f"[INFO] Found existing Gitee release for tag '{tag}' (id={data['id']})")
-        return data["id"]
-    elif resp.status_code == 404:
-        print(f"[INFO] Release for tag '{tag}' not found on Gitee, creating...")
-        create_url = f"{BASE_URL}/repos/{owner}/{repo}/releases"
-        payload = {
-            "access_token": token,
-            "tag_name": tag,
-            "name": f"Community Plugins Release Assets ({tag})",
-            "body": "Multi-Toolbox 社区功能模块云端 Release 镜像分发",
-            "prerelease": False,
-        }
-        create_resp = session.post(create_url, json=payload, timeout=15)
-        if create_resp.status_code not in (200, 201):
-            raise RuntimeError(
-                f"Failed to create Gitee release '{tag}': {create_resp.status_code} - {create_resp.text}"
-            )
+    """Create a release for the specified tag."""
+    create_url = f"{BASE_URL}/repos/{owner}/{repo}/releases"
+    payload = {
+        "access_token": token,
+        "tag_name": tag,
+        "name": f"Community Plugins Release Assets ({tag})",
+        "body": "Multi-Toolbox 社区功能模块云端 Release 镜像分发",
+        "prerelease": False,
+        "target_commitish": "main",
+    }
+    create_resp = session.post(create_url, json=payload, timeout=15)
+    if create_resp.status_code in (200, 201):
         data = create_resp.json()
-        print(f"[INFO] Successfully created Gitee release '{tag}' (id={data['id']})")
-        return data["id"]
-    else:
-        raise RuntimeError(
-            f"Failed to query Gitee release '{tag}': {resp.status_code} - {resp.text}"
-        )
+        if isinstance(data, dict) and "id" in data:
+            return data["id"]
 
+    # If creation failed, check if it was created concurrently
+    rel_id = find_release_id_by_tag(session, owner, repo, tag, token)
+    if rel_id is not None:
+        return rel_id
 
-def list_existing_attachments(
-    session: requests.Session,
-    owner: str,
-    repo: str,
-    release_id: int,
-    token: str,
-) -> Dict[str, int]:
-    """Retrieve existing attachments for the release, mapping filename to attachment id."""
-    url = f"{BASE_URL}/repos/{owner}/{repo}/releases/{release_id}/attach_files"
-    page = 1
-    attachments: Dict[str, int] = {}
-    while True:
-        resp = session.get(
-            url,
-            params={"access_token": token, "page": page, "per_page": 100},
-            timeout=15,
-        )
-        if resp.status_code != 200:
-            print(f"[WARN] Failed to list attachments: {resp.status_code} - {resp.text}")
-            break
-        items = resp.json()
-        if not items or not isinstance(items, list):
-            break
-        for item in items:
-            name = item.get("name")
-            att_id = item.get("id")
-            if name and att_id:
-                attachments[name] = att_id
-        if len(items) < 100:
-            break
-        page += 1
-    return attachments
-
-
-def delete_attachment(
-    session: requests.Session,
-    owner: str,
-    repo: str,
-    release_id: int,
-    attach_id: int,
-    token: str,
-) -> bool:
-    """Delete an existing attachment from the Gitee release."""
-    url = f"{BASE_URL}/repos/{owner}/{repo}/releases/{release_id}/attach_files/{attach_id}"
-    resp = session.delete(url, params={"access_token": token}, timeout=15)
-    return resp.status_code in (200, 204)
+    raise RuntimeError(
+        f"Failed to create Gitee release '{tag}': {create_resp.status_code} - {create_resp.text}"
+    )
 
 
 def upload_attachment(
@@ -107,16 +104,21 @@ def upload_attachment(
     release_id: int,
     file_path: Path,
     token: str,
+    retries: int = 3,
 ) -> bool:
-    """Upload a file attachment to the Gitee release."""
+    """Upload a file attachment to the Gitee release with retries."""
     url = f"{BASE_URL}/repos/{owner}/{repo}/releases/{release_id}/attach_files"
-    with file_path.open("rb") as f:
-        files = {"file": (file_path.name, f, "application/zip")}
-        data = {"access_token": token}
-        resp = session.post(url, data=data, files=files, timeout=60)
-    if resp.status_code in (200, 201):
-        return True
-    print(f"[ERROR] Failed to upload {file_path.name}: {resp.status_code} - {resp.text}")
+    for attempt in range(1, retries + 1):
+        try:
+            with file_path.open("rb") as f:
+                files = {"file": (file_path.name, f, "application/zip")}
+                data = {"access_token": token}
+                resp = session.post(url, data=data, files=files, timeout=60)
+            if resp.status_code in (200, 201):
+                return True
+            print(f"[WARN] Upload {file_path.name} attempt {attempt}/{retries} returned {resp.status_code}: {resp.text}")
+        except Exception as e:
+            print(f"[WARN] Upload {file_path.name} attempt {attempt}/{retries} failed: {e}")
     return False
 
 
@@ -153,25 +155,27 @@ def sync_gitee_release(
         return len(zip_files)
 
     session = requests.Session()
-    release_id = get_or_create_release(session, owner, repo, tag, token)
-    existing_map = list_existing_attachments(session, owner, repo, release_id, token)
-    print(f"[*] Found {len(existing_map)} existing attachment(s) in release.")
+    existing_id = find_release_id_by_tag(session, owner, repo, tag, token)
+    if existing_id is not None:
+        print(f"[INFO] Found existing Gitee release (id={existing_id}). Recreating for clean asset sync...")
+        delete_release(session, owner, repo, existing_id, token)
+
+    release_id = create_release(session, owner, repo, tag, token)
+    print(f"[INFO] Successfully active Gitee release id={release_id} for tag '{tag}'")
 
     uploaded_count = 0
     for file_path in zip_files:
         filename = file_path.name
-        if filename in existing_map:
-            print(f"[*] Deleting outdated Gitee attachment: {filename} (id={existing_map[filename]})")
-            delete_attachment(session, owner, repo, release_id, existing_map[filename], token)
-
         print(f"[*] Uploading {filename} ({file_path.stat().st_size} bytes) to Gitee...")
-        if upload_attachment(session, owner, repo, release_id, file_path, token):
+        if upload_attachment(session, owner, repo, release_id, file_path, token, retries=3):
             uploaded_count += 1
             print(f"[PASS] Successfully uploaded {filename}")
         else:
             print(f"[FAIL] Could not upload {filename}")
 
     print(f"[DONE] Successfully synchronized {uploaded_count}/{len(zip_files)} packages to Gitee Release.")
+    if uploaded_count == 0 and len(zip_files) > 0:
+        raise RuntimeError("Failed to upload any packages to Gitee Release attachments.")
     return uploaded_count
 
 

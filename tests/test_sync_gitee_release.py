@@ -28,25 +28,25 @@ class SyncGiteeReleaseTests(unittest.TestCase):
             self.assertEqual(count, 2)
 
     @mock.patch("tools.sync_gitee_release.upload_attachment")
-    @mock.patch("tools.sync_gitee_release.delete_attachment")
-    @mock.patch("tools.sync_gitee_release.list_existing_attachments")
-    @mock.patch("tools.sync_gitee_release.get_or_create_release")
-    def test_sync_uploads_and_overwrites_existing(
+    @mock.patch("tools.sync_gitee_release.create_release")
+    @mock.patch("tools.sync_gitee_release.delete_release")
+    @mock.patch("tools.sync_gitee_release.find_release_id_by_tag")
+    def test_sync_recreates_and_uploads_cleanly(
         self,
-        mock_get_release,
-        mock_list_att,
-        mock_delete,
-        mock_upload,
+        mock_find_release,
+        mock_delete_release,
+        mock_create_release,
+        mock_upload_attachment,
     ):
-        mock_get_release.return_value = 999
-        mock_list_att.return_value = {"existing.zip": 123}
-        mock_upload.return_value = True
-        mock_delete.return_value = True
+        mock_find_release.return_value = 101
+        mock_delete_release.return_value = True
+        mock_create_release.return_value = 102
+        mock_upload_attachment.return_value = True
 
         with tempfile.TemporaryDirectory() as tmp_dir:
             dir_path = Path(tmp_dir)
-            (dir_path / "existing.zip").write_bytes(b"PK01")
-            (dir_path / "new.zip").write_bytes(b"PK02")
+            (dir_path / "package1.zip").write_bytes(b"PK01")
+            (dir_path / "package2.zip").write_bytes(b"PK02")
 
             count = sync_gitee_release.sync_gitee_release(
                 token="mock_token",
@@ -54,8 +54,9 @@ class SyncGiteeReleaseTests(unittest.TestCase):
                 dry_run=False,
             )
             self.assertEqual(count, 2)
-            mock_delete.assert_called_once()
-            self.assertEqual(mock_upload.call_count, 2)
+            mock_delete_release.assert_called_once()
+            mock_create_release.assert_called_once()
+            self.assertEqual(mock_upload_attachment.call_count, 2)
 
 
 if __name__ == "__main__":
