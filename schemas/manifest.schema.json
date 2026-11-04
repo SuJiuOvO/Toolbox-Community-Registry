@@ -67,7 +67,9 @@
         ]
       },
       "minItems": 1,
-      "default": ["universal"],
+      "default": [
+        "universal"
+      ],
       "description": "支持的目标操作系统列表。省略时客户端按 universal 处理；新插件建议显式声明。"
     },
     "executionType": {
@@ -78,7 +80,8 @@
         "native_executable",
         "script",
         "internal",
-        "native_tool"
+        "native_tool",
+        "webview"
       ],
       "description": "执行引擎类型。native_tool 是现有内置流水线的历史值，新插件使用 internal。Windows 外部程序使用 native_executable 并提供 nativeRunner。"
     },
@@ -92,7 +95,8 @@
         "native_image",
         "native_tool",
         "media_pipeline",
-        "win_native_runner"
+        "win_native_runner",
+        "webview"
       ],
       "description": "历史兼容别名字段，建议优先使用 executionType。"
     },
@@ -105,12 +109,29 @@
       "description": "作者署名或组织名称。"
     },
     "icon": {
-      "type": ["object", "string"],
-      "if": {"type": "object"},
+      "type": [
+        "object",
+        "string"
+      ],
+      "if": {
+        "type": "object"
+      },
       "then": {
-        "required": ["type"],
-        "if": {"properties": {"type": {"const": "default"}}},
-        "else": {"required": ["data"]}
+        "required": [
+          "type"
+        ],
+        "if": {
+          "properties": {
+            "type": {
+              "const": "default"
+            }
+          }
+        },
+        "else": {
+          "required": [
+            "data"
+          ]
+        }
       },
       "properties": {
         "type": {
@@ -334,7 +355,9 @@
     },
     "action": {
       "type": "object",
-      "required": ["handler"],
+      "required": [
+        "handler"
+      ],
       "additionalProperties": false,
       "properties": {
         "handler": {
@@ -423,7 +446,9 @@
         },
         "env": {
           "type": "object",
-          "additionalProperties": {"type": "string"},
+          "additionalProperties": {
+            "type": "string"
+          },
           "description": "注入 WASI 沙箱的环境变量字典。"
         },
         "showTerminal": {
@@ -440,12 +465,81 @@
       "items": {
         "$ref": "#/definitions/bannerDef"
       }
+    },
+    "webViewRunner": {
+      "type": "object",
+      "required": [
+        "entry"
+      ],
+      "properties": {
+        "entry": {
+          "type": "string",
+          "minLength": 1,
+          "description": "富交互 Web 应用入口 HTML 页面相对路径。例如: dist/index.html 或 index.html"
+        },
+        "allowClipboard": {
+          "type": "boolean",
+          "default": true,
+          "description": "是否授权页面访问宿主剪贴板。"
+        },
+        "keepScreenOn": {
+          "type": "boolean",
+          "default": false,
+          "description": "展示期间是否保持屏幕常亮（例如手持弹幕等展示场景）。"
+        },
+        "fullscreenOnStart": {
+          "type": "boolean",
+          "default": false,
+          "description": "启动后是否自动进入沉浸式全屏展示。"
+        },
+        "initialTheme": {
+          "type": "string",
+          "enum": [
+            "auto",
+            "light",
+            "dark"
+          ],
+          "default": "auto",
+          "description": "初始主题模式 (auto/light/dark)。"
+        }
+      },
+      "description": "动态富交互 (WebView) 运行器配置块。"
     }
   },
   "allOf": [
     {
-      "if": {"required": ["executionType"], "properties": {"executionType": {"const": "native_executable"}}},
-      "then": {"required": ["nativeRunner"]}
+      "if": {
+        "required": [
+          "executionType"
+        ],
+        "properties": {
+          "executionType": {
+            "const": "native_executable"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "nativeRunner"
+        ]
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "executionType"
+        ],
+        "properties": {
+          "executionType": {
+            "const": "webview"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "webViewRunner"
+        ]
+      }
     }
   ],
   "definitions": {

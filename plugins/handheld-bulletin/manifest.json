@@ -1,16 +1,23 @@
 {
   "id": "handheld-bulletin",
   "name": "手持弹幕举牌",
-  "version": "1.0.0",
-  "minAppVersion": "1.1.0",
+  "version": "2.0.0",
+  "minAppVersion": "1.2.0",
   "category": "utility",
   "platforms": [
     "windows",
     "android"
   ],
-  "executionType": "internal",
-  "engineType": "internal",
-  "description": "高自由度手持弹幕与应援举牌：多行文字、五种移动方向、字号/速度/字距/行高、RGB 自定义颜色、霓虹/描边/LED 点阵、镜像与旋转、慢速闪烁、接机/应援等预设。Android 横屏沉浸显示，Windows 独立全屏，展示期间屏幕常亮，设置只保存在本机。需要 1.1.0 及以上客户端交互页面。",
+  "executionType": "webview",
+  "engineType": "webview",
+  "webViewRunner": {
+    "entry": "dist/index.html",
+    "allowClipboard": true,
+    "keepScreenOn": true,
+    "fullscreenOnStart": false,
+    "initialTheme": "dark"
+  },
+  "description": "高自由度手持弹幕与应援举牌：多行文字、五种移动方向、字号/速度/字距/行高、RGB 自定义颜色、霓虹/描边/LED 点阵、镜像与旋转、慢速闪烁、接机/应援等预设。Android 横屏沉浸显示，Windows 独立全屏，展示期间屏幕常亮，设置只保存在本机。基于 Webview 动态富交互引擎运行。",
   "author": "Toolbox Team",
   "icon": {
     "type": "code",
@@ -24,7 +31,7 @@
   },
   "banners": [
     {
-      "message": "此插件需要 1.1.0 及以上客户端。打开后进入专用编辑器；点击开始全屏举牌，轻触显示控制栏。",
+      "message": "已升级为纯动态 Webview 富交互插件。点击开始全屏举牌，轻触屏幕任意位置呼出控制栏。",
       "type": "info"
     }
   ]

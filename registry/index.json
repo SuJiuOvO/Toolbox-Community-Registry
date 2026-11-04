@@ -1204,16 +1204,23 @@
     {
       "id": "handheld-bulletin",
       "name": "手持弹幕举牌",
-      "version": "1.0.0",
-      "minAppVersion": "1.1.0",
+      "version": "2.0.0",
+      "minAppVersion": "1.2.0",
       "category": "utility",
       "platforms": [
         "windows",
         "android"
       ],
-      "executionType": "internal",
-      "engineType": "internal",
-      "description": "高自由度手持弹幕与应援举牌：多行文字、五种移动方向、字号/速度/字距/行高、RGB 自定义颜色、霓虹/描边/LED 点阵、镜像与旋转、慢速闪烁、接机/应援等预设。Android 横屏沉浸显示，Windows 独立全屏，展示期间屏幕常亮，设置只保存在本机。需要 1.1.0 及以上客户端交互页面。",
+      "executionType": "webview",
+      "engineType": "webview",
+      "webViewRunner": {
+        "entry": "dist/index.html",
+        "allowClipboard": true,
+        "keepScreenOn": true,
+        "fullscreenOnStart": false,
+        "initialTheme": "dark"
+      },
+      "description": "高自由度手持弹幕与应援举牌：多行文字、五种移动方向、字号/速度/字距/行高、RGB 自定义颜色、霓虹/描边/LED 点阵、镜像与旋转、慢速闪烁、接机/应援等预设。Android 横屏沉浸显示，Windows 独立全屏，展示期间屏幕常亮，设置只保存在本机。基于 Webview 动态富交互引擎运行。",
       "author": "Toolbox Team",
       "icon": {
         "type": "code",
@@ -1227,13 +1234,13 @@
       },
       "banners": [
         {
-          "message": "此插件需要 1.1.0 及以上客户端。打开后进入专用编辑器；点击开始全屏举牌，轻触显示控制栏。",
+          "message": "已升级为纯动态 Webview 富交互插件。点击开始全屏举牌，轻触屏幕任意位置呼出控制栏。",
           "type": "info"
         }
       ],
-      "size": 1453,
-      "md5": "0ebc815173fb1eb7fe8152cdd19b71d4",
-      "sha256": "295c8be115effd61bfd546f4e83c483dede45ae7c83fae600acab99e38969774",
+      "size": 22981,
+      "md5": "de12c98a6f90410fcbbf9f88a3096598",
+      "sha256": "d33a614f3eccfb398c214a751b9532f7040eba29e4c8e57793ab45fbddb934ef",
       "isOfficial": true,
       "downloadUrls": {
         "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/releases/download/plugins/handheld-bulletin.zip",
@@ -2730,16 +2737,23 @@
     {
       "id": "ssh-terminal",
       "name": "SSH 安全终端",
-      "version": "1.0.1",
-      "minAppVersion": "1.1.0",
+      "version": "2.0.0",
+      "minAppVersion": "1.2.0",
       "category": "network",
       "platforms": [
         "windows",
         "android"
       ],
-      "executionType": "internal",
-      "engineType": "internal",
-      "description": "Windows / Android 双端交互式 SSH 终端，支持密码、PEM / OpenSSH 私钥和私钥口令认证，首次连接 SHA256 主机指纹核对、已知主机校验、连接配置保存、ANSI 终端与移动端快捷键。认证信息不落盘。需要 1.1.0 及以上客户端提供交互式页面。",
+      "executionType": "webview",
+      "engineType": "webview",
+      "webViewRunner": {
+        "entry": "dist/index.html",
+        "allowClipboard": true,
+        "keepScreenOn": true,
+        "fullscreenOnStart": false,
+        "initialTheme": "dark"
+      },
+      "description": "Windows / Android 双端交互式 SSH 终端，支持密码、PEM / OpenSSH 私钥和私钥口令认证，首次连接 SHA256 主机指纹核对、已知主机校验、连接配置保存、ANSI 终端与移动端快捷键。认证信息不落盘。基于 Webview 动态富交互引擎运行。",
       "author": "Toolbox Team",
       "permissions": [
         "network"
@@ -2753,9 +2767,9 @@
         "handler": "ssh_terminal",
         "params": {}
       },
-      "size": 1630,
-      "md5": "ae1ef7a62e1749ccd64442e0bd2c4e06",
-      "sha256": "2423c768fe46783eb38f1ab92b13be9aece6ab69e592615b20ddcfc68dd89f1b",
+      "size": 22753,
+      "md5": "3a3dd9f6521281d30929c1f72280981c",
+      "sha256": "eab3262e503e53df41e602950f7ef07d72218fa1b3daf19f65aae2cc6d617ccb",
       "isOfficial": true,
       "downloadUrls": {
         "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/releases/download/plugins/ssh-terminal.zip",
@@ -3561,15 +3575,22 @@
     {
       "id": "windows-uninstaller",
       "name": "软件卸载",
-      "version": "1.0.1",
-      "minAppVersion": "1.1.0",
+      "version": "2.0.0",
+      "minAppVersion": "1.2.0",
       "category": "system",
       "platforms": [
         "windows"
       ],
-      "executionType": "internal",
-      "engineType": "internal",
-      "description": "Windows 桌面软件卸载：读取 32/64 位和当前用户/所有用户卸载注册表，支持搜索排序、官方卸载器和管理员权限。卸载后可扫描常见残留，默认不勾选，经用户确认后永久清理；不包含 Microsoft Store 应用管理。",
+      "executionType": "webview",
+      "engineType": "webview",
+      "webViewRunner": {
+        "entry": "dist/index.html",
+        "allowClipboard": true,
+        "keepScreenOn": false,
+        "fullscreenOnStart": false,
+        "initialTheme": "dark"
+      },
+      "description": "Windows 桌面软件卸载：读取 32/64 位和当前用户/所有用户卸载注册表，支持搜索排序、官方卸载器和管理员权限。卸载后可扫描常见残留，默认不勾选，经用户确认后永久清理；不包含 Microsoft Store 应用管理。基于 Webview 动态富交互引擎运行。",
       "author": "Toolbox Team",
       "permissions": [],
       "icon": {
@@ -3588,9 +3609,9 @@
           "message": "卸载完成后会扫描常见残留；默认不勾选，只有你确认的项目才会永久删除。"
         }
       ],
-      "size": 1239,
-      "md5": "29d3dad0975191705d0355dcaff8210c",
-      "sha256": "4dc89e3f448266769e95a8e0cc2a737fb41322dd63a7dc82bf3ef5ad44f2a689",
+      "size": 28133,
+      "md5": "d5c7c1231fb39ee6e9c6efaaa73967d8",
+      "sha256": "ffd8a44c9543df91f4cb016c26a22b20c9d1db5c3adb9d10043078eb98a6c381",
       "isOfficial": true,
       "downloadUrls": {
         "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/releases/download/plugins/windows-uninstaller.zip",
