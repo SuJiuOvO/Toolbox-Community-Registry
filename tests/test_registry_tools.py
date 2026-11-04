@@ -204,6 +204,30 @@ class RegistryToolsTests(unittest.TestCase):
         with mock.patch.object(Path, "write_bytes", side_effect=AssertionError("unchanged output rewritten")):
             self.assertEqual(build_registry.build_registry(self.root), 1)
 
+    def test_build_generates_release_asset_urls_and_honors_tag(self):
+        self.scaffold(plugin_id="sample-plugin")
+        index = self.prepare_index()
+        self.assertEqual(build_registry.build_registry(self.root, release_tag="v2.5.0"), 1)
+        result = json.loads(index.read_text(encoding="utf-8"))
+        entry = result["plugins"][0]
+        self.assertIn("downloadUrls", entry)
+        urls = entry["downloadUrls"]
+        self.assertEqual(
+            urls["github_release"],
+            "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/v2.5.0/sample-plugin.zip",
+        )
+        self.assertEqual(urls["github_raw"], urls["github_release"])
+        self.assertEqual(urls["github"], urls["github_release"])
+        self.assertEqual(
+            urls["github_cdn"],
+            "https://ghproxy.net/https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/v2.5.0/sample-plugin.zip",
+        )
+        self.assertEqual(
+            urls["gitee"],
+            "https://gitee.com/sujiuovo/toolbox-community-registry/releases/download/v2.5.0/sample-plugin.zip",
+        )
+        self.assertEqual(entry["downloadUrl"], urls["github_cdn"])
+
     @unittest.skipUnless(shutil.which("node"), "Node.js is required for the JavaScript runtime smoke test")
     def test_generated_javascript_runs_with_host_context(self):
         path, _ = self.scaffold(name="引号'\"与注释*/\n工具")

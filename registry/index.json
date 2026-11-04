@@ -714,11 +714,13 @@
       "sha256": "995ea936c7e1f992d8277d6341b1a78c21d06d9db8bbe515603aad812e4186d5",
       "isOfficial": true,
       "downloadUrls": {
-        "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/doc-converter.zip",
-        "github_cdn": "https://cdn.jsdelivr.net/gh/SuJiuOvO/Toolbox-Community-Registry@main/packages/doc-converter.zip",
-        "github": "https://raw.githubusercontent.com/SuJiuOvO/Toolbox-Community-Registry/main/packages/doc-converter.zip"
+        "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/releases/download/plugins/doc-converter.zip",
+        "github_cdn": "https://ghproxy.net/https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/doc-converter.zip",
+        "github_raw": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/doc-converter.zip",
+        "github": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/doc-converter.zip",
+        "github_release": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/doc-converter.zip"
       },
-      "downloadUrl": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/doc-converter.zip"
+      "downloadUrl": "https://ghproxy.net/https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/doc-converter.zip"
     },
     {
       "id": "downloader-toolbox",
@@ -768,11 +770,13 @@
       "sha256": "d1c26be7047f74f91a218494734bc3a7ab042ee98df0fccd0fb0af33bc4bfcd5",
       "isOfficial": true,
       "downloadUrls": {
-        "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/downloader-toolbox.zip",
-        "github_cdn": "https://cdn.jsdelivr.net/gh/SuJiuOvO/Toolbox-Community-Registry@main/packages/downloader-toolbox.zip",
-        "github": "https://raw.githubusercontent.com/SuJiuOvO/Toolbox-Community-Registry/main/packages/downloader-toolbox.zip"
+        "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/releases/download/plugins/downloader-toolbox.zip",
+        "github_cdn": "https://ghproxy.net/https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/downloader-toolbox.zip",
+        "github_raw": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/downloader-toolbox.zip",
+        "github": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/downloader-toolbox.zip",
+        "github_release": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/downloader-toolbox.zip"
       },
-      "downloadUrl": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/downloader-toolbox.zip"
+      "downloadUrl": "https://ghproxy.net/https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/downloader-toolbox.zip"
     },
     {
       "id": "gemini-banana-watermark",
@@ -912,11 +916,13 @@
       "sha256": "d8fa03e5cbf50e124facb52d96db224fc4b5825e8da7ef59a3dd3e4ae5452cf6",
       "isOfficial": true,
       "downloadUrls": {
-        "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/gemini-banana-watermark.zip",
-        "github_cdn": "https://cdn.jsdelivr.net/gh/SuJiuOvO/Toolbox-Community-Registry@main/packages/gemini-banana-watermark.zip",
-        "github": "https://raw.githubusercontent.com/SuJiuOvO/Toolbox-Community-Registry/main/packages/gemini-banana-watermark.zip"
+        "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/releases/download/plugins/gemini-banana-watermark.zip",
+        "github_cdn": "https://ghproxy.net/https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/gemini-banana-watermark.zip",
+        "github_raw": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/gemini-banana-watermark.zip",
+        "github": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/gemini-banana-watermark.zip",
+        "github_release": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/gemini-banana-watermark.zip"
       },
-      "downloadUrl": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/gemini-banana-watermark.zip"
+      "downloadUrl": "https://ghproxy.net/https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/gemini-banana-watermark.zip"
     },
     {
       "id": "gif-toolbox",
@@ -1187,11 +1193,13 @@
       "sha256": "baab09ebfa8a1fdf4fbccbd98a1f298f2aa55d2ba7d76108a215fc21af0d7d56",
       "isOfficial": true,
       "downloadUrls": {
-        "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/gif-toolbox.zip",
-        "github_cdn": "https://cdn.jsdelivr.net/gh/SuJiuOvO/Toolbox-Community-Registry@main/packages/gif-toolbox.zip",
-        "github": "https://raw.githubusercontent.com/SuJiuOvO/Toolbox-Community-Registry/main/packages/gif-toolbox.zip"
+        "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/releases/download/plugins/gif-toolbox.zip",
+        "github_cdn": "https://ghproxy.net/https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/gif-toolbox.zip",
+        "github_raw": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/gif-toolbox.zip",
+        "github": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/gif-toolbox.zip",
+        "github_release": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/gif-toolbox.zip"
       },
-      "downloadUrl": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/gif-toolbox.zip"
+      "downloadUrl": "https://ghproxy.net/https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/gif-toolbox.zip"
     },
     {
       "id": "handheld-bulletin",
@@ -1228,11 +1236,13 @@
       "sha256": "295c8be115effd61bfd546f4e83c483dede45ae7c83fae600acab99e38969774",
       "isOfficial": true,
       "downloadUrls": {
-        "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/handheld-bulletin.zip",
-        "github_cdn": "https://cdn.jsdelivr.net/gh/SuJiuOvO/Toolbox-Community-Registry@main/packages/handheld-bulletin.zip",
-        "github": "https://raw.githubusercontent.com/SuJiuOvO/Toolbox-Community-Registry/main/packages/handheld-bulletin.zip"
+        "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/releases/download/plugins/handheld-bulletin.zip",
+        "github_cdn": "https://ghproxy.net/https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/handheld-bulletin.zip",
+        "github_raw": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/handheld-bulletin.zip",
+        "github": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/handheld-bulletin.zip",
+        "github_release": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/handheld-bulletin.zip"
       },
-      "downloadUrl": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/handheld-bulletin.zip"
+      "downloadUrl": "https://ghproxy.net/https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/handheld-bulletin.zip"
     },
     {
       "id": "id-photo-bg",
@@ -1334,11 +1344,13 @@
       "sha256": "3374f95e1bd64fb260ea6c17fca6bffc1d464fae67b9d633e99e221ceda17e42",
       "isOfficial": true,
       "downloadUrls": {
-        "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/id-photo-bg.zip",
-        "github_cdn": "https://cdn.jsdelivr.net/gh/SuJiuOvO/Toolbox-Community-Registry@main/packages/id-photo-bg.zip",
-        "github": "https://raw.githubusercontent.com/SuJiuOvO/Toolbox-Community-Registry/main/packages/id-photo-bg.zip"
+        "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/releases/download/plugins/id-photo-bg.zip",
+        "github_cdn": "https://ghproxy.net/https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/id-photo-bg.zip",
+        "github_raw": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/id-photo-bg.zip",
+        "github": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/id-photo-bg.zip",
+        "github_release": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/id-photo-bg.zip"
       },
-      "downloadUrl": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/id-photo-bg.zip"
+      "downloadUrl": "https://ghproxy.net/https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/id-photo-bg.zip"
     },
     {
       "id": "image-compress",
@@ -1449,11 +1461,13 @@
       "sha256": "de5fd1cc38f7206b322be6b3f5ea21aa9a6385562a60d2e18c1b70a735321fcd",
       "isOfficial": true,
       "downloadUrls": {
-        "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/image-compress.zip",
-        "github_cdn": "https://cdn.jsdelivr.net/gh/SuJiuOvO/Toolbox-Community-Registry@main/packages/image-compress.zip",
-        "github": "https://raw.githubusercontent.com/SuJiuOvO/Toolbox-Community-Registry/main/packages/image-compress.zip"
+        "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/releases/download/plugins/image-compress.zip",
+        "github_cdn": "https://ghproxy.net/https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/image-compress.zip",
+        "github_raw": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/image-compress.zip",
+        "github": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/image-compress.zip",
+        "github_release": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/image-compress.zip"
       },
-      "downloadUrl": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/image-compress.zip"
+      "downloadUrl": "https://ghproxy.net/https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/image-compress.zip"
     },
     {
       "$schema": "../../schemas/manifest.schema.json",
@@ -1629,11 +1643,13 @@
       "sha256": "44213d38a755a49374fe4d2864a2dcf7067def4627411e7c7ae2d2d33f9b87b2",
       "isOfficial": true,
       "downloadUrls": {
-        "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/image-pixel-richtext.zip",
-        "github_cdn": "https://cdn.jsdelivr.net/gh/SuJiuOvO/Toolbox-Community-Registry@main/packages/image-pixel-richtext.zip",
-        "github": "https://raw.githubusercontent.com/SuJiuOvO/Toolbox-Community-Registry/main/packages/image-pixel-richtext.zip"
+        "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/releases/download/plugins/image-pixel-richtext.zip",
+        "github_cdn": "https://ghproxy.net/https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/image-pixel-richtext.zip",
+        "github_raw": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/image-pixel-richtext.zip",
+        "github": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/image-pixel-richtext.zip",
+        "github_release": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/image-pixel-richtext.zip"
       },
-      "downloadUrl": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/image-pixel-richtext.zip"
+      "downloadUrl": "https://ghproxy.net/https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/image-pixel-richtext.zip"
     },
     {
       "id": "image-resize",
@@ -1720,11 +1736,13 @@
       "sha256": "4461a4b0ce7c1991d0ca5d0ce59a1ea0900b1c54a6c2de257ee13b5f3a27a90a",
       "isOfficial": true,
       "downloadUrls": {
-        "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/image-resize.zip",
-        "github_cdn": "https://cdn.jsdelivr.net/gh/SuJiuOvO/Toolbox-Community-Registry@main/packages/image-resize.zip",
-        "github": "https://raw.githubusercontent.com/SuJiuOvO/Toolbox-Community-Registry/main/packages/image-resize.zip"
+        "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/releases/download/plugins/image-resize.zip",
+        "github_cdn": "https://ghproxy.net/https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/image-resize.zip",
+        "github_raw": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/image-resize.zip",
+        "github": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/image-resize.zip",
+        "github_release": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/image-resize.zip"
       },
-      "downloadUrl": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/image-resize.zip"
+      "downloadUrl": "https://ghproxy.net/https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/image-resize.zip"
     },
     {
       "id": "livephoto-toolbox",
@@ -1898,11 +1916,13 @@
       "sha256": "84b7765eb1245307abb4c4eeb7ec29462274a24e7befce1db81f44e3fb71acbe",
       "isOfficial": true,
       "downloadUrls": {
-        "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/livephoto-toolbox.zip",
-        "github_cdn": "https://cdn.jsdelivr.net/gh/SuJiuOvO/Toolbox-Community-Registry@main/packages/livephoto-toolbox.zip",
-        "github": "https://raw.githubusercontent.com/SuJiuOvO/Toolbox-Community-Registry/main/packages/livephoto-toolbox.zip"
+        "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/releases/download/plugins/livephoto-toolbox.zip",
+        "github_cdn": "https://ghproxy.net/https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/livephoto-toolbox.zip",
+        "github_raw": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/livephoto-toolbox.zip",
+        "github": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/livephoto-toolbox.zip",
+        "github_release": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/livephoto-toolbox.zip"
       },
-      "downloadUrl": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/livephoto-toolbox.zip"
+      "downloadUrl": "https://ghproxy.net/https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/livephoto-toolbox.zip"
     },
     {
       "id": "ncm-audio-converter",
@@ -1964,11 +1984,13 @@
       "sha256": "2b45b72fd11e6df7418995a53be82c25a612aef05d55eee1b62f34e878deb1cd",
       "isOfficial": true,
       "downloadUrls": {
-        "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/ncm-audio-converter.zip",
-        "github_cdn": "https://cdn.jsdelivr.net/gh/SuJiuOvO/Toolbox-Community-Registry@main/packages/ncm-audio-converter.zip",
-        "github": "https://raw.githubusercontent.com/SuJiuOvO/Toolbox-Community-Registry/main/packages/ncm-audio-converter.zip"
+        "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/releases/download/plugins/ncm-audio-converter.zip",
+        "github_cdn": "https://ghproxy.net/https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/ncm-audio-converter.zip",
+        "github_raw": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/ncm-audio-converter.zip",
+        "github": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/ncm-audio-converter.zip",
+        "github_release": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/ncm-audio-converter.zip"
       },
-      "downloadUrl": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/ncm-audio-converter.zip"
+      "downloadUrl": "https://ghproxy.net/https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/ncm-audio-converter.zip"
     },
     {
       "id": "pdf-toolbox",
@@ -2291,11 +2313,13 @@
       "sha256": "c2eeedb043f96a0c02890ab3350ee72435577c2e46f50064eabeae0e91f2c485",
       "isOfficial": true,
       "downloadUrls": {
-        "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/pdf-toolbox.zip",
-        "github_cdn": "https://cdn.jsdelivr.net/gh/SuJiuOvO/Toolbox-Community-Registry@main/packages/pdf-toolbox.zip",
-        "github": "https://raw.githubusercontent.com/SuJiuOvO/Toolbox-Community-Registry/main/packages/pdf-toolbox.zip"
+        "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/releases/download/plugins/pdf-toolbox.zip",
+        "github_cdn": "https://ghproxy.net/https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/pdf-toolbox.zip",
+        "github_raw": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/pdf-toolbox.zip",
+        "github": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/pdf-toolbox.zip",
+        "github_release": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/pdf-toolbox.zip"
       },
-      "downloadUrl": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/pdf-toolbox.zip"
+      "downloadUrl": "https://ghproxy.net/https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/pdf-toolbox.zip"
     },
     {
       "id": "petpet-generator",
@@ -2502,11 +2526,13 @@
       "sha256": "8f94b88038890cab74497db3aed471dbe4cadc1fa75292761894ad2094e37dbc",
       "isOfficial": true,
       "downloadUrls": {
-        "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/petpet-generator.zip",
-        "github_cdn": "https://cdn.jsdelivr.net/gh/SuJiuOvO/Toolbox-Community-Registry@main/packages/petpet-generator.zip",
-        "github": "https://raw.githubusercontent.com/SuJiuOvO/Toolbox-Community-Registry/main/packages/petpet-generator.zip"
+        "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/releases/download/plugins/petpet-generator.zip",
+        "github_cdn": "https://ghproxy.net/https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/petpet-generator.zip",
+        "github_raw": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/petpet-generator.zip",
+        "github": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/petpet-generator.zip",
+        "github_release": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/petpet-generator.zip"
       },
-      "downloadUrl": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/petpet-generator.zip"
+      "downloadUrl": "https://ghproxy.net/https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/petpet-generator.zip"
     },
     {
       "id": "qr-toolbox",
@@ -2693,11 +2719,13 @@
       "sha256": "e0184cafab91930cc6d50af7003ecae6b9c14776104c940c45fe7f4661f7dd4a",
       "isOfficial": true,
       "downloadUrls": {
-        "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/qr-toolbox.zip",
-        "github_cdn": "https://cdn.jsdelivr.net/gh/SuJiuOvO/Toolbox-Community-Registry@main/packages/qr-toolbox.zip",
-        "github": "https://raw.githubusercontent.com/SuJiuOvO/Toolbox-Community-Registry/main/packages/qr-toolbox.zip"
+        "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/releases/download/plugins/qr-toolbox.zip",
+        "github_cdn": "https://ghproxy.net/https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/qr-toolbox.zip",
+        "github_raw": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/qr-toolbox.zip",
+        "github": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/qr-toolbox.zip",
+        "github_release": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/qr-toolbox.zip"
       },
-      "downloadUrl": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/qr-toolbox.zip"
+      "downloadUrl": "https://ghproxy.net/https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/qr-toolbox.zip"
     },
     {
       "id": "ssh-terminal",
@@ -2730,11 +2758,13 @@
       "sha256": "2423c768fe46783eb38f1ab92b13be9aece6ab69e592615b20ddcfc68dd89f1b",
       "isOfficial": true,
       "downloadUrls": {
-        "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/ssh-terminal.zip",
-        "github_cdn": "https://cdn.jsdelivr.net/gh/SuJiuOvO/Toolbox-Community-Registry@main/packages/ssh-terminal.zip",
-        "github": "https://raw.githubusercontent.com/SuJiuOvO/Toolbox-Community-Registry/main/packages/ssh-terminal.zip"
+        "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/releases/download/plugins/ssh-terminal.zip",
+        "github_cdn": "https://ghproxy.net/https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/ssh-terminal.zip",
+        "github_raw": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/ssh-terminal.zip",
+        "github": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/ssh-terminal.zip",
+        "github_release": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/ssh-terminal.zip"
       },
-      "downloadUrl": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/ssh-terminal.zip"
+      "downloadUrl": "https://ghproxy.net/https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/ssh-terminal.zip"
     },
     {
       "id": "universal-archive-extractor",
@@ -2908,11 +2938,13 @@
       "sha256": "c3fe4ece64ee14d79fec693aaa91bea10ca65e1963057d591546f5ecaf97e103",
       "isOfficial": true,
       "downloadUrls": {
-        "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/universal-archive-extractor.zip",
-        "github_cdn": "https://cdn.jsdelivr.net/gh/SuJiuOvO/Toolbox-Community-Registry@main/packages/universal-archive-extractor.zip",
-        "github": "https://raw.githubusercontent.com/SuJiuOvO/Toolbox-Community-Registry/main/packages/universal-archive-extractor.zip"
+        "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/releases/download/plugins/universal-archive-extractor.zip",
+        "github_cdn": "https://ghproxy.net/https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/universal-archive-extractor.zip",
+        "github_raw": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/universal-archive-extractor.zip",
+        "github": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/universal-archive-extractor.zip",
+        "github_release": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/universal-archive-extractor.zip"
       },
-      "downloadUrl": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/universal-archive-extractor.zip"
+      "downloadUrl": "https://ghproxy.net/https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/universal-archive-extractor.zip"
     },
     {
       "id": "universal-data-codec",
@@ -2991,11 +3023,13 @@
       "sha256": "b5c23dfa2d30311321b0d70d1c67439bfc9be1b2b5de9deebdd80724572e0edf",
       "isOfficial": true,
       "downloadUrls": {
-        "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/universal-data-codec.zip",
-        "github_cdn": "https://cdn.jsdelivr.net/gh/SuJiuOvO/Toolbox-Community-Registry@main/packages/universal-data-codec.zip",
-        "github": "https://raw.githubusercontent.com/SuJiuOvO/Toolbox-Community-Registry/main/packages/universal-data-codec.zip"
+        "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/releases/download/plugins/universal-data-codec.zip",
+        "github_cdn": "https://ghproxy.net/https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/universal-data-codec.zip",
+        "github_raw": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/universal-data-codec.zip",
+        "github": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/universal-data-codec.zip",
+        "github_release": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/universal-data-codec.zip"
       },
-      "downloadUrl": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/universal-data-codec.zip"
+      "downloadUrl": "https://ghproxy.net/https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/universal-data-codec.zip"
     },
     {
       "id": "universal-wasm-runner",
@@ -3146,11 +3180,13 @@
       "sha256": "286bd0f858dd880d860e9b7693274535d17636a70e52d6e4532482e93e30e295",
       "isOfficial": true,
       "downloadUrls": {
-        "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/universal-wasm-runner.zip",
-        "github_cdn": "https://cdn.jsdelivr.net/gh/SuJiuOvO/Toolbox-Community-Registry@main/packages/universal-wasm-runner.zip",
-        "github": "https://raw.githubusercontent.com/SuJiuOvO/Toolbox-Community-Registry/main/packages/universal-wasm-runner.zip"
+        "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/releases/download/plugins/universal-wasm-runner.zip",
+        "github_cdn": "https://ghproxy.net/https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/universal-wasm-runner.zip",
+        "github_raw": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/universal-wasm-runner.zip",
+        "github": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/universal-wasm-runner.zip",
+        "github_release": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/universal-wasm-runner.zip"
       },
-      "downloadUrl": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/universal-wasm-runner.zip"
+      "downloadUrl": "https://ghproxy.net/https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/universal-wasm-runner.zip"
     },
     {
       "id": "video-audio-toolbox",
@@ -3303,11 +3339,13 @@
       "sha256": "d60498c2d807903ecedf495f71cc6d1fba2b62da27a74c55fec853fd61b1b0e5",
       "isOfficial": true,
       "downloadUrls": {
-        "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/video-audio-toolbox.zip",
-        "github_cdn": "https://cdn.jsdelivr.net/gh/SuJiuOvO/Toolbox-Community-Registry@main/packages/video-audio-toolbox.zip",
-        "github": "https://raw.githubusercontent.com/SuJiuOvO/Toolbox-Community-Registry/main/packages/video-audio-toolbox.zip"
+        "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/releases/download/plugins/video-audio-toolbox.zip",
+        "github_cdn": "https://ghproxy.net/https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/video-audio-toolbox.zip",
+        "github_raw": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/video-audio-toolbox.zip",
+        "github": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/video-audio-toolbox.zip",
+        "github_release": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/video-audio-toolbox.zip"
       },
-      "downloadUrl": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/video-audio-toolbox.zip"
+      "downloadUrl": "https://ghproxy.net/https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/video-audio-toolbox.zip"
     },
     {
       "id": "windows-fast-file-shuttle",
@@ -3459,11 +3497,13 @@
       "sha256": "c41e2e0a6f6330bd25d4abdcb304abd5a5cd8f6fd9b0a73bbc1efb35ff38d86d",
       "isOfficial": true,
       "downloadUrls": {
-        "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/windows-fast-file-shuttle.zip",
-        "github_cdn": "https://cdn.jsdelivr.net/gh/SuJiuOvO/Toolbox-Community-Registry@main/packages/windows-fast-file-shuttle.zip",
-        "github": "https://raw.githubusercontent.com/SuJiuOvO/Toolbox-Community-Registry/main/packages/windows-fast-file-shuttle.zip"
+        "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/releases/download/plugins/windows-fast-file-shuttle.zip",
+        "github_cdn": "https://ghproxy.net/https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/windows-fast-file-shuttle.zip",
+        "github_raw": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/windows-fast-file-shuttle.zip",
+        "github": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/windows-fast-file-shuttle.zip",
+        "github_release": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/windows-fast-file-shuttle.zip"
       },
-      "downloadUrl": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/windows-fast-file-shuttle.zip"
+      "downloadUrl": "https://ghproxy.net/https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/windows-fast-file-shuttle.zip"
     },
     {
       "id": "windows-media-downloader",
@@ -3510,11 +3550,13 @@
       "sha256": "3c642bc9a303cf38582bade0dfee9afcfe39e56edf0fb48482c4db4a8563ef9a",
       "isOfficial": true,
       "downloadUrls": {
-        "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/windows-media-downloader.zip",
-        "github_cdn": "https://cdn.jsdelivr.net/gh/SuJiuOvO/Toolbox-Community-Registry@main/packages/windows-media-downloader.zip",
-        "github": "https://raw.githubusercontent.com/SuJiuOvO/Toolbox-Community-Registry/main/packages/windows-media-downloader.zip"
+        "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/releases/download/plugins/windows-media-downloader.zip",
+        "github_cdn": "https://ghproxy.net/https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/windows-media-downloader.zip",
+        "github_raw": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/windows-media-downloader.zip",
+        "github": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/windows-media-downloader.zip",
+        "github_release": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/windows-media-downloader.zip"
       },
-      "downloadUrl": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/windows-media-downloader.zip"
+      "downloadUrl": "https://ghproxy.net/https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/windows-media-downloader.zip"
     },
     {
       "id": "windows-uninstaller",
@@ -3551,11 +3593,13 @@
       "sha256": "4dc89e3f448266769e95a8e0cc2a737fb41322dd63a7dc82bf3ef5ad44f2a689",
       "isOfficial": true,
       "downloadUrls": {
-        "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/windows-uninstaller.zip",
-        "github_cdn": "https://cdn.jsdelivr.net/gh/SuJiuOvO/Toolbox-Community-Registry@main/packages/windows-uninstaller.zip",
-        "github": "https://raw.githubusercontent.com/SuJiuOvO/Toolbox-Community-Registry/main/packages/windows-uninstaller.zip"
+        "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/releases/download/plugins/windows-uninstaller.zip",
+        "github_cdn": "https://ghproxy.net/https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/windows-uninstaller.zip",
+        "github_raw": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/windows-uninstaller.zip",
+        "github": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/windows-uninstaller.zip",
+        "github_release": "https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/windows-uninstaller.zip"
       },
-      "downloadUrl": "https://gitee.com/sujiuovo/toolbox-community-registry/raw/main/packages/windows-uninstaller.zip"
+      "downloadUrl": "https://ghproxy.net/https://github.com/SuJiuOvO/Toolbox-Community-Registry/releases/download/plugins/windows-uninstaller.zip"
     }
   ]
 }

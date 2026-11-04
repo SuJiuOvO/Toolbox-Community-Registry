@@ -9,3 +9,7 @@ Thumbs.db
 # Build caches
 __pycache__/
 *.pyc
+
+# Package distribution archives (hosted via GitHub Releases)
+packages/*.zip
+!packages/.gitkeep

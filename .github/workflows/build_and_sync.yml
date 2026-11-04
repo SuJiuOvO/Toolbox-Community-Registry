@@ -32,16 +32,26 @@ jobs:
 
       - name: Build Plugins & Regenerate Index
         run: |
-          python tools/build_registry.py
+          python tools/build_registry.py --release-tag plugins
+
+      - name: Publish Packages to GitHub Release Assets
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: plugins
+          name: "Community Plugins Release Assets"
+          body: "Automated release asset hosting for Multi-Toolbox community plugins"
+          files: packages/*.zip
+          prerelease: false
 
       - name: Commit & Push Changes
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add packages/ registry/index.json
+          git add registry/index.json
           if ! git diff --staged --quiet; then
-            git commit -m "chore(auto): build packages and regenerate index.json [skip ci]"
+            git commit -m "chore(auto): update registry index for release assets [skip ci]"
             git push origin main
           else
             echo "No changes to commit"

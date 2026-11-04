@@ -16,6 +16,7 @@ GITHUB_USER = "SuJiuOvO"
 GITHUB_REPO = "Toolbox-Community-Registry"
 GITEE_USER = "sujiuovo"
 GITEE_REPO = "toolbox-community-registry"
+DEFAULT_RELEASE_TAG = os.environ.get("TOOLBOX_RELEASE_TAG", "plugins")
 QUICKJS_ENTRIES = ("entry.js", "index.js", "main.js", "tool.js")
 # Normalize source/config files only; executable and media bytes are preserved.
 TEXT_SUFFIXES = {".json", ".js", ".ts", ".rs", ".toml", ".lock", ".sh", ".bat", ".cmd", ".ps1", ".py", ".yaml", ".yml"}
@@ -101,7 +102,12 @@ def write_if_changed(path: Path, data: bytes) -> None:
     path.write_bytes(data)
 
 
-def build_registry(base_dir: Path = BASE_DIR, *, validate_only: bool = False) -> int:
+def build_registry(
+    base_dir: Path = BASE_DIR,
+    *,
+    validate_only: bool = False,
+    release_tag: str = DEFAULT_RELEASE_TAG,
+) -> int:
     base_dir = Path(base_dir)
     validator = load_validator(base_dir / "schemas" / "manifest.schema.json")
     plugins = []
@@ -125,12 +131,20 @@ def build_registry(base_dir: Path = BASE_DIR, *, validate_only: bool = False) ->
         entry = dict(manifest)
         entry.update(size=len(data), md5=hashlib.md5(data).hexdigest(), sha256=hashlib.sha256(data).hexdigest())
         entry["isOfficial"] = manifest.get("isOfficial", True)
+
+        # Multi-source mirror & Release CDN accelerated endpoints
+        release_url = f"https://github.com/{GITHUB_USER}/{GITHUB_REPO}/releases/download/{release_tag}/{plugin_id}.zip"
+        cdn_url = f"https://ghproxy.net/https://github.com/{GITHUB_USER}/{GITHUB_REPO}/releases/download/{release_tag}/{plugin_id}.zip"
+        gitee_url = f"https://gitee.com/{GITEE_USER}/{GITEE_REPO}/releases/download/{release_tag}/{plugin_id}.zip"
+
         entry["downloadUrls"] = {
-            "gitee": f"https://gitee.com/{GITEE_USER}/{GITEE_REPO}/raw/main/packages/{plugin_id}.zip",
-            "github_cdn": f"https://cdn.jsdelivr.net/gh/{GITHUB_USER}/{GITHUB_REPO}@main/packages/{plugin_id}.zip",
-            "github": f"https://raw.githubusercontent.com/{GITHUB_USER}/{GITHUB_REPO}/main/packages/{plugin_id}.zip",
+            "gitee": gitee_url,
+            "github_cdn": cdn_url,
+            "github_raw": release_url,
+            "github": release_url,
+            "github_release": release_url,
         }
-        entry["downloadUrl"] = entry["downloadUrls"]["gitee"]
+        entry["downloadUrl"] = cdn_url
         index_plugins.append(entry)
 
     index_path = base_dir / "registry" / "index.json"
@@ -145,8 +159,13 @@ def build_registry(base_dir: Path = BASE_DIR, *, validate_only: bool = False) ->
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--validate-only", action="store_true", help="Validate without writing packages or index")
+    parser.add_argument(
+        "--release-tag",
+        default=DEFAULT_RELEASE_TAG,
+        help=f"GitHub release tag for hosted packages (default: {DEFAULT_RELEASE_TAG})",
+    )
     args = parser.parse_args()
-    count = build_registry(validate_only=args.validate_only)
+    count = build_registry(validate_only=args.validate_only, release_tag=args.release_tag)
     verb = "validated" if args.validate_only else "validated and processed"
     print(f"Successfully {verb} {count} plugins.")
 
