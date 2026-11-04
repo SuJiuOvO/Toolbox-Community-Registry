@@ -44,6 +44,13 @@ jobs:
           files: packages/*.zip
           prerelease: false
 
+      - name: Synchronize Packages to Gitee Release
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        env:
+          GITEE_TOKEN: ${{ secrets.GITEE_TOKEN }}
+        run: |
+          python tools/sync_gitee_release.py --tag plugins --dir packages
+
       - name: Commit & Push Changes
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: |
