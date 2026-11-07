@@ -1232,15 +1232,10 @@
         "handler": "handheld_bulletin",
         "params": {}
       },
-      "banners": [
-        {
-          "message": "已升级为纯动态 Webview 富交互插件。点击开始全屏举牌，轻触屏幕任意位置呼出控制栏。",
-          "type": "info"
-        }
-      ],
-      "size": 22981,
-      "md5": "de12c98a6f90410fcbbf9f88a3096598",
-      "sha256": "d33a614f3eccfb398c214a751b9532f7040eba29e4c8e57793ab45fbddb934ef",
+      "banners": [],
+      "size": 36229,
+      "md5": "26ae2e1ae03b88f503bbdf630128aa7f",
+      "sha256": "c9b01c8a8b4db3323ffbe17f0cbf569e99ee15beb4b198404cd2eb75a5f54286",
       "isOfficial": true,
       "downloadUrls": {
         "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/releases/download/plugins/handheld-bulletin.zip",
@@ -2357,6 +2352,7 @@
         "handler": "petpet_generator",
         "params": {}
       },
+<<<<<<< HEAD
       "banners": [
         {
           "message": "已升级为全新 WebUI 交互画板：在画板上可直接拖拽调整头像对齐掌心，支持滚轮/双指缩放，所见即所得实时预览！",
@@ -2366,6 +2362,12 @@
       "size": 213390,
       "md5": "1a88c5e4ee5f486b278221d874bcaad8",
       "sha256": "dde719885a631f9c002fcc7f85cc075ca4f3a30ad3acf8fae720bd919160a305",
+=======
+      "banners": [],
+      "size": 219189,
+      "md5": "47ed56956efc0acc10f1c848bcef11fd",
+      "sha256": "8370d70ab7761c0062ab972bd02d365c7fe685dafbce7cde4b5a357dd9d0cbd3",
+>>>>>>> 37d481d (feat(ui-ux): overhaul WebUI plugins (petpet, bulletin, uninstaller, ssh-terminal) with modern design system)
       "isOfficial": true,
       "downloadUrls": {
         "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/releases/download/plugins/petpet-generator.zip",
@@ -2602,9 +2604,9 @@
         "handler": "ssh_terminal",
         "params": {}
       },
-      "size": 22753,
-      "md5": "3a3dd9f6521281d30929c1f72280981c",
-      "sha256": "eab3262e503e53df41e602950f7ef07d72218fa1b3daf19f65aae2cc6d617ccb",
+      "size": 34798,
+      "md5": "92e11e31681c86f2caf803be8bb57fcc",
+      "sha256": "880b0ca74e0ad9a647f65f27234fb2322af97285863214c0b43b1569a7c66d13",
       "isOfficial": true,
       "downloadUrls": {
         "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/releases/download/plugins/ssh-terminal.zip",
@@ -3444,9 +3446,9 @@
           "message": "卸载完成后会扫描常见残留；默认不勾选，只有你确认的项目才会永久删除。"
         }
       ],
-      "size": 28133,
-      "md5": "d5c7c1231fb39ee6e9c6efaaa73967d8",
-      "sha256": "ffd8a44c9543df91f4cb016c26a22b20c9d1db5c3adb9d10043078eb98a6c381",
+      "size": 33705,
+      "md5": "628d2ea98f3c440f9abf3441e43f3387",
+      "sha256": "0bf0ae9e3e870ccccf62682434fdf4d1a535912828a4bbab5f6d82359b38198b",
       "isOfficial": true,
       "downloadUrls": {
         "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/releases/download/plugins/windows-uninstaller.zip",

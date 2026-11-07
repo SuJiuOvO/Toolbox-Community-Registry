@@ -29,10 +29,5 @@
     "handler": "handheld_bulletin",
     "params": {}
   },
-  "banners": [
-    {
-      "message": "已升级为纯动态 Webview 富交互插件。点击开始全屏举牌，轻触屏幕任意位置呼出控制栏。",
-      "type": "info"
-    }
-  ]
+  "banners": []
 }

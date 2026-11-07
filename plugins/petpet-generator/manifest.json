@@ -27,10 +27,5 @@
     "handler": "petpet_generator",
     "params": {}
   },
-  "banners": [
-    {
-      "message": "已升级为全新 WebUI 交互画板：在画板上可直接拖拽调整头像对齐掌心，支持滚轮/双指缩放，所见即所得实时预览！",
-      "type": "info"
-    }
-  ]
+  "banners": []
 }

@@ -2,23 +2,44 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>手持弹幕举牌</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>手持弹幕举牌 - LED Banner</title>
   <style>
+    :root {
+      --bg-dark: #090D16;
+      --surface-dark: #131A29;
+      --surface-elevated: #1C263B;
+      --border-subtle: rgba(255, 255, 255, 0.1);
+      --border-hover: rgba(255, 255, 255, 0.2);
+      --text-main: #F8FAFC;
+      --text-muted: #94A3B8;
+      --accent: #06B6D4;
+      --accent-hover: #0891B2;
+      --accent-glow: rgba(6, 182, 212, 0.25);
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-full: 9999px;
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    }
+
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
       user-select: none;
       -webkit-user-select: none;
+      -webkit-tap-highlight-color: transparent;
     }
+
     html, body {
       width: 100%;
       height: 100%;
       overflow: hidden;
-      background-color: #080D12;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background-color: var(--bg-dark);
+      font-family: var(--font-sans);
+      color: var(--text-main);
     }
+
     #stage {
       position: absolute;
       inset: 0;
@@ -27,209 +48,450 @@
       justify-content: center;
       overflow: hidden;
       cursor: pointer;
+      background-color: #000000;
+      transition: background-color 0.2s ease;
     }
+
     #marquee-container {
       display: inline-block;
       white-space: pre;
-      line-height: 1.2;
-      font-weight: bold;
+      line-height: 1.15;
+      font-weight: 800;
+      text-align: center;
       transition: opacity 0.2s;
+      will-change: transform;
     }
+
     .led-overlay {
       position: absolute;
       inset: 0;
       pointer-events: none;
-      background: radial-gradient(rgba(0,0,0,0.4) 15%, transparent 16%) 0 0,
-                  radial-gradient(rgba(0,0,0,0.4) 15%, transparent 16%) 4px 4px;
+      background: radial-gradient(rgba(0, 0, 0, 0.45) 18%, transparent 19%) 0 0,
+                  radial-gradient(rgba(0, 0, 0, 0.45) 18%, transparent 19%) 4px 4px;
       background-size: 8px 8px;
       display: none;
+      z-index: 5;
     }
-    /* Controls Panel */
+
+    /* Floating Capsule Toolbar */
     #toolbar {
       position: absolute;
-      top: 16px;
+      top: max(16px, env(safe-area-inset-top));
       left: 50%;
       transform: translateX(-50%);
-      background: rgba(20, 24, 33, 0.88);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 30px;
-      padding: 6px 14px;
+      background: rgba(19, 26, 41, 0.88);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-full);
+      padding: 6px 10px;
       display: flex;
-      gap: 10px;
+      gap: 6px;
       align-items: center;
       z-index: 100;
-      transition: opacity 0.3s, transform 0.3s;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+      transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.6);
+      max-width: 95vw;
+      overflow-x: auto;
+      scrollbar-width: none;
     }
+
+    #toolbar::-webkit-scrollbar {
+      display: none;
+    }
+
     #toolbar.hidden {
       opacity: 0;
-      transform: translateX(-50%) translateY(-20px);
+      transform: translateX(-50%) translateY(-24px);
       pointer-events: none;
     }
+
     .tb-btn {
       background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      color: #fff;
-      padding: 6px 12px;
-      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #F8FAFC;
+      padding: 7px 13px;
+      border-radius: var(--radius-full);
       font-size: 13px;
+      font-weight: 500;
       cursor: pointer;
-      display: flex;
+      display: inline-flex;
       align-items: center;
-      gap: 5px;
-      transition: background 0.2s, transform 0.1s;
+      gap: 6px;
+      white-space: nowrap;
+      flex-shrink: 0;
+      transition: all 0.15s ease;
     }
+
     .tb-btn:hover {
-      background: rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.16);
+      border-color: rgba(255, 255, 255, 0.25);
     }
+
     .tb-btn:active {
       transform: scale(0.96);
     }
 
-    /* Drawer Modal */
-    #drawer {
+    .tb-btn svg {
+      width: 15px;
+      height: 15px;
+      fill: currentColor;
+      flex-shrink: 0;
+    }
+
+    /* Tap Stage Floating Hint */
+    #tap-hint {
       position: absolute;
+      bottom: max(16px, env(safe-area-inset-bottom));
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.65);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: rgba(255, 255, 255, 0.7);
+      padding: 6px 14px;
+      border-radius: var(--radius-full);
+      font-size: 11.5px;
+      pointer-events: none;
+      z-index: 50;
+      transition: opacity 0.5s ease;
+      backdrop-filter: blur(8px);
+      white-space: nowrap;
+    }
+
+    #tap-hint.fade-out {
+      opacity: 0;
+    }
+
+    /* Modal Drawer */
+    #drawer-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(4px);
+      z-index: 110;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+
+    #drawer-backdrop.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    #drawer {
+      position: fixed;
       bottom: 0;
       left: 0;
       right: 0;
-      background: rgba(18, 22, 30, 0.94);
-      backdrop-filter: blur(20px);
-      border-top: 1px solid rgba(255, 255, 255, 0.12);
+      background: var(--surface-dark);
+      border-top: 1px solid var(--border-subtle);
       border-radius: 20px 20px 0 0;
-      padding: 20px;
-      max-height: 80vh;
+      padding: 16px 20px max(20px, env(safe-area-inset-bottom));
+      max-height: 85vh;
       overflow-y: auto;
-      z-index: 110;
+      z-index: 120;
       transform: translateY(100%);
       transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-      box-shadow: 0 -10px 40px rgba(0,0,0,0.6);
-      color: #eee;
+      box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.7);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
     }
+
     #drawer.open {
       transform: translateY(0);
     }
+
+    .drawer-handle {
+      width: 40px;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.25);
+      border-radius: 2px;
+      margin: 0 auto 4px auto;
+      flex-shrink: 0;
+    }
+
     .drawer-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 16px;
       padding-bottom: 12px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      border-bottom: 1px solid var(--border-subtle);
     }
+
     .drawer-title {
       font-size: 16px;
-      font-weight: 600;
-      color: #fff;
+      font-weight: 700;
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
+
+    .drawer-title svg {
+      width: 18px;
+      height: 18px;
+      fill: var(--accent);
+    }
+
+    .btn-finish {
+      background: var(--accent);
+      color: #090D16;
+      border: none;
+      font-weight: 700;
+      padding: 6px 16px;
+      border-radius: var(--radius-full);
+      font-size: 13px;
+      cursor: pointer;
+      transition: background 0.15s ease;
+    }
+
+    .btn-finish:hover {
+      background: var(--accent-hover);
+    }
+
     .form-group {
-      margin-bottom: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
     }
+
     .form-label {
       font-size: 13px;
-      color: #aaa;
-      margin-bottom: 6px;
+      font-weight: 600;
+      color: var(--text-muted);
       display: flex;
       justify-content: space-between;
+      align-items: center;
     }
+
     .text-input {
       width: 100%;
-      background: rgba(0, 0, 0, 0.4);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 8px;
-      padding: 10px;
-      color: #fff;
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 10px 12px;
+      color: #FFFFFF;
       font-size: 15px;
+      font-family: inherit;
       outline: none;
       resize: vertical;
-      min-height: 60px;
+      min-height: 56px;
+      transition: border-color 0.2s;
     }
+
     .text-input:focus {
-      border-color: #53FFAA;
+      border-color: var(--accent);
     }
+
     .btn-group {
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
     }
+
     .opt-btn {
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      color: #ccc;
-      padding: 6px 14px;
-      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      padding: 7px 14px;
+      border-radius: var(--radius-sm);
       font-size: 13px;
+      font-weight: 500;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all 0.15s ease;
+      white-space: nowrap;
     }
+
+    .opt-btn:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: #FFFFFF;
+    }
+
     .opt-btn.active {
-      background: #53FFAA;
-      color: #080D12;
-      font-weight: 600;
-      border-color: #53FFAA;
+      background: rgba(6, 182, 212, 0.18);
+      color: #38BDF8;
+      border-color: #38BDF8;
+      font-weight: 700;
+      box-shadow: 0 0 12px rgba(56, 189, 248, 0.2);
     }
+
     .slider-row {
       display: flex;
       align-items: center;
       gap: 12px;
     }
+
     .slider {
       flex: 1;
-      accent-color: #53FFAA;
+      height: 6px;
+      border-radius: 3px;
+      background: rgba(255, 255, 255, 0.12);
+      outline: none;
+      accent-color: var(--accent);
+      cursor: pointer;
     }
-    .color-swatches {
+
+    .val-chip {
+      font-size: 12px;
+      font-family: monospace;
+      color: var(--accent);
+      background: rgba(6, 182, 212, 0.12);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-weight: 700;
+    }
+
+    /* Color Swatch Arrays (8 Curated Colors) */
+    .color-swatches-grid {
       display: flex;
+      flex-wrap: wrap;
       gap: 10px;
       align-items: center;
     }
-    .swatch {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      cursor: pointer;
-      border: 2px solid transparent;
-      transition: transform 0.2s;
-    }
-    .swatch.active {
-      border-color: #fff;
-      transform: scale(1.15);
-    }
-    .color-input {
+
+    .swatch-item {
       width: 34px;
       height: 34px;
-      border: none;
       border-radius: 50%;
       cursor: pointer;
-      background: transparent;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      transition: transform 0.15s ease, border-color 0.15s ease;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .swatch-item:hover {
+      transform: scale(1.1);
+      border-color: rgba(255, 255, 255, 0.6);
+    }
+
+    .swatch-item.active {
+      transform: scale(1.15);
+      border-color: #FFFFFF;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    }
+
+    .swatch-item.active::after {
+      content: '';
+      position: absolute;
+      inset: 6px;
+      border-radius: 50%;
+      border: 2px solid #FFFFFF;
+    }
+
+    /* Inline Color Customizer (No Native Popup) */
+    .inline-color-customizer {
+      margin-top: 8px;
+      padding: 10px 12px;
+      background: rgba(0, 0, 0, 0.25);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .customizer-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .color-preview-chip {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      flex-shrink: 0;
+    }
+
+    .hex-input {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid var(--border-subtle);
+      color: #FFFFFF;
+      font-family: monospace;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 4px 8px;
+      border-radius: 6px;
+      width: 100px;
+      outline: none;
+    }
+
+    .hex-input:focus {
+      border-color: var(--accent);
+    }
+
+    .rgb-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .rgb-slider {
+      flex: 1;
+      height: 4px;
+      accent-color: var(--accent);
+    }
+
+    @keyframes flash {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.15; }
     }
   </style>
 </head>
 <body>
+
+  <!-- Screen Stage -->
   <div id="stage">
     <div id="marquee-container">很高兴遇见你！</div>
     <div class="led-overlay" id="led-mask"></div>
   </div>
 
-  <!-- Top Floating Bar -->
+  <!-- Top Floating Capsule Toolbar -->
   <div id="toolbar">
-    <button class="tb-btn" id="btn-toggle-play">⏸️ 暂停</button>
-    <button class="tb-btn" id="btn-edit">⚙️ 设置</button>
-    <button class="tb-btn" id="btn-preset">✨ 预设</button>
-    <button class="tb-btn" id="btn-fullscreen">⛶ 全屏</button>
+    <button class="tb-btn" id="btn-toggle-play">
+      <svg viewBox="0 0 24 24" id="icon-play-state"><path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z"/></svg>
+      <span id="text-play-state">暂停</span>
+    </button>
+    <button class="tb-btn" id="btn-edit">
+      <svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
+      <span>设置</span>
+    </button>
+    <button class="tb-btn" id="btn-fullscreen">
+      <svg viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
+      <span id="text-fullscreen">全屏</span>
+    </button>
   </div>
+
+  <!-- Tap Stage Floating Hint -->
+  <div id="tap-hint">轻触屏幕任意位置可唤出控制栏</div>
+
+  <!-- Settings Drawer Backdrop -->
+  <div id="drawer-backdrop"></div>
 
   <!-- Settings Drawer -->
   <div id="drawer">
+    <div class="drawer-handle"></div>
     <div class="drawer-header">
-      <span class="drawer-title">弹幕举牌定制器</span>
-      <button class="tb-btn" id="btn-close-drawer">完成</button>
+      <div class="drawer-title">
+        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14h2v2h-2zm0-10h2v8h-2z"/></svg>
+        <span>弹幕与举牌设置</span>
+      </div>
+      <button class="btn-finish" id="btn-close-drawer">完成</button>
     </div>
 
+    <!-- Text Input -->
     <div class="form-group">
-      <label class="form-label">弹幕文字内容</label>
-      <textarea class="text-input" id="input-text" placeholder="输入要举牌或滚动的文字...">很高兴遇见你！</textarea>
+      <label class="form-label">举牌文字内容</label>
+      <textarea class="text-input" id="input-text" placeholder="输入举牌文字或欢迎标语...">很高兴遇见你！</textarea>
     </div>
 
+    <!-- Presets -->
     <div class="form-group">
       <label class="form-label">经典场景预设</label>
       <div class="btn-group" id="presets-group">
@@ -241,63 +503,99 @@
       </div>
     </div>
 
+    <!-- Direction -->
     <div class="form-group">
       <label class="form-label">滚动方向</label>
       <div class="btn-group" id="direction-group">
-        <button class="opt-btn" data-dir="left">← 向左</button>
-        <button class="opt-btn" data-dir="right">→ 向右</button>
-        <button class="opt-btn" data-dir="up">↑ 向上</button>
-        <button class="opt-btn" data-dir="down">↓ 向下</button>
+        <button class="opt-btn" data-dir="left">← 向左滚动</button>
+        <button class="opt-btn" data-dir="right">→ 向右滚动</button>
+        <button class="opt-btn" data-dir="up">↑ 向上滚动</button>
+        <button class="opt-btn" data-dir="down">↓ 向下滚动</button>
         <button class="opt-btn" data-dir="still">⏸️ 静止居中</button>
       </div>
     </div>
 
+    <!-- Speed Slider -->
     <div class="form-group">
       <div class="form-label">
         <span>滚动速度</span>
-        <span id="label-speed">100</span>
+        <span class="val-chip" id="label-speed">100</span>
       </div>
       <div class="slider-row">
         <input type="range" class="slider" id="slider-speed" min="20" max="400" value="100">
       </div>
     </div>
 
+    <!-- Font Size Slider -->
     <div class="form-group">
       <div class="form-label">
         <span>文字字号</span>
-        <span id="label-size">112 px</span>
+        <span class="val-chip" id="label-size">112 px</span>
       </div>
       <div class="slider-row">
         <input type="range" class="slider" id="slider-size" min="30" max="300" value="112">
       </div>
     </div>
 
+    <!-- Text Color (Swatches + In-page Customizer) -->
     <div class="form-group">
       <label class="form-label">文字颜色</label>
-      <div class="color-swatches" id="color-swatches">
-        <div class="swatch active" style="background:#53FFAA" data-color="#53FFAA"></div>
-        <div class="swatch" style="background:#FF4B72" data-color="#FF4B72"></div>
-        <div class="swatch" style="background:#FFDF00" data-color="#FFDF00"></div>
-        <div class="swatch" style="background:#00E5FF" data-color="#00E5FF"></div>
-        <div class="swatch" style="background:#FFFFFF" data-color="#FFFFFF"></div>
-        <input type="color" class="color-input" id="custom-color" value="#53FFAA">
+      <div class="color-swatches-grid" id="text-color-swatches">
+        <div class="swatch-item active" style="background:#06B6D4" data-color="#06B6D4"></div>
+        <div class="swatch-item" style="background:#38BDF8" data-color="#38BDF8"></div>
+        <div class="swatch-item" style="background:#F43F5E" data-color="#F43F5E"></div>
+        <div class="swatch-item" style="background:#FACC15" data-color="#FACC15"></div>
+        <div class="swatch-item" style="background:#10B981" data-color="#10B981"></div>
+        <div class="swatch-item" style="background:#A855F7" data-color="#A855F7"></div>
+        <div class="swatch-item" style="background:#FFFFFF" data-color="#FFFFFF"></div>
+        <div class="swatch-item" style="background:#FFA500" data-color="#FFA500"></div>
+      </div>
+      <!-- Inline Customizer for Text Color -->
+      <div class="inline-color-customizer">
+        <div class="customizer-row">
+          <div class="color-preview-chip" id="text-preview-chip" style="background:#06B6D4;"></div>
+          <span style="font-size:12px;color:var(--text-muted);">自定义HEX:</span>
+          <input type="text" class="hex-input" id="hex-text-color" value="#06B6D4" maxlength="7">
+        </div>
+        <div class="rgb-row">
+          <span>R</span><input type="range" class="rgb-slider" id="text-r" min="0" max="255" value="6">
+          <span>G</span><input type="range" class="rgb-slider" id="text-g" min="0" max="255" value="182">
+          <span>B</span><input type="range" class="rgb-slider" id="text-b" min="0" max="255" value="212">
+        </div>
       </div>
     </div>
 
+    <!-- Background Color (Swatches + In-page Customizer) -->
     <div class="form-group">
-      <label class="form-label">背景颜色</label>
-      <div class="color-swatches" id="bg-swatches">
-        <div class="swatch active" style="background:#080D12" data-bgcolor="#080D12"></div>
-        <div class="swatch" style="background:#000000" data-bgcolor="#000000"></div>
-        <div class="swatch" style="background:#1A0022" data-bgcolor="#1A0022"></div>
-        <div class="swatch" style="background:#001824" data-bgcolor="#001824"></div>
-        <div class="swatch" style="background:#2A0808" data-bgcolor="#2A0808"></div>
-        <input type="color" class="color-input" id="custom-bgcolor" value="#080D12">
+      <label class="form-label">背景底色</label>
+      <div class="color-swatches-grid" id="bg-color-swatches">
+        <div class="swatch-item active" style="background:#000000" data-color="#000000"></div>
+        <div class="swatch-item" style="background:#090D16" data-color="#090D16"></div>
+        <div class="swatch-item" style="background:#1A0022" data-color="#1A0022"></div>
+        <div class="swatch-item" style="background:#001824" data-color="#001824"></div>
+        <div class="swatch-item" style="background:#2A0808" data-color="#2A0808"></div>
+        <div class="swatch-item" style="background:#062817" data-color="#062817"></div>
+        <div class="swatch-item" style="background:#18181B" data-color="#18181B"></div>
+        <div class="swatch-item" style="background:#1E293B" data-color="#1E293B"></div>
+      </div>
+      <!-- Inline Customizer for Bg Color -->
+      <div class="inline-color-customizer">
+        <div class="customizer-row">
+          <div class="color-preview-chip" id="bg-preview-chip" style="background:#000000;"></div>
+          <span style="font-size:12px;color:var(--text-muted);">自定义HEX:</span>
+          <input type="text" class="hex-input" id="hex-bg-color" value="#000000" maxlength="7">
+        </div>
+        <div class="rgb-row">
+          <span>R</span><input type="range" class="rgb-slider" id="bg-r" min="0" max="255" value="0">
+          <span>G</span><input type="range" class="rgb-slider" id="bg-g" min="0" max="255" value="0">
+          <span>B</span><input type="range" class="rgb-slider" id="bg-b" min="0" max="255" value="0">
+        </div>
       </div>
     </div>
 
+    <!-- Visual Effects -->
     <div class="form-group">
-      <label class="form-label">视觉特效</label>
+      <label class="form-label">视觉特效与样式</label>
       <div class="btn-group">
         <button class="opt-btn" id="btn-fx-glow">🌟 霓虹辉光</button>
         <button class="opt-btn" id="btn-fx-stroke">🔲 文字描边</button>
@@ -314,8 +612,8 @@
       text: '很高兴遇见你！',
       fontSize: 112,
       speed: 100,
-      textColor: '#53FFAA',
-      bgColor: '#080D12',
+      textColor: '#06B6D4',
+      bgColor: '#000000',
       direction: 'left',
       glow: true,
       stroke: false,
@@ -332,19 +630,21 @@
     const stage = document.getElementById('stage');
     const toolbar = document.getElementById('toolbar');
     const drawer = document.getElementById('drawer');
+    const drawerBackdrop = document.getElementById('drawer-backdrop');
     const ledMask = document.getElementById('led-mask');
+    const tapHint = document.getElementById('tap-hint');
 
     let animFrame = null;
     let lastTime = performance.now();
     let hideTimer = null;
 
-    // Presets Definition
+    // Presets
     const PRESETS = {
       airport: {
         text: '接机：张总 一路辛苦！',
         fontSize: 120,
         speed: 110,
-        textColor: '#FFDF00',
+        textColor: '#FACC15',
         bgColor: '#000000',
         direction: 'left',
         glow: true,
@@ -356,7 +656,7 @@
         text: '★ 全世界最好的你 闪耀舞台 ★',
         fontSize: 130,
         speed: 140,
-        textColor: '#FF4B72',
+        textColor: '#F43F5E',
         bgColor: '#1A0022',
         direction: 'left',
         glow: true,
@@ -368,8 +668,8 @@
         text: '做我女朋友好不好？❤️',
         fontSize: 140,
         speed: 0,
-        textColor: '#FF4B72',
-        bgColor: '#080D12',
+        textColor: '#F43F5E',
+        bgColor: '#090D16',
         direction: 'still',
         glow: true,
         stroke: true,
@@ -380,7 +680,7 @@
         text: '🔥 秘制大烤肠 10元3串 🔥',
         fontSize: 120,
         speed: 90,
-        textColor: '#53FFAA',
+        textColor: '#06B6D4',
         bgColor: '#000000',
         direction: 'left',
         glow: true,
@@ -392,7 +692,7 @@
         text: '⚠️ 前方施工 请减速慢行 ⚠️',
         fontSize: 130,
         speed: 0,
-        textColor: '#FFDF00',
+        textColor: '#FACC15',
         bgColor: '#000000',
         direction: 'still',
         glow: true,
@@ -408,28 +708,23 @@
       container.style.color = state.textColor;
       stage.style.backgroundColor = state.bgColor;
 
-      // Glow effect
       if (state.glow) {
-        container.style.textShadow = `0 0 10px \${state.textColor}, 0 0 20px \${state.textColor}, 0 0 40px \${state.textColor}`;
+        container.style.textShadow = `0 0 10px ${state.textColor}, 0 0 25px ${state.textColor}, 0 0 50px ${state.textColor}`;
       } else {
         container.style.textShadow = 'none';
       }
 
-      // Stroke
       if (state.stroke) {
-        container.style.webkitTextStroke = '2px #fff';
+        container.style.webkitTextStroke = '2px #FFFFFF';
       } else {
         container.style.webkitTextStroke = '0';
       }
 
-      // LED Mask
       ledMask.style.display = state.led ? 'block' : 'none';
 
-      // Mirror
       const mirrorScale = state.mirror ? -1 : 1;
       container.style.transformOrigin = 'center center';
 
-      // Flash
       if (state.flash) {
         container.style.animation = 'flash 1.2s infinite ease-in-out';
       } else {
@@ -453,219 +748,333 @@
       document.getElementById('btn-fx-mirror').classList.toggle('active', state.mirror);
       document.getElementById('btn-fx-flash').classList.toggle('active', state.flash);
 
-      // Save state to Host Bridge
-      if (window.Toolbox && window.Toolbox.storage) {
-        window.Toolbox.storage.set('bulletin_settings', state);
+      // Update color swatches active states
+      document.querySelectorAll('#text-color-swatches .swatch-item').forEach(sw => {
+        sw.classList.toggle('active', sw.dataset.color.toLowerCase() === state.textColor.toLowerCase());
+      });
+      document.querySelectorAll('#bg-color-swatches .swatch-item').forEach(sw => {
+        sw.classList.toggle('active', sw.dataset.color.toLowerCase() === state.bgColor.toLowerCase());
+      });
+
+      // Update custom color chips & inputs
+      document.getElementById('text-preview-chip').style.backgroundColor = state.textColor;
+      document.getElementById('hex-text-color').value = state.textColor;
+      syncRgbSliders('text', state.textColor);
+
+      document.getElementById('bg-preview-chip').style.backgroundColor = state.bgColor;
+      document.getElementById('hex-bg-color').value = state.bgColor;
+      syncRgbSliders('bg', state.bgColor);
+
+      resetPositions();
+    }
+
+    function syncRgbSliders(type, hex) {
+      const rgb = hexToRgb(hex);
+      if (rgb) {
+        document.getElementById(`${type}-r`).value = rgb.r;
+        document.getElementById(`${type}-g`).value = rgb.g;
+        document.getElementById(`${type}-b`).value = rgb.b;
       }
     }
 
-    // Main 60fps Loop
-    function tick(now) {
+    function hexToRgb(hex) {
+      hex = hex.replace('#', '');
+      if (hex.length === 3) {
+        hex = hex.split('').map(c => c + c).join('');
+      }
+      if (hex.length !== 6) return null;
+      const num = parseInt(hex, 16);
+      return {
+        r: (num >> 16) & 255,
+        g: (num >> 8) & 255,
+        b: num & 255
+      };
+    }
+
+    function rgbToHex(r, g, b) {
+      const toHex = n => {
+        const h = Math.max(0, Math.min(255, n)).toString(16);
+        return h.length === 1 ? '0' + h : h;
+      };
+      return '#' + toHex(r) + toHex(g) + toHex(b);
+    }
+
+    function resetPositions() {
+      const stageW = stage.clientWidth;
+      const stageH = stage.clientHeight;
+      const elemW = container.offsetWidth;
+      const elemH = container.offsetHeight;
+
+      if (state.direction === 'left') {
+        state.posX = stageW;
+        state.posY = 0;
+      } else if (state.direction === 'right') {
+        state.posX = -elemW;
+        state.posY = 0;
+      } else if (state.direction === 'up') {
+        state.posX = 0;
+        state.posY = stageH;
+      } else if (state.direction === 'down') {
+        state.posX = 0;
+        state.posY = -elemH;
+      } else {
+        state.posX = 0;
+        state.posY = 0;
+      }
+      renderMarqueeTransform();
+    }
+
+    function renderMarqueeTransform() {
+      const mirrorScale = state.mirror ? -1 : 1;
+      container.style.transform = `translate3d(${state.posX}px, ${state.posY}px, 0) scaleX(${mirrorScale})`;
+    }
+
+    function loop(now) {
       const dt = (now - lastTime) / 1000;
       lastTime = now;
 
       if (!state.paused && state.direction !== 'still') {
+        const step = state.speed * dt * 2.2;
         const stageW = stage.clientWidth;
         const stageH = stage.clientHeight;
-        const textW = container.clientWidth;
-        const textH = container.clientHeight;
+        const elemW = container.offsetWidth;
+        const elemH = container.offsetHeight;
 
         if (state.direction === 'left') {
-          state.posX -= state.speed * dt;
-          if (state.posX < -textW) state.posX = stageW;
-          state.posY = 0;
+          state.posX -= step;
+          if (state.posX < -elemW) {
+            state.posX = stageW;
+          }
         } else if (state.direction === 'right') {
-          state.posX += state.speed * dt;
-          if (state.posX > stageW) state.posX = -textW;
-          state.posY = 0;
+          state.posX += step;
+          if (state.posX > stageW) {
+            state.posX = -elemW;
+          }
         } else if (state.direction === 'up') {
-          state.posY -= state.speed * dt;
-          if (state.posY < -textH) state.posY = stageH;
-          state.posX = 0;
+          state.posY -= step;
+          if (state.posY < -elemH) {
+            state.posY = stageH;
+          }
         } else if (state.direction === 'down') {
-          state.posY += state.speed * dt;
-          if (state.posY > stageH) state.posY = -textH;
-          state.posX = 0;
+          state.posY += step;
+          if (state.posY > stageH) {
+            state.posY = -elemH;
+          }
         }
-      } else if (state.direction === 'still') {
-        state.posX = 0;
-        state.posY = 0;
+        renderMarqueeTransform();
       }
 
-      const mirror = state.mirror ? 'scaleX(-1) ' : '';
-      container.style.transform = `\${mirror}translate(\${state.posX}px, \${state.posY}px)`;
-
-      animFrame = requestAnimationFrame(tick);
-    }
-
-    function resetPosition() {
-      if (state.direction === 'left') state.posX = stage.clientWidth;
-      else if (state.direction === 'right') state.posX = -container.clientWidth;
-      else if (state.direction === 'up') state.posY = stage.clientHeight;
-      else if (state.direction === 'down') state.posY = -container.clientHeight;
-      else { state.posX = 0; state.posY = 0; }
+      animFrame = requestAnimationFrame(loop);
     }
 
     // Auto Hide Toolbar
-    function pingActivity() {
+    function triggerToolbarVisibility() {
       toolbar.classList.remove('hidden');
       clearTimeout(hideTimer);
       hideTimer = setTimeout(() => {
         if (!drawer.classList.contains('open')) {
           toolbar.classList.add('hidden');
         }
-      }, 3500);
+      }, 4000);
     }
 
+    // Event Handlers
     stage.addEventListener('click', (e) => {
-      if (drawer.classList.contains('open')) {
-        drawer.classList.remove('open');
+      if (drawer.classList.contains('open')) return;
+      if (toolbar.classList.contains('hidden')) {
+        triggerToolbarVisibility();
       } else {
-        toolbar.classList.toggle('hidden');
-        if (!toolbar.classList.contains('hidden')) {
-          pingActivity();
-        }
+        toolbar.classList.add('hidden');
       }
+      tapHint.classList.add('fade-out');
     });
 
-    // Toolbar Listeners
     document.getElementById('btn-toggle-play').addEventListener('click', (e) => {
       e.stopPropagation();
       state.paused = !state.paused;
-      e.target.textContent = state.paused ? '▶️ 开始' : '⏸️ 暂停';
+      const playIcon = document.getElementById('icon-play-state');
+      const playText = document.getElementById('text-play-state');
+      if (state.paused) {
+        playIcon.innerHTML = '<path d="M8 5v14l11-7z"/>';
+        playText.textContent = '播放';
+      } else {
+        playIcon.innerHTML = '<path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z"/>';
+        playText.textContent = '暂停';
+      }
+      triggerToolbarVisibility();
     });
+
+    function openDrawer() {
+      drawer.classList.add('open');
+      drawerBackdrop.classList.add('open');
+      toolbar.classList.remove('hidden');
+      clearTimeout(hideTimer);
+    }
+
+    function closeDrawer() {
+      drawer.classList.remove('open');
+      drawerBackdrop.classList.remove('open');
+      triggerToolbarVisibility();
+    }
 
     document.getElementById('btn-edit').addEventListener('click', (e) => {
       e.stopPropagation();
-      drawer.classList.add('open');
-      toolbar.classList.remove('hidden');
+      openDrawer();
     });
 
-    document.getElementById('btn-preset').addEventListener('click', (e) => {
-      e.stopPropagation();
-      drawer.classList.add('open');
-      document.getElementById('presets-group').scrollIntoView({ behavior: 'smooth' });
-    });
+    document.getElementById('btn-close-drawer').addEventListener('click', closeDrawer);
+    drawerBackdrop.addEventListener('click', closeDrawer);
 
-    document.getElementById('btn-close-drawer').addEventListener('click', () => {
-      drawer.classList.remove('open');
-      pingActivity();
-    });
-
+    // Fullscreen Toggle
     document.getElementById('btn-fullscreen').addEventListener('click', (e) => {
       e.stopPropagation();
-      state.isFullscreen = !state.isFullscreen;
-      if (window.Toolbox && window.Toolbox.system) {
-        window.Toolbox.system.setFullscreen(state.isFullscreen);
+      if (window.Toolbox && window.Toolbox.system && window.Toolbox.system.toggleFullscreen) {
+        window.Toolbox.system.toggleFullscreen();
+      } else {
+        if (!document.fullscreenElement) {
+          document.documentElement.requestFullscreen().catch(() => {});
+        } else {
+          document.exitFullscreen().catch(() => {});
+        }
       }
+      triggerToolbarVisibility();
     });
 
-    // Form inputs
+    // Inputs
     document.getElementById('input-text').addEventListener('input', (e) => {
-      state.text = e.target.value;
+      state.text = e.target.value || ' ';
       applyState();
     });
 
     document.getElementById('slider-speed').addEventListener('input', (e) => {
-      state.speed = parseFloat(e.target.value);
+      state.speed = parseInt(e.target.value);
       document.getElementById('label-speed').textContent = state.speed;
-      applyState();
     });
 
     document.getElementById('slider-size').addEventListener('input', (e) => {
-      state.fontSize = parseFloat(e.target.value);
+      state.fontSize = parseInt(e.target.value);
       document.getElementById('label-size').textContent = state.fontSize + ' px';
-      applyState();
-      resetPosition();
+      container.style.fontSize = state.fontSize + 'px';
+      resetPositions();
     });
 
-    // Direction
-    document.querySelectorAll('#direction-group .opt-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        state.direction = btn.dataset.dir;
+    // Preset Selection
+    document.getElementById('presets-group').addEventListener('click', (e) => {
+      const btn = e.target.closest('.opt-btn');
+      if (!btn) return;
+      const p = PRESETS[btn.dataset.preset];
+      if (p) {
+        Object.assign(state, p);
         applyState();
-        resetPosition();
-      });
+      }
+    });
+
+    // Direction Selection
+    document.getElementById('direction-group').addEventListener('click', (e) => {
+      const btn = e.target.closest('.opt-btn');
+      if (!btn) return;
+      state.direction = btn.dataset.dir;
+      applyState();
+    });
+
+    // Swatches
+    document.getElementById('text-color-swatches').addEventListener('click', (e) => {
+      const sw = e.target.closest('.swatch-item');
+      if (!sw) return;
+      state.textColor = sw.dataset.color;
+      applyState();
+    });
+
+    document.getElementById('bg-color-swatches').addEventListener('click', (e) => {
+      const sw = e.target.closest('.swatch-item');
+      if (!sw) return;
+      state.bgColor = sw.dataset.color;
+      applyState();
+    });
+
+    // Text Color RGB & Hex
+    function updateTextColorFromRgb() {
+      const r = parseInt(document.getElementById('text-r').value);
+      const g = parseInt(document.getElementById('text-g').value);
+      const b = parseInt(document.getElementById('text-b').value);
+      state.textColor = rgbToHex(r, g, b);
+      applyState();
+    }
+
+    ['text-r', 'text-g', 'text-b'].forEach(id => {
+      document.getElementById(id).addEventListener('input', updateTextColorFromRgb);
+    });
+
+    document.getElementById('hex-text-color').addEventListener('change', (e) => {
+      let v = e.target.value.trim();
+      if (!v.startsWith('#')) v = '#' + v;
+      if (/^#[0-9A-Fa-f]{6}$/.test(v)) {
+        state.textColor = v.toUpperCase();
+        applyState();
+      }
+    });
+
+    // Bg Color RGB & Hex
+    function updateBgColorFromRgb() {
+      const r = parseInt(document.getElementById('bg-r').value);
+      const g = parseInt(document.getElementById('bg-g').value);
+      const b = parseInt(document.getElementById('bg-b').value);
+      state.bgColor = rgbToHex(r, g, b);
+      applyState();
+    }
+
+    ['bg-r', 'bg-g', 'bg-b'].forEach(id => {
+      document.getElementById(id).addEventListener('input', updateBgColorFromRgb);
+    });
+
+    document.getElementById('hex-bg-color').addEventListener('change', (e) => {
+      let v = e.target.value.trim();
+      if (!v.startsWith('#')) v = '#' + v;
+      if (/^#[0-9A-Fa-f]{6}$/.test(v)) {
+        state.bgColor = v.toUpperCase();
+        applyState();
+      }
     });
 
     // Effects
-    document.getElementById('btn-fx-glow').addEventListener('click', () => { state.glow = !state.glow; applyState(); });
-    document.getElementById('btn-fx-stroke').addEventListener('click', () => { state.stroke = !state.stroke; applyState(); });
-    document.getElementById('btn-fx-led').addEventListener('click', () => { state.led = !state.led; applyState(); });
-    document.getElementById('btn-fx-mirror').addEventListener('click', () => { state.mirror = !state.mirror; applyState(); });
-    document.getElementById('btn-fx-flash').addEventListener('click', () => { state.flash = !state.flash; applyState(); });
-
-    // Swatches
-    document.querySelectorAll('#color-swatches .swatch').forEach(sw => {
-      sw.addEventListener('click', () => {
-        document.querySelectorAll('#color-swatches .swatch').forEach(s => s.classList.remove('active'));
-        sw.classList.add('active');
-        state.textColor = sw.dataset.color;
-        applyState();
-      });
+    document.getElementById('btn-fx-glow').addEventListener('click', () => {
+      state.glow = !state.glow;
+      applyState();
     });
-    document.getElementById('custom-color').addEventListener('input', (e) => {
-      state.textColor = e.target.value;
+    document.getElementById('btn-fx-stroke').addEventListener('click', () => {
+      state.stroke = !state.stroke;
+      applyState();
+    });
+    document.getElementById('btn-fx-led').addEventListener('click', () => {
+      state.led = !state.led;
+      applyState();
+    });
+    document.getElementById('btn-fx-mirror').addEventListener('click', () => {
+      state.mirror = !state.mirror;
+      applyState();
+    });
+    document.getElementById('btn-fx-flash').addEventListener('click', () => {
+      state.flash = !state.flash;
       applyState();
     });
 
-    document.querySelectorAll('#bg-swatches .swatch').forEach(sw => {
-      sw.addEventListener('click', () => {
-        document.querySelectorAll('#bg-swatches .swatch').forEach(s => s.classList.remove('active'));
-        sw.classList.add('active');
-        state.bgColor = sw.dataset.bgcolor;
-        applyState();
-      });
-    });
-    document.getElementById('custom-bgcolor').addEventListener('input', (e) => {
-      state.bgColor = e.target.value;
-      applyState();
-    });
+    window.addEventListener('resize', resetPositions);
 
-    // Presets click
-    document.querySelectorAll('#presets-group .opt-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const pKey = btn.dataset.preset;
-        if (PRESETS[pKey]) {
-          Object.assign(state, PRESETS[pKey]);
-          applyState();
-          resetPosition();
-          if (window.Toolbox && window.Toolbox.system) {
-            window.Toolbox.system.showToast('已载入预设: ' + btn.textContent, 'success');
-          }
-        }
-      });
-    });
-
-    // Load saved settings from Host Bridge
-    function initBridge() {
-      if (window.Toolbox) {
-        // Keep screen awake
-        if (window.Toolbox.system) {
-          window.Toolbox.system.setKeepScreenOn(true);
-        }
-        // Load storage
-        if (window.Toolbox.storage) {
-          window.Toolbox.storage.get('bulletin_settings').then(saved => {
-            if (saved && typeof saved === 'object') {
-              Object.assign(state, saved);
-              applyState();
-              resetPosition();
-            }
-          }).catch(console.error);
-        }
-      }
-    }
-
-    window.addEventListener('toolboxready', initBridge);
-    if (window.Toolbox) initBridge();
-
-    // Start
+    // Initial setup
     applyState();
-    resetPosition();
     lastTime = performance.now();
-    animFrame = requestAnimationFrame(tick);
-    pingActivity();
+    animFrame = requestAnimationFrame(loop);
+    triggerToolbarVisibility();
+
+    // Auto fade hint after 5s
+    setTimeout(() => {
+      tapHint.classList.add('fade-out');
+    }, 5000);
+
+    // Keep screen on if bridge is available
+    if (window.Toolbox && window.Toolbox.system && window.Toolbox.system.keepScreenOn) {
+      window.Toolbox.system.keepScreenOn(true);
+    }
   </script>
 </body>
 </html>

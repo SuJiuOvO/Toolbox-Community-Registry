@@ -2,82 +2,100 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>SSH 安全终端 - SSH Terminal</title>
   <style>
     :root {
-      --bg: #090d16;
-      --term-bg: #0b0f19;
-      --card-bg: #151d2f;
-      --card-border: #243048;
-      --text: #e2e8f0;
-      --text-muted: #8392a8;
-      --primary: #38bdf8;
-      --primary-hover: #0284c7;
-      --danger: #ef4444;
-      --success: #10b981;
-      --warning: #f59e0b;
-      --font-mono: "Cascadia Code", "Fira Code", Consolas, Menlo, monospace;
+      --bg: #0A0E17;
+      --term-bg: #070A10;
+      --card-bg: #131A29;
+      --card-surface: #1B2438;
+      --card-border: rgba(255, 255, 255, 0.09);
+      --card-hover: #222E47;
+      --text: #F8FAFC;
+      --text-muted: #94A3B8;
+      --primary: #38BDF8;
+      --primary-hover: #0284C7;
+      --primary-tonal: rgba(56, 189, 248, 0.14);
+      --danger: #EF4444;
+      --danger-hover: #DC2626;
+      --danger-tonal: rgba(239, 68, 68, 0.14);
+      --success: #10B981;
+      --warning: #F59E0B;
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      --font-mono: ui-monospace, SFMono-Regular, "Cascadia Code", "Fira Code", Menlo, Consolas, monospace;
     }
 
     [data-theme="light"] {
-      --bg: #f1f5f9;
-      --term-bg: #ffffff;
-      --card-bg: #f8fafc;
-      --card-border: #cbd5e1;
-      --text: #0f172a;
-      --text-muted: #64748b;
-      --primary: #0284c7;
-      --primary-hover: #0369a1;
+      --bg: #F1F5F9;
+      --term-bg: #FFFFFF;
+      --card-bg: #FFFFFF;
+      --card-surface: #F8FAFC;
+      --card-border: rgba(0, 0, 0, 0.08);
+      --card-hover: #F1F5F9;
+      --text: #0F172A;
+      --text-muted: #64748B;
+      --primary: #0284C7;
+      --primary-hover: #0369A1;
+      --primary-tonal: rgba(2, 132, 199, 0.12);
+      --danger-tonal: rgba(239, 68, 68, 0.1);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
+
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background: var(--bg);
+      font-family: var(--font-sans);
+      background-color: var(--bg);
       color: var(--text);
       display: flex;
       flex-direction: column;
       height: 100vh;
       overflow: hidden;
       user-select: none;
+      -webkit-font-smoothing: antialiased;
     }
 
+    /* Minimal Connected Header Bar */
     header {
       background: var(--card-bg);
       border-bottom: 1px solid var(--card-border);
-      padding: 10px 16px;
+      padding: 8px 16px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 12px;
       flex-shrink: 0;
       z-index: 10;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
     }
 
-    .brand {
+    .header-left {
       display: flex;
       align-items: center;
       gap: 10px;
-      font-size: 15px;
-      font-weight: 600;
+      min-width: 0;
     }
 
-    .brand svg {
+    .brand-icon {
       width: 20px;
       height: 20px;
       fill: var(--primary);
+      flex-shrink: 0;
     }
 
-    .status-pill {
+    .status-capsule {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      padding: 3px 10px;
+      padding: 4px 10px;
       border-radius: 9999px;
       font-size: 12px;
       background: rgba(255, 255, 255, 0.06);
       border: 1px solid var(--card-border);
+      max-width: 280px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .status-dot {
@@ -85,49 +103,270 @@
       height: 8px;
       border-radius: 50%;
       background: var(--text-muted);
+      flex-shrink: 0;
     }
 
-    .status-dot.connected { background: var(--success); box-shadow: 0 0 8px var(--success); }
-    .status-dot.connecting { background: var(--warning); animation: pulse 1s infinite alternate; }
+    .status-dot.connected {
+      background: var(--success);
+      box-shadow: 0 0 8px var(--success);
+    }
 
-    @keyframes pulse { from { opacity: 0.4; } to { opacity: 1; } }
+    .status-dot.connecting {
+      background: var(--warning);
+      animation: pulse 1s infinite alternate;
+    }
+
+    @keyframes pulse { from { opacity: 0.3; } to { opacity: 1; } }
 
     .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    .icon-btn {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--card-border);
+      color: var(--text);
+      padding: 5px 9px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.15s ease;
+    }
+
+    .icon-btn:hover {
+      background: rgba(255, 255, 255, 0.16);
+    }
+
+    .icon-btn-danger {
+      background: var(--danger-tonal);
+      color: #F87171;
+      border-color: rgba(239, 68, 68, 0.25);
+    }
+
+    .icon-btn-danger:hover {
+      background: var(--danger);
+      color: #FFFFFF;
+      border-color: var(--danger);
+    }
+
+    /* Disconnected State: Elegant Server Connection Dashboard */
+    #dashboard-view {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+    }
+
+    .conn-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      width: 100%;
+      max-width: 580px;
+      padding: 20px 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      box-shadow: 0 8px 30px -4px rgba(0, 0, 0, 0.35);
+    }
+
+    .card-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--card-border);
+      padding-bottom: 12px;
+    }
+
+    .card-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text);
       display: flex;
       align-items: center;
       gap: 8px;
     }
 
-    .btn {
+    .card-subtitle {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    /* Profiles Pills */
+    .profiles-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      scrollbar-width: none;
+    }
+
+    .profiles-bar::-webkit-scrollbar { display: none; }
+
+    .profile-pill {
+      background: var(--card-surface);
+      border: 1px solid var(--card-border);
+      color: var(--text-muted);
+      padding: 6px 12px;
+      border-radius: 9999px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      padding: 6px 14px;
-      border-radius: 6px;
-      background: var(--primary);
-      color: #ffffff;
-      border: none;
-      font-size: 13px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: background 0.15s;
+      white-space: nowrap;
+      transition: all 0.15s ease;
+      flex-shrink: 0;
     }
 
-    .btn:hover { background: var(--primary-hover); }
-    .btn-secondary { background: var(--card-border); color: var(--text); }
-    .btn-secondary:hover { background: rgba(255, 255, 255, 0.15); }
-    .btn-danger { background: var(--danger); }
-    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .profile-pill:hover {
+      background: var(--card-hover);
+      color: var(--text);
+    }
 
-    /* Terminal Container */
+    .profile-pill.active {
+      background: var(--primary-tonal);
+      color: var(--primary);
+      border-color: var(--primary);
+    }
+
+    .profile-pill-delete {
+      font-size: 14px;
+      color: var(--text-muted);
+      padding: 0 2px;
+    }
+
+    .profile-pill-delete:hover {
+      color: var(--danger);
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-label {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .form-row {
+      display: flex;
+      gap: 10px;
+    }
+
+    .input-field {
+      width: 100%;
+      padding: 9px 12px;
+      border-radius: 8px;
+      background: var(--bg);
+      border: 1px solid var(--card-border);
+      color: var(--text);
+      font-size: 13.5px;
+      outline: none;
+      transition: border-color 0.15s ease;
+    }
+
+    .input-field:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+    }
+
+    .auth-tabs {
+      display: flex;
+      background: var(--bg);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 3px;
+      gap: 4px;
+    }
+
+    .auth-tab {
+      flex: 1;
+      padding: 6px 10px;
+      border-radius: 6px;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.15s ease;
+    }
+
+    .auth-tab.active {
+      background: var(--card-bg);
+      color: var(--text);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    .key-textarea {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      height: 90px;
+      resize: vertical;
+      line-height: 1.4;
+    }
+
+    .btn-primary-large {
+      width: 100%;
+      padding: 12px;
+      border-radius: 9px;
+      background: var(--primary);
+      color: #0A0E17;
+      font-size: 14.5px;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: background 0.15s ease, transform 0.1s ease;
+      box-shadow: 0 4px 14px rgba(56, 189, 248, 0.25);
+    }
+
+    .btn-primary-large:hover {
+      background: var(--primary-hover);
+      color: #FFFFFF;
+    }
+
+    .btn-primary-large:active {
+      transform: scale(0.99);
+    }
+
+    /* Connected State: Terminal Workspace */
+    #terminal-view {
+      flex: 1;
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+      background: var(--term-bg);
+    }
+
     #terminal-container {
       flex: 1;
-      background: var(--term-bg);
       padding: 12px 14px;
       overflow-y: auto;
       overflow-x: hidden;
       font-family: var(--font-mono);
-      font-size: 13px;
+      font-size: 13.5px;
       line-height: 1.45;
       white-space: pre-wrap;
       word-break: break-all;
@@ -139,7 +378,7 @@
     .ansi-cursor {
       display: inline-block;
       width: 8px;
-      height: 15px;
+      height: 16px;
       vertical-align: middle;
       background: var(--primary);
       animation: blink 1s step-end infinite;
@@ -147,235 +386,238 @@
 
     @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
-    /* ANSI Colors */
-    .c-black { color: #64748b; }
-    .c-red { color: #ef4444; }
-    .c-green { color: #10b981; }
-    .c-yellow { color: #f59e0b; }
-    .c-blue { color: #3b82f6; }
-    .c-magenta { color: #ec4899; }
-    .c-cyan { color: #06b6d4; }
-    .c-white { color: #f8fafc; }
-    .c-bold { font-weight: bold; }
-    .c-dim { opacity: 0.7; }
-    .c-underline { text-decoration: underline; }
-
-    /* Virtual Keyboard Helper Bar */
+    /* Virtual Keyboard Bar */
     #virtual-bar {
       background: var(--card-bg);
       border-top: 1px solid var(--card-border);
-      padding: 6px 12px;
+      padding: 6px 10px;
       display: flex;
       gap: 6px;
       overflow-x: auto;
+      scrollbar-width: none;
       flex-shrink: 0;
     }
+
+    #virtual-bar::-webkit-scrollbar { display: none; }
 
     .key-btn {
-      padding: 6px 10px;
-      background: var(--bg);
+      padding: 6px 11px;
+      background: rgba(255, 255, 255, 0.06);
       border: 1px solid var(--card-border);
-      border-radius: 4px;
+      border-radius: 6px;
       color: var(--text);
-      font-size: 12px;
+      font-size: 12.5px;
       font-family: var(--font-mono);
+      font-weight: 600;
       cursor: pointer;
       flex-shrink: 0;
-      user-select: none;
+      white-space: nowrap;
+      transition: background 0.1s ease;
     }
 
-    .key-btn:active { background: var(--primary); color: #fff; }
+    .key-btn:active {
+      background: var(--primary);
+      color: #0A0E17;
+    }
 
-    /* Modal */
+    /* Modal / Alert Dialog Backdrop */
     .modal-backdrop {
       position: fixed;
       inset: 0;
-      background: rgba(11, 15, 25, 0.85);
-      backdrop-filter: blur(4px);
+      background: rgba(0, 0, 0, 0.65);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
       display: flex;
       align-items: center;
       justify-content: center;
       z-index: 100;
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.2s;
+      transition: opacity 0.2s ease;
     }
 
-    .modal-backdrop.show { opacity: 1; pointer-events: auto; }
+    .modal-backdrop.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
 
-    .modal-dialog {
+    .modal-box {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
-      border-radius: 10px;
+      border-radius: 12px;
       width: 90%;
-      max-width: 500px;
+      max-width: 440px;
+      padding: 20px;
       display: flex;
       flex-direction: column;
-      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.6);
-      overflow: hidden;
+      gap: 14px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
     }
 
-    .modal-header {
-      padding: 14px 18px;
-      border-bottom: 1px solid var(--card-border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      font-weight: 600;
-    }
-
-    .modal-body {
-      padding: 18px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      font-size: 13px;
-    }
-
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .form-group label {
-      color: var(--text-muted);
-      font-size: 12px;
-    }
-
-    .form-row {
-      display: flex;
-      gap: 10px;
-    }
-
-    input[type="text"], input[type="password"], input[type="number"], select, textarea {
-      padding: 8px 12px;
-      border-radius: 6px;
-      background: var(--bg);
-      border: 1px solid var(--card-border);
+    .modal-box-title {
+      font-size: 16px;
+      font-weight: 700;
       color: var(--text);
-      font-size: 13px;
-      outline: none;
     }
 
-    input:focus, textarea:focus, select:focus {
-      border-color: var(--primary);
+    .modal-box-msg {
+      font-size: 13.5px;
+      color: var(--text-muted);
+      line-height: 1.5;
     }
 
-    textarea {
-      font-family: var(--font-mono);
-      height: 90px;
-      resize: vertical;
-    }
-
-    .modal-footer {
-      padding: 12px 18px;
-      border-top: 1px solid var(--card-border);
+    .modal-box-actions {
       display: flex;
-      align-items: center;
       justify-content: flex-end;
       gap: 10px;
+      margin-top: 6px;
     }
   </style>
 </head>
 <body>
 
+  <!-- Top Minimal Header Bar -->
   <header>
-    <div class="brand">
-      <svg viewBox="0 0 24 24"><rect x="2.5" y="3.5" width="19" height="17" rx="4.5" fill="currentColor" fill-opacity="0.22"/><path d="m6.8 10 3 3-3 3m5.4 0h4.9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="5.3" cy="6" r="0.8" fill="currentColor"/><circle cx="7.2" cy="6" r="0.8" fill="currentColor"/><circle cx="9.1" cy="6" r="0.8" fill="currentColor"/></svg>
-      <span>SSH 安全终端</span>
-      <div class="status-pill">
+    <div class="header-left">
+      <svg class="brand-icon" viewBox="0 0 24 24"><rect x="2.5" y="3.5" width="19" height="17" rx="4.5" fill="currentColor" fill-opacity="0.22"/><path d="m6.8 10 3 3-3 3m5.4 0h4.9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="5.3" cy="6" r="0.8" fill="currentColor"/><circle cx="7.2" cy="6" r="0.8" fill="currentColor"/><circle cx="9.1" cy="6" r="0.8" fill="currentColor"/></svg>
+      <span style="font-weight:700;font-size:14.5px;">SSH 安全终端</span>
+      <div class="status-capsule">
         <div class="status-dot" id="status-dot"></div>
         <span id="status-text">未连接</span>
       </div>
     </div>
 
     <div class="header-actions">
-      <select id="profile-select" style="max-width:180px;">
-        <option value="">快速连接 / 新建配置</option>
-      </select>
-      <button class="btn btn-secondary" id="btn-edit-profile">编辑配置</button>
-      <button class="btn" id="btn-connect">连接</button>
-      <button class="btn btn-danger" id="btn-disconnect" style="display:none;">断开</button>
+      <!-- Zoom controls for terminal -->
+      <div id="zoom-controls" style="display:none;align-items:center;gap:4px;">
+        <button class="icon-btn" onclick="adjustZoom(-2)" title="缩小字体">A-</button>
+        <button class="icon-btn" onclick="adjustZoom(2)" title="放大字体">A+</button>
+        <button class="icon-btn" onclick="copyAllOutput()" title="复制全部终端文本">📋 复制</button>
+      </div>
+      <!-- Disconnect button in header -->
+      <button class="icon-btn icon-btn-danger" id="btn-disconnect" style="display:none;" onclick="confirmDisconnect()">
+        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        <span>断开连接</span>
+      </button>
     </div>
   </header>
 
-  <div id="terminal-container" tabindex="0">
-    <span style="color:var(--text-muted);">[Toolbox SSH Terminal v2.0 - 准备就绪]</span><br>
-    <span style="color:var(--text-muted);">点击上方「连接」或配置连接信息即可开启远程交互终端。</span><br><br>
-    <span id="terminal-output"></span><span class="ansi-cursor" id="cursor"></span>
-  </div>
-
-  <div id="virtual-bar">
-    <button class="key-btn" onclick="sendSpecialKey('\x1b')">ESC</button>
-    <button class="key-btn" onclick="sendSpecialKey('\t')">TAB</button>
-    <button class="key-btn" onclick="sendSpecialKey('\x03')">Ctrl+C</button>
-    <button class="key-btn" onclick="sendSpecialKey('\x04')">Ctrl+D</button>
-    <button class="key-btn" onclick="sendSpecialKey('\x1a')">Ctrl+Z</button>
-    <button class="key-btn" onclick="sendSpecialKey('\x1b[A')">↑</button>
-    <button class="key-btn" onclick="sendSpecialKey('\x1b[B')">↓</button>
-    <button class="key-btn" onclick="sendSpecialKey('\x1b[D')">←</button>
-    <button class="key-btn" onclick="sendSpecialKey('\x1b[C')">→</button>
-    <button class="key-btn" onclick="sendSpecialKey('clear\n')">Clear</button>
-  </div>
-
-  <!-- Connection Configuration Modal -->
-  <div class="modal-backdrop" id="profile-modal">
-    <div class="modal-dialog">
-      <div class="modal-header">
-        <div>SSH 连接配置</div>
-        <button style="background:none;border:none;color:var(--text-muted);font-size:20px;cursor:pointer;" onclick="closeProfileModal()">&times;</button>
-      </div>
-      <div class="modal-body">
-        <div class="form-group">
-          <label>配置名称 (可选)</label>
-          <input type="text" id="cfg-name" placeholder="例如：开发测试服务器">
-        </div>
-
-        <div class="form-row">
-          <div class="form-group" style="flex:3;">
-            <label>主机地址 (IP / 域名)</label>
-            <input type="text" id="cfg-host" placeholder="192.168.1.100" required>
+  <!-- 1. Disconnected State View: Server Connection Dashboard -->
+  <main id="dashboard-view">
+    <div class="conn-card">
+      <div class="card-title-row">
+        <div>
+          <div class="card-title">
+            <span>⚡ 服务器连接配置</span>
           </div>
-          <div class="form-group" style="flex:1;">
-            <label>端口</label>
-            <input type="number" id="cfg-port" value="22" min="1" max="65535">
-          </div>
+          <div class="card-subtitle">凭据经本地 AES-256 加密保存，仅在本机解密，保障资产安全</div>
         </div>
-
-        <div class="form-group">
-          <label>登录用户名</label>
-          <input type="text" id="cfg-user" placeholder="root" required>
-        </div>
-
-        <div class="form-group">
-          <label>认证方式</label>
-          <select id="cfg-auth">
-            <option value="password">密码认证</option>
-            <option value="privateKey">私钥认证 (PEM / OpenSSH)</option>
-          </select>
-        </div>
-
-        <div class="form-group" id="group-password">
-          <label>SSH 登录密码</label>
-          <input type="password" id="cfg-password" placeholder="请输入密码">
-        </div>
-
-        <div class="form-group" id="group-privatekey" style="display:none;">
-          <label>私钥内容 (PEM / OpenSSH)</label>
-          <textarea id="cfg-privatekey" placeholder="-----BEGIN OPENSSH PRIVATE KEY-----..."></textarea>
-          <label style="margin-top:6px;">私钥口令 (Passphrase，如无则留空)</label>
-          <input type="password" id="cfg-passphrase" placeholder="私钥密码口令">
-        </div>
-
-        <label style="display:flex;align-items:center;gap:6px;cursor:pointer;margin-top:4px;">
-          <input type="checkbox" id="cfg-save-profile" checked>
-          <span>将该配置保存至本地（密码/私钥不会落盘，仅留存连接元数据）</span>
-        </label>
+        <button class="icon-btn" onclick="resetFormToNew()" style="font-size:12px;">+ 新建配置</button>
       </div>
-      <div class="modal-footer">
-        <button class="btn btn-secondary" onclick="closeProfileModal()">取消</button>
-        <button class="btn" onclick="startConnectionFromModal()">保存并连接</button>
+
+      <!-- Saved Profiles Carousel -->
+      <div class="form-group" id="profiles-section" style="display:none;">
+        <label class="form-label">已保存的服务器配置</label>
+        <div class="profiles-bar" id="profiles-bar">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+
+      <!-- Name & Host & Port -->
+      <div class="form-group">
+        <label class="form-label">连接别名 (可选)</label>
+        <input type="text" class="input-field" id="cfg-name" placeholder="例如：阿里云生产机、树莓派4B">
+      </div>
+
+      <div class="form-row">
+        <div class="form-group" style="flex:3;">
+          <label class="form-label">主机地址 (IP / 域名)</label>
+          <input type="text" class="input-field" id="cfg-host" placeholder="192.168.1.100 或 server.com" required>
+        </div>
+        <div class="form-group" style="flex:1;">
+          <label class="form-label">端口</label>
+          <input type="number" class="input-field" id="cfg-port" value="22" min="1" max="65535">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">登录用户名</label>
+        <input type="text" class="input-field" id="cfg-user" value="root" placeholder="root" required>
+      </div>
+
+      <!-- Auth Method Selector -->
+      <div class="form-group">
+        <label class="form-label">身份认证方式</label>
+        <div class="auth-tabs">
+          <button class="auth-tab active" id="tab-auth-pwd" onclick="switchAuthMethod('password')">🔑 密码认证</button>
+          <button class="auth-tab" id="tab-auth-key" onclick="switchAuthMethod('privateKey')">📜 私钥认证 (PEM/OpenSSH)</button>
+        </div>
+      </div>
+
+      <!-- Password Auth Field -->
+      <div class="form-group" id="group-password">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <label class="form-label">SSH 登录密码</label>
+          <a href="javascript:void(0)" onclick="togglePasswordVisibility()" id="toggle-pwd-link" style="font-size:11.5px;color:var(--primary);text-decoration:none;">显示密码</a>
+        </div>
+        <input type="password" class="input-field" id="cfg-password" placeholder="输入主机密码">
+      </div>
+
+      <!-- Key Auth Fields -->
+      <div class="form-group" id="group-key" style="display:none;">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <label class="form-label">PEM / OpenSSH 私钥内容</label>
+          <button class="icon-btn" onclick="importKeyFile()" style="padding:2px 8px;font-size:11.5px;">📁 导入私钥文件</button>
+        </div>
+        <textarea class="input-field key-textarea" id="cfg-private-key" placeholder="-----BEGIN OPENSSH PRIVATE KEY----- 或 RSA 私钥内容"></textarea>
+        <input type="password" class="input-field" id="cfg-passphrase" placeholder="私钥口令 (若无留空)" style="margin-top:6px;">
+      </div>
+
+      <!-- Remember Credentials Checkbox -->
+      <label style="display:flex;align-items:center;gap:8px;font-size:12.5px;cursor:pointer;color:var(--text-muted);">
+        <input type="checkbox" id="cfg-remember" checked style="accent-color:var(--primary);width:16px;height:16px;">
+        <span>记住此连接配置与凭据 (本地 AES-256 加密保存)</span>
+      </label>
+
+      <!-- Primary Connect Button -->
+      <button class="btn-primary-large" id="btn-connect-dashboard" onclick="startConnection()">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14h2v2h-2zm0-10h2v8h-2z"/></svg>
+        <span id="btn-connect-text">建立 SSH 连接</span>
+      </button>
+    </div>
+  </main>
+
+  <!-- 2. Connected State View: Terminal Screen -->
+  <main id="terminal-view">
+    <div id="terminal-container" tabindex="0">
+      <span id="terminal-output"></span><span class="ansi-cursor" id="cursor"></span>
+    </div>
+
+    <!-- Virtual Bar -->
+    <div id="virtual-bar">
+      <button class="key-btn" onclick="sendSpecialKey('\x1b')">ESC</button>
+      <button class="key-btn" onclick="sendSpecialKey('\t')">TAB</button>
+      <button class="key-btn" onclick="sendSpecialKey('\x03')">Ctrl+C</button>
+      <button class="key-btn" onclick="sendSpecialKey('\x04')">Ctrl+D</button>
+      <button class="key-btn" onclick="sendSpecialKey('\x1a')">Ctrl+Z</button>
+      <button class="key-btn" onclick="sendSpecialKey('\x1b[A')">↑</button>
+      <button class="key-btn" onclick="sendSpecialKey('\x1b[B')">↓</button>
+      <button class="key-btn" onclick="sendSpecialKey('\x1b[D')">←</button>
+      <button class="key-btn" onclick="sendSpecialKey('\x1b[C')">→</button>
+      <button class="key-btn" onclick="copyAllOutput()">复制</button>
+      <button class="key-btn" onclick="pasteFromClipboard()">粘贴</button>
+      <button class="key-btn" onclick="clearTerminal()">清屏</button>
+    </div>
+  </main>
+
+  <!-- Disconnect Confirmation Dialog -->
+  <div class="modal-backdrop" id="disconnect-dialog">
+    <div class="modal-box">
+      <div class="modal-box-title">断开 SSH 连接？</div>
+      <div class="modal-box-msg" id="disconnect-msg">确定要结束当前的 SSH 会话并返回连接配置吗？</div>
+      <div class="modal-box-actions">
+        <button class="icon-btn" onclick="closeDisconnectDialog()" style="padding:7px 14px;">取消</button>
+        <button class="icon-btn icon-btn-danger" onclick="executeDisconnect()" style="padding:7px 14px;">确认断开</button>
       </div>
     </div>
   </div>
@@ -383,10 +625,20 @@
   <script>
     let isConnected = false;
     let profiles = [];
-    let termOutput = document.getElementById('terminal-output');
-    let termContainer = document.getElementById('terminal-container');
+    let currentAuthMethod = 'password';
+    let termFontSize = 13.5;
+    let rawTerminalText = '';
 
-    // 初始化 Bridge
+    const statusDot = document.getElementById('status-dot');
+    const statusText = document.getElementById('status-text');
+    const dashboardView = document.getElementById('dashboard-view');
+    const terminalView = document.getElementById('terminal-view');
+    const termContainer = document.getElementById('terminal-container');
+    const termOutput = document.getElementById('terminal-output');
+    const zoomControls = document.getElementById('zoom-controls');
+    const btnDisconnect = document.getElementById('btn-disconnect');
+    const disconnectDialog = document.getElementById('disconnect-dialog');
+
     function initBridge() {
       if (!window.Toolbox) return;
 
@@ -395,14 +647,11 @@
       });
 
       window.Toolbox.on('ssh_output', (data) => {
-        if (data && data.text) {
-          appendAnsiText(data.text);
-        }
+        if (data && data.text) appendTerminalData(data.text);
       });
 
       window.Toolbox.on('ssh_closed', (data) => {
-        setConnectedState(false);
-        appendAnsiText(`\r\n\x1b[31m[SSH 会话已关闭: ${data.message || '连接断开'}]\x1b[0m\r\n`);
+        handleDisconnected(data ? data.message : '连接已断开');
       });
 
       loadProfiles();
@@ -411,234 +660,313 @@
     window.addEventListener('toolboxready', initBridge);
     if (window.Toolbox) initBridge();
 
-    // 认证方式切换
-    document.getElementById('cfg-auth').addEventListener('change', (e) => {
-      const isKey = e.target.value === 'privateKey';
-      document.getElementById('group-password').style.display = isKey ? 'none' : 'flex';
-      document.getElementById('group-privatekey').style.display = isKey ? 'flex' : 'none';
-    });
-
-    // 配置选择
-    document.getElementById('profile-select').addEventListener('change', (e) => {
-      const auth = e.target.value;
-      if (!auth) {
-        openProfileModal();
-        return;
-      }
-      const p = profiles.find(item => item.host + ':' + item.port === auth);
-      if (p) populateModal(p);
-    });
-
-    document.getElementById('btn-edit-profile').addEventListener('click', openProfileModal);
-    document.getElementById('btn-connect').addEventListener('click', () => {
-      const select = document.getElementById('profile-select');
-      if (!select.value) {
-        openProfileModal();
-      } else {
-        const p = profiles.find(item => item.host + ':' + item.port === select.value);
-        if (p) {
-          populateModal(p);
-          openProfileModal();
-        }
-      }
-    });
-
-    document.getElementById('btn-disconnect').addEventListener('click', async () => {
-      if (window.Toolbox) {
-        await window.Toolbox.ssh.disconnect();
-      }
-      setConnectedState(false);
-    });
-
     async function loadProfiles() {
       try {
-        profiles = await window.Toolbox.ssh.loadProfiles() || [];
-        const select = document.getElementById('profile-select');
-        select.innerHTML = '<option value="">快速连接 / 新建配置</option>' + profiles.map(p => `
-          <option value="${p.host}:${p.port}">${escapeHtml(p.name || p.username + '@' + p.host)}</option>
-        `).join('');
-      } catch (e) {
-        console.error('Failed to load SSH profiles', e);
-      }
+        if (!window.Toolbox || !window.Toolbox.ssh) return;
+        const res = await window.Toolbox.ssh.loadProfiles();
+        profiles = res.profiles || [];
+        renderProfilesBar();
+      } catch (_) {}
     }
 
-    function populateModal(p) {
+    function renderProfilesBar() {
+      const section = document.getElementById('profiles-section');
+      const bar = document.getElementById('profiles-bar');
+      if (!profiles || profiles.length === 0) {
+        section.style.display = 'none';
+        return;
+      }
+      section.style.display = 'flex';
+      bar.innerHTML = profiles.map(p => `
+        <div class="profile-pill" onclick="selectProfile('${escapeHtml(p.identity)}')">
+          <span>${escapeHtml(p.name || p.host)}</span>
+          <span style="font-size:10px;opacity:0.6;">(${escapeHtml(p.username)}@${escapeHtml(p.host)})</span>
+          <span class="profile-pill-delete" onclick="event.stopPropagation();deleteProfile('${escapeHtml(p.identity)}')" title="删除此配置">&times;</span>
+        </div>
+      `).join('');
+    }
+
+    function selectProfile(identity) {
+      const p = profiles.find(item => item.identity === identity);
+      if (!p) return;
       document.getElementById('cfg-name').value = p.name || '';
       document.getElementById('cfg-host').value = p.host || '';
       document.getElementById('cfg-port').value = p.port || 22;
-      document.getElementById('cfg-user').value = p.username || '';
-      document.getElementById('cfg-auth').value = p.authMethod || 'password';
-      document.getElementById('cfg-auth').dispatchEvent(new Event('change'));
+      document.getElementById('cfg-user').value = p.username || 'root';
+      document.getElementById('cfg-remember').checked = p.rememberCredentials !== false;
+      switchAuthMethod(p.authMethod || 'password');
+      if (p.password) document.getElementById('cfg-password').value = p.password;
+      if (p.privateKey) document.getElementById('cfg-private-key').value = p.privateKey;
+      if (p.passphrase) document.getElementById('cfg-passphrase').value = p.passphrase;
     }
 
-    function openProfileModal() {
-      document.getElementById('profile-modal').classList.add('show');
+    async function deleteProfile(identity) {
+      if (!window.Toolbox || !window.Toolbox.ssh) return;
+      const confirm = await window.Toolbox.dialog.confirm('删除配置', `确定要删除配置 [${identity}] 吗？`);
+      if (!confirm) return;
+      await window.Toolbox.ssh.deleteProfile(identity);
+      profiles = profiles.filter(p => p.identity !== identity);
+      renderProfilesBar();
     }
 
-    function closeProfileModal() {
-      document.getElementById('profile-modal').classList.remove('show');
+    function resetFormToNew() {
+      document.getElementById('cfg-name').value = '';
+      document.getElementById('cfg-host').value = '';
+      document.getElementById('cfg-port').value = 22;
+      document.getElementById('cfg-user').value = 'root';
+      document.getElementById('cfg-password').value = '';
+      document.getElementById('cfg-private-key').value = '';
+      document.getElementById('cfg-passphrase').value = '';
+      switchAuthMethod('password');
     }
 
-    async function startConnectionFromModal() {
+    function switchAuthMethod(method) {
+      currentAuthMethod = method;
+      document.getElementById('tab-auth-pwd').classList.toggle('active', method === 'password');
+      document.getElementById('tab-auth-key').classList.toggle('active', method === 'privateKey');
+      document.getElementById('group-password').style.display = method === 'password' ? 'flex' : 'none';
+      document.getElementById('group-key').style.display = method === 'privateKey' ? 'flex' : 'none';
+    }
+
+    function togglePasswordVisibility() {
+      const input = document.getElementById('cfg-password');
+      const link = document.getElementById('toggle-pwd-link');
+      if (input.type === 'password') {
+        input.type = 'text';
+        link.textContent = '隐藏密码';
+      } else {
+        input.type = 'password';
+        link.textContent = '显示密码';
+      }
+    }
+
+    async function importKeyFile() {
+      if (!window.Toolbox || !window.Toolbox.file) return;
+      try {
+        const paths = await window.Toolbox.file.pickFiles({ allowMultiple: false });
+        if (paths && paths.length > 0) {
+          const content = await window.Toolbox.file.readText(paths[0]);
+          document.getElementById('cfg-private-key').value = content;
+        }
+      } catch (e) {
+        window.Toolbox.system.showToast('读取私钥文件失败: ' + e.message, 'error');
+      }
+    }
+
+    async function startConnection() {
       const host = document.getElementById('cfg-host').value.trim();
       const port = parseInt(document.getElementById('cfg-port').value) || 22;
-      const username = document.getElementById('cfg-user').value.trim();
+      const user = document.getElementById('cfg-user').value.trim();
       const name = document.getElementById('cfg-name').value.trim();
-      const authMethod = document.getElementById('cfg-auth').value;
-      const password = document.getElementById('cfg-password').value;
-      const privateKey = document.getElementById('cfg-privatekey').value;
+      const remember = document.getElementById('cfg-remember').checked;
+      const pwd = document.getElementById('cfg-password').value;
+      const key = document.getElementById('cfg-private-key').value;
       const passphrase = document.getElementById('cfg-passphrase').value;
-      const shouldSave = document.getElementById('cfg-save-profile').checked;
 
-      if (!host || !username) {
-        window.Toolbox.system.showToast('请填写主机地址和用户名', 'error');
+      if (!host) {
+        window.Toolbox.system.showToast('请输入有效的主机 IP 或域名', 'warning');
+        return;
+      }
+      if (!user) {
+        window.Toolbox.system.showToast('请输入 SSH 登录用户名', 'warning');
         return;
       }
 
-      const profile = { name, host, port, username, authMethod };
+      const profile = {
+        name: name,
+        host: host,
+        port: port,
+        username: user,
+        authMethod: currentAuthMethod,
+        password: pwd,
+        privateKey: key,
+        passphrase: passphrase,
+        rememberCredentials: remember
+      };
 
-      closeProfileModal();
-      setConnectingState(true);
-      termOutput.innerHTML = '';
-      appendAnsiText(`\x1b[36m正在建立 SSH 安全隧道: ${username}@${host}:${port} ...\x1b[0m\r\n`);
+      setConnectingState(true, `${user}@${host}:${port}`);
 
       try {
-        if (shouldSave) {
+        if (remember && window.Toolbox && window.Toolbox.ssh) {
           await window.Toolbox.ssh.saveProfile(profile);
           loadProfiles();
         }
 
-        await window.Toolbox.ssh.connect({
-          profile,
-          password,
-          privateKey,
-          passphrase,
-          columns: 120,
-          rows: 32
-        });
-
-        setConnectedState(true);
-        termContainer.focus();
-      } catch (e) {
-        setConnectedState(false);
-        appendAnsiText(`\r\n\x1b[31m连接失败: ${e.message}\x1b[0m\r\n`);
-      }
-    }
-
-    function setConnectingState(connecting) {
-      const dot = document.getElementById('status-dot');
-      const text = document.getElementById('status-text');
-      if (connecting) {
-        dot.className = 'status-dot connecting';
-        text.textContent = '连接中...';
-      }
-    }
-
-    function setConnectedState(connected) {
-      isConnected = connected;
-      const dot = document.getElementById('status-dot');
-      const text = document.getElementById('status-text');
-      const btnConnect = document.getElementById('btn-connect');
-      const btnDisconnect = document.getElementById('btn-disconnect');
-
-      if (connected) {
-        dot.className = 'status-dot connected';
-        text.textContent = '已连接';
-        btnConnect.style.display = 'none';
-        btnDisconnect.style.display = 'inline-flex';
-      } else {
-        dot.className = 'status-dot';
-        text.textContent = '未连接';
-        btnConnect.style.display = 'inline-flex';
-        btnDisconnect.style.display = 'none';
-      }
-    }
-
-    // ANSI 终端简单转义渲染引擎
-    function appendAnsiText(raw) {
-      let html = '';
-      let i = 0;
-      let curClass = '';
-
-      while (i < raw.length) {
-        if (raw[i] === '\x1b' && raw[i + 1] === '[') {
-          let j = i + 2;
-          while (j < raw.length && !/[a-zA-Z]/.test(raw[j])) j++;
-          const code = raw.substring(i + 2, j);
-          const cmd = raw[j];
-
-          if (cmd === 'm') {
-            const parts = code.split(';');
-            for (const p of parts) {
-              const num = parseInt(p) || 0;
-              if (num === 0) curClass = '';
-              else if (num === 1) curClass += ' c-bold';
-              else if (num === 2) curClass += ' c-dim';
-              else if (num === 4) curClass += ' c-underline';
-              else if (num >= 30 && num <= 37) {
-                const colors = ['black', 'red', 'green', 'yellow', 'blue', 'magenta', 'cyan', 'white'];
-                curClass += ' c-' + colors[num - 30];
-              }
-            }
-          } else if (cmd === 'J' && code === '2') {
-            termOutput.innerHTML = '';
-          }
-          i = j + 1;
-        } else if (raw[i] === '\r') {
-          i++;
-        } else if (raw[i] === '\n') {
-          html += '<br>';
-          i++;
-        } else if (raw[i] === '\b') {
-          if (html.length > 0) html = html.slice(0, -1);
-          i++;
+        const res = await window.Toolbox.ssh.connect({ profile: profile });
+        if (res && res.succeeded) {
+          handleConnected(`${user}@${host}:${port}`);
         } else {
-          let ch = raw[i];
-          if (ch === '<') ch = '&lt;';
-          else if (ch === '>') ch = '&gt;';
-          else if (ch === '&') ch = '&amp;';
-          else if (ch === ' ') ch = '&nbsp;';
-
-          if (curClass) {
-            html += `<span class="${curClass}">${ch}</span>`;
-          } else {
-            html += ch;
-          }
-          i++;
+          handleDisconnected(res ? res.message : '连接失败');
         }
+      } catch (e) {
+        handleDisconnected(e.message || '连接发生异常');
       }
-
-      termOutput.insertAdjacentHTML('beforeend', html);
-      termContainer.scrollTop = termContainer.scrollHeight;
     }
 
-    // 键盘输入监听
-    termContainer.addEventListener('keydown', (e) => {
-      if (!isConnected) return;
-      e.preventDefault();
+    function setConnectingState(connecting, identity) {
+      if (connecting) {
+        statusDot.className = 'status-dot connecting';
+        statusText.textContent = '正在连接 ' + identity;
+        document.getElementById('btn-connect-dashboard').disabled = true;
+        document.getElementById('btn-connect-text').textContent = '正在建立安全通道...';
+      } else {
+        document.getElementById('btn-connect-dashboard').disabled = false;
+        document.getElementById('btn-connect-text').textContent = '建立 SSH 连接';
+      }
+    }
 
-      let key = e.key;
-      if (key === 'Enter') sendSpecialKey('\r');
-      else if (key === 'Backspace') sendSpecialKey('\x7f');
-      else if (key === 'Tab') sendSpecialKey('\t');
-      else if (key === 'Escape') sendSpecialKey('\x1b');
-      else if (key === 'ArrowUp') sendSpecialKey('\x1b[A');
-      else if (key === 'ArrowDown') sendSpecialKey('\x1b[B');
-      else if (key === 'ArrowRight') sendSpecialKey('\x1b[C');
-      else if (key === 'ArrowLeft') sendSpecialKey('\x1b[D');
-      else if (e.ctrlKey) {
-        const code = key.toUpperCase().charCodeAt(0);
-        if (code >= 64 && code <= 95) {
-          sendSpecialKey(String.fromCharCode(code - 64));
+    function handleConnected(identity) {
+      isConnected = true;
+      statusDot.className = 'status-dot connected';
+      statusText.textContent = '已连接 · ' + identity;
+
+      // Switch to Terminal Workspace
+      dashboardView.style.display = 'none';
+      terminalView.style.display = 'flex';
+      zoomControls.style.display = 'inline-flex';
+      btnDisconnect.style.display = 'inline-flex';
+
+      clearTerminal();
+      appendTerminalData(`\x1b[1;36m[Toolbox SSH] 成功连接至 ${identity}\x1b[0m\r\n`);
+      termContainer.focus();
+    }
+
+    function handleDisconnected(reason) {
+      isConnected = false;
+      statusDot.className = 'status-dot';
+      statusText.textContent = '未连接';
+
+      // Switch back to Dashboard View
+      dashboardView.style.display = 'flex';
+      terminalView.style.display = 'none';
+      zoomControls.style.display = 'none';
+      btnDisconnect.style.display = 'none';
+      setConnectingState(false);
+
+      if (reason) {
+        window.Toolbox.system.showToast(reason, 'info');
+      }
+    }
+
+    function confirmDisconnect() {
+      disconnectDialog.classList.add('show');
+    }
+
+    function closeDisconnectDialog() {
+      disconnectDialog.classList.remove('show');
+    }
+
+    async function executeDisconnect() {
+      closeDisconnectDialog();
+      try {
+        if (window.Toolbox && window.Toolbox.ssh) {
+          await window.Toolbox.ssh.disconnect();
         }
-      } else if (key.length === 1) {
-        sendSpecialKey(key);
+      } catch (_) {}
+      handleDisconnected('会话已断开');
+    }
+
+    function adjustZoom(delta) {
+      termFontSize = Math.max(9, Math.min(36, termFontSize + delta));
+      termContainer.style.fontSize = termFontSize + 'px';
+      window.Toolbox.system.showToast(`终端字体: ${termFontSize}px`, 'info');
+    }
+
+    async function copyAllOutput() {
+      const text = rawTerminalText.trim();
+      if (!text) {
+        window.Toolbox.system.showToast('终端当前无文本', 'info');
+        return;
+      }
+      try {
+        await navigator.clipboard.writeText(text);
+        window.Toolbox.system.showToast(`已复制全部终端输出 (${text.length} 字符)`, 'success');
+      } catch (_) {
+        if (window.Toolbox && window.Toolbox.system && window.Toolbox.system.copyText) {
+          window.Toolbox.system.copyText(text);
+          window.Toolbox.system.showToast(`已复制终端输出 (${text.length} 字符)`, 'success');
+        }
+      }
+    }
+
+    async function pasteFromClipboard() {
+      try {
+        const text = await navigator.clipboard.readText();
+        if (text && window.Toolbox && window.Toolbox.ssh) {
+          window.Toolbox.ssh.send(text);
+        }
+      } catch (_) {
+        window.Toolbox.system.showToast('无法读取剪贴板', 'warning');
+      }
+    }
+
+    function clearTerminal() {
+      termOutput.innerHTML = '';
+      rawTerminalText = '';
+    }
+
+    function sendSpecialKey(code) {
+      if (!isConnected || !window.Toolbox || !window.Toolbox.ssh) return;
+      window.Toolbox.ssh.send(code);
+      termContainer.focus();
+    }
+
+    // Terminal Keyboard Listener
+    termContainer.addEventListener('keydown', (e) => {
+      if (!isConnected || !window.Toolbox || !window.Toolbox.ssh) return;
+      if (e.key === 'Backspace') {
+        window.Toolbox.ssh.send('\x7f');
+        e.preventDefault();
+      } else if (e.key === 'Enter') {
+        window.Toolbox.ssh.send('\r');
+        e.preventDefault();
+      } else if (e.key === 'ArrowUp') {
+        window.Toolbox.ssh.send('\x1b[A');
+        e.preventDefault();
+      } else if (e.key === 'ArrowDown') {
+        window.Toolbox.ssh.send('\x1b[B');
+        e.preventDefault();
+      } else if (e.key === 'ArrowRight') {
+        window.Toolbox.ssh.send('\x1b[C');
+        e.preventDefault();
+      } else if (e.key === 'ArrowLeft') {
+        window.Toolbox.ssh.send('\x1b[D');
+        e.preventDefault();
+      } else if (e.key === 'Tab') {
+        window.Toolbox.ssh.send('\t');
+        e.preventDefault();
+      } else if (e.ctrlKey) {
+        const code = e.key.toUpperCase().charCodeAt(0);
+        if (code >= 65 && code <= 90) {
+          window.Toolbox.ssh.send(String.fromCharCode(code - 64));
+          e.preventDefault();
+        }
+      } else if (e.key.length === 1) {
+        window.Toolbox.ssh.send(e.key);
+        e.preventDefault();
       }
     });
 
-    function sendSpecialKey(str) {
-      if (!isConnected || !window.Toolbox) return;
-      window.Toolbox.ssh.send(str);
+    function appendTerminalData(raw) {
+      rawTerminalText += raw;
+      if (rawTerminalText.length > 100000) {
+        rawTerminalText = rawTerminalText.slice(-60000);
+      }
+      const html = ansiToHtml(raw);
+      const span = document.createElement('span');
+      span.innerHTML = html;
+      termOutput.appendChild(span);
+      termContainer.scrollTop = termContainer.scrollHeight;
+    }
+
+    function ansiToHtml(str) {
+      return escapeHtml(str)
+        .replace(/\x1b\[1;36m/g, '<span style="color:#38BDF8;font-weight:bold;">')
+        .replace(/\x1b\[1;32m/g, '<span style="color:#10B981;font-weight:bold;">')
+        .replace(/\x1b\[1;31m/g, '<span style="color:#EF4444;font-weight:bold;">')
+        .replace(/\x1b\[1;33m/g, '<span style="color:#F59E0B;font-weight:bold;">')
+        .replace(/\x1b\[0m/g, '</span>')
+        .replace(/\r\n|\r|\n/g, '<br>');
     }
 
     function escapeHtml(str) {
