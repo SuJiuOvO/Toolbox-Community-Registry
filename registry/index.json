@@ -2331,206 +2331,41 @@
     {
       "id": "petpet-generator",
       "name": "摸头 GIF 生成器",
-      "version": "1.2.2",
-      "minAppVersion": "1.0.0",
+      "version": "2.0.0",
+      "minAppVersion": "1.2.0",
       "category": "media",
       "platforms": [
         "universal"
       ],
-      "executionType": "quickjs",
-      "engineType": "quickjs",
+      "executionType": "webview",
+      "engineType": "webview",
+      "webViewRunner": {
+        "entry": "dist/index.html",
+        "allowClipboard": true,
+        "keepScreenOn": false,
+        "fullscreenOnStart": false,
+        "initialTheme": "dark"
+      },
       "author": "Community & A.Tools Reference",
-      "description": "【摸头表情包制作神器】全面对标 A.Tools 完整参数体系。将任意头像一键制作成摸头 (Petpet / Rua) 动态 GIF。直通目标分辨率管线，大尺寸输出纤毫毕现绝无马赛克；基于客户端原生 Alpha 隔离调色板量化器，实现真正的真·透明背景（人物黑发/眼瞳绝不穿孔）；支持微调模式 (X/Y偏移)、头像与手势独立翻转、速度/尺寸/挤压力度全自由调节，全内存链式极速秒级渲染，离线安全无残留。",
+      "description": "【摸头表情包制作神器】基于 Webview 动态富交互画板全新重构！60fps 实时预览揉捏动效，支持触屏手势/鼠标直接拖拽头像对齐抚摸动线、滚轮/双指捏合缩放；真·透明背景隔离量化（人物黑发/眼瞳绝不穿孔）；支持速度、挤压力度、镜像反转与目标分辨率直通秒级导出。",
       "icon": {
         "type": "code",
         "data": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\"><rect x=\"3\" y=\"3\" width=\"18\" height=\"18\" rx=\"5\" fill=\"currentColor\" fill-opacity=\"0.22\"/><circle cx=\"12\" cy=\"14\" r=\"4.5\" fill=\"currentColor\" fill-opacity=\"0.32\"/><path d=\"M7 9.5c2-2.5 6.5-3.5 10-.5\" stroke=\"currentColor\" stroke-width=\"2.2\" stroke-linecap=\"round\" fill=\"none\"/><path d=\"M14.5 7c1.3.6 2.3 1.8 2.5 3\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" fill=\"none\"/><path d=\"M9.5 13.8c.4-.7 1.2-.7 1.6 0m3.8 0c.4-.7 1.2-.7 1.6 0\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" fill=\"none\"/><path d=\"M12 16.2a1 1 0 0 1 1-.5\" stroke=\"currentColor\" stroke-width=\"1.2\" stroke-linecap=\"round\" fill=\"none\"/></svg>"
       },
-      "inputs": [
-        {
-          "id": "sourceImage",
-          "label": "选择头像或待揉捏图片 (支持批量多选)",
-          "type": "file_picker",
-          "required": true,
-          "allowMultiple": true,
-          "allowedExtensions": [
-            "png",
-            "jpg",
-            "jpeg",
-            "webp",
-            "gif",
-            "bmp"
-          ]
-        },
-        {
-          "id": "shape",
-          "label": "头像外形裁切",
-          "type": "select",
-          "defaultValue": "circle",
-          "options": [
-            {
-              "label": "⚪ 圆形裁切 (推荐，最适宜社交头像)",
-              "value": "circle"
-            },
-            {
-              "label": "⬜ 方形原图 (适合立绘、宠物原图)",
-              "value": "square"
-            }
-          ]
-        },
-        {
-          "id": "scale",
-          "label": "图片大小 (缩放比例 %)",
-          "type": "slider",
-          "defaultValue": 100,
-          "min": 50,
-          "max": 150,
-          "step": 5
-        },
-        {
-          "id": "squish",
-          "label": "挤压力度 (0.0 不变形，1.0 经典，2.0 极限超弹)",
-          "type": "slider",
-          "defaultValue": 1.0,
-          "min": 0.0,
-          "max": 2.0,
-          "step": 0.1
-        },
-        {
-          "id": "delayMs",
-          "label": "速度 (单帧间隔毫秒，越小越快，默认 50ms)",
-          "type": "slider",
-          "defaultValue": 50,
-          "min": 20,
-          "max": 150,
-          "step": 5
-        },
-        {
-          "id": "fineTune",
-          "label": "开启微调模式",
-          "type": "switch",
-          "defaultValue": false,
-          "description": "展开水平与垂直微调滑块，可精确对齐不同发型或头型"
-        },
-        {
-          "id": "offsetX",
-          "label": "水平微调偏移 (X)",
-          "type": "slider",
-          "defaultValue": 0,
-          "min": -30,
-          "max": 30,
-          "step": 1,
-          "visibleIf": {
-            "field": "fineTune",
-            "equals": true
-          }
-        },
-        {
-          "id": "offsetY",
-          "label": "垂直微调偏移 (Y)",
-          "type": "slider",
-          "defaultValue": 0,
-          "min": -30,
-          "max": 30,
-          "step": 1,
-          "visibleIf": {
-            "field": "fineTune",
-            "equals": true
-          }
-        },
-        {
-          "id": "flipAvatar",
-          "label": "翻转图片 (左右水平镜像)",
-          "type": "switch",
-          "defaultValue": false,
-          "description": "将被揉捏的头像进行左右水平翻转"
-        },
-        {
-          "id": "flipHand",
-          "label": "翻转手势 / 从右侧摸头",
-          "type": "switch",
-          "defaultValue": false,
-          "description": "镜像整个手势动线，小手改为从右上方探出"
-        },
-        {
-          "id": "transparentBg",
-          "label": "透明背景",
-          "type": "switch",
-          "defaultValue": true,
-          "description": "保持动图背景完全透明 (关闭后可自定义纯色背景色)"
-        },
-        {
-          "id": "bgColor",
-          "label": "背景底色",
-          "type": "color_picker",
-          "defaultValue": "#FFFFFF",
-          "options": [
-            {
-              "label": "纯白底",
-              "value": "#FFFFFF"
-            },
-            {
-              "label": "素雅浅灰",
-              "value": "#F3F4F6"
-            },
-            {
-              "label": "天蓝底",
-              "value": "#38BDF8"
-            },
-            {
-              "label": "樱花粉",
-              "value": "#F472B6"
-            },
-            {
-              "label": "活力黄",
-              "value": "#FBBF24"
-            },
-            {
-              "label": "纯黑底",
-              "value": "#000000"
-            }
-          ],
-          "visibleIf": {
-            "field": "transparentBg",
-            "equals": false
-          },
-          "description": "自定义背景颜色，支持预设色块或点击调色盘自由选取"
-        },
-        {
-          "id": "resolution",
-          "label": "GIF 大小 (导出分辨率)",
-          "type": "select",
-          "defaultValue": "128",
-          "options": [
-            {
-              "label": "112 px (经典原版尺寸)",
-              "value": "112"
-            },
-            {
-              "label": "128 px (高清适中 - 推荐微信/QQ表情)",
-              "value": "128"
-            },
-            {
-              "label": "160 px (高清大图)",
-              "value": "160"
-            },
-            {
-              "label": "200 px (超清大图)",
-              "value": "200"
-            },
-            {
-              "label": "256 px (极致超清)",
-              "value": "256"
-            }
-          ]
-        }
-      ],
+      "inputs": [],
       "action": {
-        "handler": "quickjs_runner",
+        "handler": "petpet_generator",
         "params": {}
       },
-      "size": 77331,
-      "md5": "fc765e064a201d7f8263844329eaac3a",
-      "sha256": "8f94b88038890cab74497db3aed471dbe4cadc1fa75292761894ad2094e37dbc",
+      "banners": [
+        {
+          "message": "已升级为全新 WebUI 交互画板：在画板上可直接拖拽调整头像对齐掌心，支持滚轮/双指缩放，所见即所得实时预览！",
+          "type": "info"
+        }
+      ],
+      "size": 214964,
+      "md5": "e06acc0fff87ef051295eaab4a5f43fb",
+      "sha256": "491103b27250d70c478366bd15628cd5add626b5ddd5c75ab27335835ac73858",
       "isOfficial": true,
       "downloadUrls": {
         "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/releases/download/plugins/petpet-generator.zip",
