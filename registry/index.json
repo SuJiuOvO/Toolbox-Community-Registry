@@ -2352,22 +2352,10 @@
         "handler": "petpet_generator",
         "params": {}
       },
-<<<<<<< HEAD
-      "banners": [
-        {
-          "message": "已升级为全新 WebUI 交互画板：在画板上可直接拖拽调整头像对齐掌心，支持滚轮/双指缩放，所见即所得实时预览！",
-          "type": "info"
-        }
-      ],
-      "size": 213390,
-      "md5": "1a88c5e4ee5f486b278221d874bcaad8",
-      "sha256": "dde719885a631f9c002fcc7f85cc075ca4f3a30ad3acf8fae720bd919160a305",
-=======
       "banners": [],
       "size": 219189,
       "md5": "47ed56956efc0acc10f1c848bcef11fd",
       "sha256": "8370d70ab7761c0062ab972bd02d365c7fe685dafbce7cde4b5a357dd9d0cbd3",
->>>>>>> 37d481d (feat(ui-ux): overhaul WebUI plugins (petpet, bulletin, uninstaller, ssh-terminal) with modern design system)
       "isOfficial": true,
       "downloadUrls": {
         "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/releases/download/plugins/petpet-generator.zip",
