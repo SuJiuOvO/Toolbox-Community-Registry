@@ -1,8 +1,8 @@
 {
   "id": "ssh-terminal",
   "name": "SSH 安全终端",
-  "version": "2.0.1",
-  "minAppVersion": "1.2.0",
+  "version": "1.0.2",
+  "minAppVersion": "1.1.0",
   "category": "network",
   "platforms": [
     "windows",
@@ -10,7 +10,7 @@
   ],
   "executionType": "internal",
   "engineType": "internal",
-  "description": "Windows / Android 双端原生交互式 SSH 安全终端，两级界面架构：支持密码、PEM / OpenSSH 私钥本地选择导入与口令认证，本地 AES-256 加密保存凭据；连接后独占全屏终端，具备二次确认快速断开、字号大跨度调节、ANSI 终端色彩与移动端快捷键。",
+  "description": "Windows / Android 双端交互式 SSH 终端，支持密码、PEM / OpenSSH 私钥和私钥口令认证，首次连接 SHA256 主机指纹核对、已知主机校验、连接配置保存、ANSI 终端与移动端快捷键。认证信息不落盘。",
   "author": "Toolbox Team",
   "permissions": [
     "network"

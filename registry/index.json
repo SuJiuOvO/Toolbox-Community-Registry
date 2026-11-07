@@ -1233,9 +1233,9 @@
         "params": {}
       },
       "banners": [],
-      "size": 39369,
-      "md5": "789607e0f8f0230e623a7d8ed0f2ef28",
-      "sha256": "a5815960d7b15e8abedcedcc84eab3db53a6d96fbe4da17bc68fecea10f8a1e0",
+      "size": 46858,
+      "md5": "266166405311e070bd18fc82a6c0c2bf",
+      "sha256": "9839ffd828276e428d4e23c6bfb21efdcec97ad87d6bc1b97e7b8b38c3ee729d",
       "isOfficial": true,
       "downloadUrls": {
         "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/releases/download/plugins/handheld-bulletin.zip",
@@ -2353,9 +2353,9 @@
         "params": {}
       },
       "banners": [],
-      "size": 216145,
-      "md5": "c7eb053eee452902c6c6e7476f376a53",
-      "sha256": "68fc7614c5f0aa545945359fe70a8ec2a8b595e404945dcc2ad24bc3e9b9248c",
+      "size": 225088,
+      "md5": "a6d7db4967214607a6195ac13ae24f7b",
+      "sha256": "3b274dcc9f8fcb276153469c86e300d83a194e2370d9dda6c5bd76e890d195da",
       "isOfficial": true,
       "downloadUrls": {
         "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/releases/download/plugins/petpet-generator.zip",
@@ -2562,8 +2562,8 @@
     {
       "id": "ssh-terminal",
       "name": "SSH 安全终端",
-      "version": "2.0.1",
-      "minAppVersion": "1.2.0",
+      "version": "1.0.2",
+      "minAppVersion": "1.1.0",
       "category": "network",
       "platforms": [
         "windows",
@@ -2571,7 +2571,7 @@
       ],
       "executionType": "internal",
       "engineType": "internal",
-      "description": "Windows / Android 双端原生交互式 SSH 安全终端，两级界面架构：支持密码、PEM / OpenSSH 私钥本地选择导入与口令认证，本地 AES-256 加密保存凭据；连接后独占全屏终端，具备二次确认快速断开、字号大跨度调节、ANSI 终端色彩与移动端快捷键。",
+      "description": "Windows / Android 双端交互式 SSH 终端，支持密码、PEM / OpenSSH 私钥和私钥口令认证，首次连接 SHA256 主机指纹核对、已知主机校验、连接配置保存、ANSI 终端与移动端快捷键。认证信息不落盘。",
       "author": "Toolbox Team",
       "permissions": [
         "network"
@@ -2585,9 +2585,9 @@
         "handler": "ssh_terminal",
         "params": {}
       },
-      "size": 1642,
-      "md5": "7f6d956bee6fed4f35ad5d15fdab55a4",
-      "sha256": "e7a953c09b317f4e32d07fa39ac5388cf6e1da2b63a16ee6045226142ce9bb46",
+      "size": 1575,
+      "md5": "c037f6d51ab1730d58f33a0bfab0f7a3",
+      "sha256": "10931953fe102db28d0fba6a186ffa632f940ba2633c4a84bac6111d9122403d",
       "isOfficial": true,
       "downloadUrls": {
         "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/releases/download/plugins/ssh-terminal.zip",
@@ -3393,8 +3393,8 @@
     {
       "id": "windows-uninstaller",
       "name": "软件卸载",
-      "version": "2.0.1",
-      "minAppVersion": "1.2.0",
+      "version": "1.0.2",
+      "minAppVersion": "1.1.0",
       "category": "system",
       "platforms": [
         "windows"
@@ -3421,8 +3421,8 @@
         }
       ],
       "size": 1291,
-      "md5": "feae8c794257284ed401e0f7558b78a6",
-      "sha256": "21e9d4ca79fc2a214c4d0d1fa1bf30b07086005b7e4d8c460d2dd5195d4560c9",
+      "md5": "bd91c9cbfaf7565c784541e5f94bc3b6",
+      "sha256": "eb526dcff7f7edea723c429a265a910fd38fad9122797bdb297f7147af4d3a9e",
       "isOfficial": true,
       "downloadUrls": {
         "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/releases/download/plugins/windows-uninstaller.zip",
