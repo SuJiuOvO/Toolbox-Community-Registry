@@ -3,49 +3,45 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>手持弹幕举牌 - LED Banner</title>
+  <title>手持弹幕举牌</title>
   <style>
     :root {
       --bg-dark: #090D16;
       --surface-dark: #131A29;
-      --surface-elevated: #1C263B;
-      --border-subtle: rgba(255, 255, 255, 0.1);
-      --border-hover: rgba(255, 255, 255, 0.2);
-      --text-main: #F8FAFC;
+      --surface-card: #1C2538;
+      --text-main: #FFFFFF;
       --text-muted: #94A3B8;
-      --accent: #06B6D4;
-      --accent-hover: #0891B2;
-      --accent-glow: rgba(6, 182, 212, 0.25);
+      --accent: #38BDF8;
+      --accent-glow: rgba(56, 189, 248, 0.4);
+      --border-subtle: rgba(255, 255, 255, 0.12);
+      --border-strong: rgba(255, 255, 255, 0.28);
       --radius-sm: 8px;
-      --radius-md: 14px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
       --radius-full: 9999px;
-      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", "PingFang SC", Roboto, sans-serif;
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      user-select: none;
-      -webkit-user-select: none;
       -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      font-family: var(--font-sans);
     }
 
     html, body {
       width: 100%;
       height: 100%;
       overflow: hidden;
-      background-color: var(--bg-dark);
-      font-family: var(--font-sans);
+      background-color: #000000;
       color: var(--text-main);
     }
 
     #stage {
       position: absolute;
       inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
       overflow: hidden;
       cursor: pointer;
       background-color: #000000;
@@ -53,13 +49,17 @@
     }
 
     #marquee-container {
+      position: absolute;
       display: inline-block;
       white-space: pre;
       line-height: 1.15;
       font-weight: 800;
       text-align: center;
-      transition: opacity 0.2s;
       will-change: transform;
+      user-select: none;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
     }
 
     .led-overlay {
@@ -79,25 +79,19 @@
       top: max(16px, env(safe-area-inset-top));
       left: 50%;
       transform: translateX(-50%);
-      background: rgba(19, 26, 41, 0.88);
+      background: rgba(19, 26, 41, 0.92);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius-full);
       padding: 6px 10px;
       display: flex;
-      gap: 6px;
+      gap: 8px;
       align-items: center;
       z-index: 100;
       transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
       box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.6);
       max-width: 95vw;
-      overflow-x: auto;
-      scrollbar-width: none;
-    }
-
-    #toolbar::-webkit-scrollbar {
-      display: none;
     }
 
     #toolbar.hidden {
@@ -108,9 +102,9 @@
 
     .tb-btn {
       background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.14);
       color: #F8FAFC;
-      padding: 7px 13px;
+      padding: 7px 14px;
       border-radius: var(--radius-full);
       font-size: 13px;
       font-weight: 500;
@@ -120,16 +114,17 @@
       gap: 6px;
       white-space: nowrap;
       flex-shrink: 0;
-      transition: all 0.15s ease;
+      transition: background 0.15s ease, transform 0.1s ease;
     }
 
     .tb-btn:hover {
-      background: rgba(255, 255, 255, 0.16);
-      border-color: rgba(255, 255, 255, 0.25);
+      background: rgba(255, 255, 255, 0.18);
+      border-color: rgba(255, 255, 255, 0.28);
     }
 
     .tb-btn:active {
-      transform: scale(0.96);
+      transform: scale(0.94);
+      background: rgba(255, 255, 255, 0.25);
     }
 
     .tb-btn svg {
@@ -142,15 +137,15 @@
     /* Tap Stage Floating Hint */
     #tap-hint {
       position: absolute;
-      bottom: max(16px, env(safe-area-inset-bottom));
+      bottom: max(24px, env(safe-area-inset-bottom));
       left: 50%;
       transform: translateX(-50%);
-      background: rgba(0, 0, 0, 0.65);
+      background: rgba(0, 0, 0, 0.72);
       border: 1px solid rgba(255, 255, 255, 0.15);
-      color: rgba(255, 255, 255, 0.7);
+      color: rgba(255, 255, 255, 0.8);
       padding: 6px 14px;
       border-radius: var(--radius-full);
-      font-size: 11.5px;
+      font-size: 12px;
       pointer-events: none;
       z-index: 50;
       transition: opacity 0.5s ease;
@@ -162,24 +157,26 @@
       opacity: 0;
     }
 
-    /* Modal Drawer */
-    #drawer-backdrop {
+    /* Drawers Backdrop */
+    .drawer-backdrop {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.6);
+      background: rgba(0, 0, 0, 0.65);
       backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
       z-index: 110;
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.25s ease;
     }
 
-    #drawer-backdrop.open {
+    .drawer-backdrop.open {
       opacity: 1;
       pointer-events: auto;
     }
 
-    #drawer {
+    /* Bottom Drawers */
+    .drawer {
       position: fixed;
       bottom: 0;
       left: 0;
@@ -199,7 +196,7 @@
       gap: 16px;
     }
 
-    #drawer.open {
+    .drawer.open {
       transform: translateY(0);
     }
 
@@ -229,12 +226,6 @@
       gap: 8px;
     }
 
-    .drawer-title svg {
-      width: 18px;
-      height: 18px;
-      fill: var(--accent);
-    }
-
     .btn-finish {
       background: var(--accent);
       color: #090D16;
@@ -244,13 +235,14 @@
       border-radius: var(--radius-full);
       font-size: 13px;
       cursor: pointer;
-      transition: background 0.15s ease;
+      transition: background 0.15s ease, transform 0.1s ease;
     }
 
-    .btn-finish:hover {
-      background: var(--accent-hover);
+    .btn-finish:active {
+      transform: scale(0.95);
     }
 
+    /* Form Components */
     .form-group {
       display: flex;
       flex-direction: column;
@@ -266,18 +258,24 @@
       align-items: center;
     }
 
+    .val-chip {
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 12px;
+    }
+
     .text-input {
       width: 100%;
-      background: rgba(0, 0, 0, 0.35);
+      background: rgba(0, 0, 0, 0.3);
       border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-sm);
-      padding: 10px 12px;
+      border-radius: var(--radius-md);
       color: #FFFFFF;
+      padding: 10px 14px;
       font-size: 15px;
-      font-family: inherit;
-      outline: none;
+      font-weight: 600;
       resize: vertical;
-      min-height: 56px;
+      min-height: 52px;
+      outline: none;
       transition: border-color 0.2s;
     }
 
@@ -292,29 +290,30 @@
     }
 
     .opt-btn {
-      background: rgba(255, 255, 255, 0.06);
+      background: var(--surface-card);
       border: 1px solid var(--border-subtle);
-      color: var(--text-muted);
-      padding: 7px 14px;
+      color: #E2E8F0;
+      padding: 8px 14px;
       border-radius: var(--radius-sm);
       font-size: 13px;
       font-weight: 500;
       cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
       transition: all 0.15s ease;
-      white-space: nowrap;
+      touch-action: manipulation;
     }
 
-    .opt-btn:hover {
-      background: rgba(255, 255, 255, 0.12);
-      color: #FFFFFF;
+    .opt-btn:active {
+      transform: scale(0.94);
     }
 
     .opt-btn.active {
-      background: rgba(6, 182, 212, 0.18);
-      color: #38BDF8;
-      border-color: #38BDF8;
+      background: rgba(56, 189, 248, 0.18);
+      border-color: var(--accent);
+      color: var(--accent);
       font-weight: 700;
-      box-shadow: 0 0 12px rgba(56, 189, 248, 0.2);
     }
 
     .slider-row {
@@ -327,23 +326,15 @@
       flex: 1;
       height: 6px;
       border-radius: 3px;
-      background: rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.15);
       outline: none;
+      -webkit-appearance: none;
       accent-color: var(--accent);
       cursor: pointer;
+      touch-action: none;
     }
 
-    .val-chip {
-      font-size: 12px;
-      font-family: monospace;
-      color: var(--accent);
-      background: rgba(6, 182, 212, 0.12);
-      padding: 2px 8px;
-      border-radius: 4px;
-      font-weight: 700;
-    }
-
-    /* Color Swatch Arrays (8 Curated Colors) */
+    /* Color Swatches Grid */
     .color-swatches-grid {
       display: flex;
       flex-wrap: wrap;
@@ -352,45 +343,51 @@
     }
 
     .swatch-item {
-      width: 34px;
-      height: 34px;
-      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      border: 2px solid rgba(255, 255, 255, 0.28);
       cursor: pointer;
-      border: 2px solid rgba(255, 255, 255, 0.2);
-      transition: transform 0.15s ease, border-color 0.15s ease;
       position: relative;
-      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+      transition: transform 0.1s ease;
+      touch-action: manipulation;
     }
 
-    .swatch-item:hover {
-      transform: scale(1.1);
-      border-color: rgba(255, 255, 255, 0.6);
+    .swatch-item:active {
+      transform: scale(0.92);
     }
 
     .swatch-item.active {
-      transform: scale(1.15);
       border-color: #FFFFFF;
-      box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+      box-shadow: 0 0 0 2px var(--surface-dark), 0 0 0 4px var(--accent);
     }
 
     .swatch-item.active::after {
-      content: '';
-      position: absolute;
-      inset: 6px;
-      border-radius: 50%;
-      border: 2px solid #FFFFFF;
+      content: '✓';
+      font-size: 16px;
+      font-weight: 900;
+      color: #0F172A;
+      text-shadow: 0 0 2px #FFFFFF;
     }
 
-    /* Inline Color Customizer (No Native Popup) */
+    .swatch-item.dark-swatch.active::after {
+      color: #FFFFFF;
+      text-shadow: 0 0 2px #000000;
+    }
+
     .inline-color-customizer {
-      margin-top: 8px;
-      padding: 10px 12px;
-      background: rgba(0, 0, 0, 0.25);
-      border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-sm);
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 8px;
+      background: var(--surface-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 10px 12px;
+      margin-top: 6px;
     }
 
     .customizer-row {
@@ -408,34 +405,102 @@
     }
 
     .hex-input {
-      background: rgba(0, 0, 0, 0.3);
+      background: rgba(0, 0, 0, 0.4);
       border: 1px solid var(--border-subtle);
       color: #FFFFFF;
-      font-family: monospace;
+      font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
       font-size: 13px;
       font-weight: 700;
-      padding: 4px 8px;
+      padding: 5px 8px;
       border-radius: 6px;
       width: 100px;
       outline: none;
+      text-transform: uppercase;
     }
 
     .hex-input:focus {
       border-color: var(--accent);
     }
 
-    .rgb-row {
+    /* Preset Cards Grid (Independent Presets Sheet) */
+    .preset-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 12px;
+    }
+
+    .preset-card {
+      background: var(--surface-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 12px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      transition: all 0.15s ease;
+      touch-action: manipulation;
+    }
+
+    .preset-card:hover {
+      border-color: var(--accent);
+      background: rgba(56, 189, 248, 0.08);
+    }
+
+    .preset-card:active {
+      transform: scale(0.96);
+    }
+
+    .preset-card-header {
+      font-size: 13px;
+      font-weight: 700;
+      color: #FFFFFF;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
+    }
+
+    .preset-card-preview {
+      background: #000000;
+      border-radius: 6px;
+      padding: 8px 6px;
+      font-size: 13px;
+      font-weight: 800;
+      text-align: center;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .preset-card-desc {
       font-size: 11px;
       color: var(--text-muted);
     }
 
-    .rgb-slider {
-      flex: 1;
-      height: 4px;
-      accent-color: var(--accent);
+    /* Toast */
+    .toast-pill {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: rgba(19, 26, 41, 0.95);
+      border: 1px solid var(--accent);
+      color: #F8FAFC;
+      padding: 8px 18px;
+      border-radius: var(--radius-full);
+      font-size: 13px;
+      font-weight: 600;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.25s ease;
+      z-index: 200;
+    }
+
+    .toast-pill.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
     }
 
     @keyframes flash {
@@ -458,9 +523,13 @@
       <svg viewBox="0 0 24 24" id="icon-play-state"><path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z"/></svg>
       <span id="text-play-state">暂停</span>
     </button>
-    <button class="tb-btn" id="btn-edit">
+    <button class="tb-btn" id="btn-open-settings">
       <svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
       <span>设置</span>
+    </button>
+    <button class="tb-btn" id="btn-open-presets">
+      <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      <span>预设</span>
     </button>
     <button class="tb-btn" id="btn-fullscreen">
       <svg viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
@@ -469,38 +538,29 @@
   </div>
 
   <!-- Tap Stage Floating Hint -->
-  <div id="tap-hint">轻触屏幕任意位置可唤出控制栏</div>
+  <div id="tap-hint">轻触屏幕任意位置呼出控制栏</div>
 
-  <!-- Settings Drawer Backdrop -->
-  <div id="drawer-backdrop"></div>
+  <!-- Toast Notification -->
+  <div class="toast-pill" id="toastPill">已生效</div>
 
-  <!-- Settings Drawer -->
-  <div id="drawer">
+  <!-- Backdrop for Drawers -->
+  <div class="drawer-backdrop" id="drawerBackdrop"></div>
+
+  <!-- DRAWER 1: SETTINGS (独立设置面板) -->
+  <div class="drawer" id="drawerSettings">
     <div class="drawer-handle"></div>
     <div class="drawer-header">
       <div class="drawer-title">
-        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14h2v2h-2zm0-10h2v8h-2z"/></svg>
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="var(--accent)"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14h2v2h-2zm0-10h2v8h-2z"/></svg>
         <span>弹幕与举牌设置</span>
       </div>
-      <button class="btn-finish" id="btn-close-drawer">完成</button>
+      <button class="btn-finish" id="btn-close-settings">完成</button>
     </div>
 
     <!-- Text Input -->
     <div class="form-group">
       <label class="form-label">举牌文字内容</label>
-      <textarea class="text-input" id="input-text" placeholder="输入举牌文字或欢迎标语...">很高兴遇见你！</textarea>
-    </div>
-
-    <!-- Presets -->
-    <div class="form-group">
-      <label class="form-label">经典场景预设</label>
-      <div class="btn-group" id="presets-group">
-        <button class="opt-btn" data-preset="airport">🛫 机场接机</button>
-        <button class="opt-btn" data-preset="idol">🎤 演唱应援</button>
-        <button class="opt-btn" data-preset="love">💖 浪漫告白</button>
-        <button class="opt-btn" data-preset="market">🏮 招牌集市</button>
-        <button class="opt-btn" data-preset="warning">⚠️ 警示通告</button>
-      </div>
+      <textarea class="text-input" id="input-text" placeholder="输入要举牌或滚动的文字内容...">很高兴遇见你！</textarea>
     </div>
 
     <!-- Direction -->
@@ -519,7 +579,7 @@
     <div class="form-group">
       <div class="form-label">
         <span>滚动速度</span>
-        <span class="val-chip" id="label-speed">100</span>
+        <span class="val-chip" id="label-speed">100 px/s</span>
       </div>
       <div class="slider-row">
         <input type="range" class="slider" id="slider-speed" min="20" max="400" value="100">
@@ -537,58 +597,42 @@
       </div>
     </div>
 
-    <!-- Text Color (Swatches + In-page Customizer) -->
+    <!-- Text Color -->
     <div class="form-group">
       <label class="form-label">文字颜色</label>
       <div class="color-swatches-grid" id="text-color-swatches">
-        <div class="swatch-item active" style="background:#06B6D4" data-color="#06B6D4"></div>
-        <div class="swatch-item" style="background:#38BDF8" data-color="#38BDF8"></div>
-        <div class="swatch-item" style="background:#F43F5E" data-color="#F43F5E"></div>
-        <div class="swatch-item" style="background:#FACC15" data-color="#FACC15"></div>
-        <div class="swatch-item" style="background:#10B981" data-color="#10B981"></div>
-        <div class="swatch-item" style="background:#A855F7" data-color="#A855F7"></div>
-        <div class="swatch-item" style="background:#FFFFFF" data-color="#FFFFFF"></div>
-        <div class="swatch-item" style="background:#FFA500" data-color="#FFA500"></div>
+        <div class="swatch-item active" style="background:#00FF88" data-color="#00FF88" title="荧光绿"></div>
+        <div class="swatch-item" style="background:#38BDF8" data-color="#38BDF8" title="天蓝"></div>
+        <div class="swatch-item" style="background:#FF3366" data-color="#FF3366" title="应援粉"></div>
+        <div class="swatch-item" style="background:#FFCC00" data-color="#FFCC00" title="活力黄"></div>
+        <div class="swatch-item" style="background:#A855F7" data-color="#A855F7" title="梦幻紫"></div>
+        <div class="swatch-item" style="background:#FFFFFF" data-color="#FFFFFF" title="纯白"></div>
       </div>
-      <!-- Inline Customizer for Text Color -->
       <div class="inline-color-customizer">
         <div class="customizer-row">
-          <div class="color-preview-chip" id="text-preview-chip" style="background:#06B6D4;"></div>
-          <span style="font-size:12px;color:var(--text-muted);">自定义HEX:</span>
-          <input type="text" class="hex-input" id="hex-text-color" value="#06B6D4" maxlength="7">
-        </div>
-        <div class="rgb-row">
-          <span>R</span><input type="range" class="rgb-slider" id="text-r" min="0" max="255" value="6">
-          <span>G</span><input type="range" class="rgb-slider" id="text-g" min="0" max="255" value="182">
-          <span>B</span><input type="range" class="rgb-slider" id="text-b" min="0" max="255" value="212">
+          <div class="color-preview-chip" id="text-preview-chip" style="background:#00FF88;"></div>
+          <span style="font-size:12px;color:var(--text-muted);">自定义 HEX:</span>
+          <input type="text" class="hex-input" id="hex-text-color" value="#00FF88" maxlength="7">
         </div>
       </div>
     </div>
 
-    <!-- Background Color (Swatches + In-page Customizer) -->
+    <!-- Background Color -->
     <div class="form-group">
       <label class="form-label">背景底色</label>
       <div class="color-swatches-grid" id="bg-color-swatches">
-        <div class="swatch-item active" style="background:#000000" data-color="#000000"></div>
-        <div class="swatch-item" style="background:#090D16" data-color="#090D16"></div>
-        <div class="swatch-item" style="background:#1A0022" data-color="#1A0022"></div>
-        <div class="swatch-item" style="background:#001824" data-color="#001824"></div>
-        <div class="swatch-item" style="background:#2A0808" data-color="#2A0808"></div>
-        <div class="swatch-item" style="background:#062817" data-color="#062817"></div>
-        <div class="swatch-item" style="background:#18181B" data-color="#18181B"></div>
-        <div class="swatch-item" style="background:#1E293B" data-color="#1E293B"></div>
+        <div class="swatch-item dark-swatch active" style="background:#000000; border-color: rgba(255,255,255,0.4);" data-color="#000000" title="深邃黑"></div>
+        <div class="swatch-item dark-swatch" style="background:#0F172A; border-color: rgba(255,255,255,0.35);" data-color="#0F172A" title="夜幕蓝"></div>
+        <div class="swatch-item dark-swatch" style="background:#1A0022; border-color: rgba(255,255,255,0.35);" data-color="#1A0022" title="暗夜紫"></div>
+        <div class="swatch-item dark-swatch" style="background:#001824; border-color: rgba(255,255,255,0.35);" data-color="#001824" title="暗青蓝"></div>
+        <div class="swatch-item dark-swatch" style="background:#2A0808; border-color: rgba(255,255,255,0.35);" data-color="#2A0808" title="暗酒红"></div>
+        <div class="swatch-item dark-swatch" style="background:#18181B; border-color: rgba(255,255,255,0.35);" data-color="#18181B" title="石墨灰"></div>
       </div>
-      <!-- Inline Customizer for Bg Color -->
       <div class="inline-color-customizer">
         <div class="customizer-row">
           <div class="color-preview-chip" id="bg-preview-chip" style="background:#000000;"></div>
-          <span style="font-size:12px;color:var(--text-muted);">自定义HEX:</span>
+          <span style="font-size:12px;color:var(--text-muted);">自定义 HEX:</span>
           <input type="text" class="hex-input" id="hex-bg-color" value="#000000" maxlength="7">
-        </div>
-        <div class="rgb-row">
-          <span>R</span><input type="range" class="rgb-slider" id="bg-r" min="0" max="255" value="0">
-          <span>G</span><input type="range" class="rgb-slider" id="bg-g" min="0" max="255" value="0">
-          <span>B</span><input type="range" class="rgb-slider" id="bg-b" min="0" max="255" value="0">
         </div>
       </div>
     </div>
@@ -606,13 +650,84 @@
     </div>
   </div>
 
+  <!-- DRAWER 2: PRESETS (独立预设面板) -->
+  <div class="drawer" id="drawerPresets">
+    <div class="drawer-handle"></div>
+    <div class="drawer-header">
+      <div class="drawer-title">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="var(--accent)"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <span>场景应援与经典预设</span>
+      </div>
+      <button class="btn-finish" id="btn-close-presets">关闭</button>
+    </div>
+
+    <div class="preset-cards-grid">
+      <!-- 1: 机场接机 -->
+      <div class="preset-card" data-preset="airport">
+        <div class="preset-card-header">🛫 机场接机</div>
+        <div class="preset-card-preview" style="background:#0A192F; color:#38BDF8;">接机 · 李总一路辛苦！</div>
+        <div class="preset-card-desc">天蓝字体 · 深海夜蓝 · 适中速度</div>
+      </div>
+
+      <!-- 2: 演唱应援 -->
+      <div class="preset-card" data-preset="idol">
+        <div class="preset-card-header">🎤 演唱会应援</div>
+        <div class="preset-card-preview" style="background:#1A0022; color:#00FF88; text-shadow: 0 0 8px #00FF88;">★ 全世界最好的你 ★</div>
+        <div class="preset-card-desc">荧光青绿 · 魅影紫 · 霓虹辉光</div>
+      </div>
+
+      <!-- 3: 浪漫告白 -->
+      <div class="preset-card" data-preset="love">
+        <div class="preset-card-header">💖 浪漫告白</div>
+        <div class="preset-card-preview" style="background:#090D16; color:#FF3366;">做我女朋友好不好？❤️</div>
+        <div class="preset-card-desc">玫瑰粉红 · 静止居中 · 呼吸闪烁</div>
+      </div>
+
+      <!-- 4: 招牌集市 -->
+      <div class="preset-card" data-preset="market">
+        <div class="preset-card-header">🏮 招牌集市</div>
+        <div class="preset-card-preview" style="background:#000000; color:#FFCC00;">🔥 秘制大烤肠 10元3串 🔥</div>
+        <div class="preset-card-desc">琥珀金黄 · LED点阵 · 快速滚动</div>
+      </div>
+
+      <!-- 5: 警示通告 -->
+      <div class="preset-card" data-preset="warning">
+        <div class="preset-card-header">⚠️ 警示通告</div>
+        <div class="preset-card-preview" style="background:#000000; color:#FACC15;">⚠️ 前方施工 请减速慢行 ⚠️</div>
+        <div class="preset-card-desc">醒目亮黄 · 静止居中 · 强效警示</div>
+      </div>
+
+      <!-- 6: 生日快乐 -->
+      <div class="preset-card" data-preset="birthday">
+        <div class="preset-card-header">🎂 生日快乐</div>
+        <div class="preset-card-preview" style="background:#1C1427; color:#A855F7; text-shadow: 0 0 8px #A855F7;">🎉 祝你天天开心 梦想成真 🎂</div>
+        <div class="preset-card-desc">梦幻亮紫 · 辉光闪烁 · 优雅横移</div>
+      </div>
+    </div>
+  </div>
+
   <script>
-    // State Store
+    const stage = document.getElementById('stage');
+    const container = document.getElementById('marquee-container');
+    const ledMask = document.getElementById('led-mask');
+    const toolbar = document.getElementById('toolbar');
+    const tapHint = document.getElementById('tap-hint');
+    const toastPill = document.getElementById('toastPill');
+
+    const drawerBackdrop = document.getElementById('drawerBackdrop');
+    const drawerSettings = document.getElementById('drawerSettings');
+    const drawerPresets = document.getElementById('drawerPresets');
+
+    let hideTimer = null;
+    let toastTimer = null;
+    let lastTime = 0;
+    let animFrame = null;
+
     const state = {
       text: '很高兴遇见你！',
       fontSize: 112,
       speed: 100,
-      textColor: '#06B6D4',
+      textColor: '#00FF88',
       bgColor: '#000000',
       direction: 'left',
       glow: true,
@@ -621,42 +736,28 @@
       mirror: false,
       flash: false,
       paused: false,
-      isFullscreen: false,
       posX: 0,
-      posY: 0,
+      posY: 0
     };
 
-    const container = document.getElementById('marquee-container');
-    const stage = document.getElementById('stage');
-    const toolbar = document.getElementById('toolbar');
-    const drawer = document.getElementById('drawer');
-    const drawerBackdrop = document.getElementById('drawer-backdrop');
-    const ledMask = document.getElementById('led-mask');
-    const tapHint = document.getElementById('tap-hint');
-
-    let animFrame = null;
-    let lastTime = performance.now();
-    let hideTimer = null;
-
-    // Presets
     const PRESETS = {
       airport: {
-        text: '接机：张总 一路辛苦！',
+        text: '接机 · 李总一路辛苦！',
         fontSize: 120,
-        speed: 110,
-        textColor: '#FACC15',
-        bgColor: '#000000',
+        speed: 80,
+        textColor: '#38BDF8',
+        bgColor: '#0A192F',
         direction: 'left',
-        glow: true,
+        glow: false,
         stroke: true,
         led: false,
         flash: false
       },
       idol: {
         text: '★ 全世界最好的你 闪耀舞台 ★',
-        fontSize: 130,
-        speed: 140,
-        textColor: '#F43F5E',
+        fontSize: 125,
+        speed: 110,
+        textColor: '#00FF88',
         bgColor: '#1A0022',
         direction: 'left',
         glow: true,
@@ -666,31 +767,31 @@
       },
       love: {
         text: '做我女朋友好不好？❤️',
-        fontSize: 140,
+        fontSize: 135,
         speed: 0,
-        textColor: '#F43F5E',
+        textColor: '#FF3366',
         bgColor: '#090D16',
         direction: 'still',
         glow: true,
-        stroke: true,
+        stroke: false,
         led: false,
         flash: true
       },
       market: {
         text: '🔥 秘制大烤肠 10元3串 🔥',
-        fontSize: 120,
-        speed: 90,
-        textColor: '#06B6D4',
+        fontSize: 115,
+        speed: 120,
+        textColor: '#FFCC00',
         bgColor: '#000000',
         direction: 'left',
-        glow: true,
+        glow: false,
         stroke: false,
         led: true,
         flash: false
       },
       warning: {
         text: '⚠️ 前方施工 请减速慢行 ⚠️',
-        fontSize: 130,
+        fontSize: 125,
         speed: 0,
         textColor: '#FACC15',
         bgColor: '#000000',
@@ -699,10 +800,31 @@
         stroke: true,
         led: false,
         flash: true
+      },
+      birthday: {
+        text: '🎉 Happy Birthday 愿你天天开心 🎂',
+        fontSize: 120,
+        speed: 90,
+        textColor: '#A855F7',
+        bgColor: '#1C1427',
+        direction: 'left',
+        glow: true,
+        stroke: false,
+        led: false,
+        flash: false
       }
     };
 
-    function applyState() {
+    function showToast(msg) {
+      toastPill.textContent = msg;
+      toastPill.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        toastPill.classList.remove('show');
+      }, 2000);
+    }
+
+    function applyState(keepPosition = false) {
       container.textContent = state.text;
       container.style.fontSize = state.fontSize + 'px';
       container.style.color = state.textColor;
@@ -722,19 +844,16 @@
 
       ledMask.style.display = state.led ? 'block' : 'none';
 
-      const mirrorScale = state.mirror ? -1 : 1;
-      container.style.transformOrigin = 'center center';
-
       if (state.flash) {
         container.style.animation = 'flash 1.2s infinite ease-in-out';
       } else {
         container.style.animation = 'none';
       }
 
-      // Sync form controls
+      // Sync settings form controls
       document.getElementById('input-text').value = state.text;
       document.getElementById('slider-speed').value = state.speed;
-      document.getElementById('label-speed').textContent = state.speed;
+      document.getElementById('label-speed').textContent = state.speed + ' px/s';
       document.getElementById('slider-size').value = state.fontSize;
       document.getElementById('label-size').textContent = state.fontSize + ' px';
 
@@ -750,91 +869,81 @@
 
       // Update color swatches active states
       document.querySelectorAll('#text-color-swatches .swatch-item').forEach(sw => {
-        sw.classList.toggle('active', sw.dataset.color.toLowerCase() === state.textColor.toLowerCase());
+        sw.classList.toggle('active', sw.dataset.color.toUpperCase() === state.textColor.toUpperCase());
       });
       document.querySelectorAll('#bg-color-swatches .swatch-item').forEach(sw => {
-        sw.classList.toggle('active', sw.dataset.color.toLowerCase() === state.bgColor.toLowerCase());
+        sw.classList.toggle('active', sw.dataset.color.toUpperCase() === state.bgColor.toUpperCase());
       });
 
       // Update custom color chips & inputs
       document.getElementById('text-preview-chip').style.backgroundColor = state.textColor;
       document.getElementById('hex-text-color').value = state.textColor;
-      syncRgbSliders('text', state.textColor);
 
       document.getElementById('bg-preview-chip').style.backgroundColor = state.bgColor;
       document.getElementById('hex-bg-color').value = state.bgColor;
-      syncRgbSliders('bg', state.bgColor);
 
-      resetPositions();
-    }
-
-    function syncRgbSliders(type, hex) {
-      const rgb = hexToRgb(hex);
-      if (rgb) {
-        document.getElementById(`${type}-r`).value = rgb.r;
-        document.getElementById(`${type}-g`).value = rgb.g;
-        document.getElementById(`${type}-b`).value = rgb.b;
+      if (!keepPosition) {
+        initPosition();
       }
     }
 
-    function hexToRgb(hex) {
-      hex = hex.replace('#', '');
-      if (hex.length === 3) {
-        hex = hex.split('').map(c => c + c).join('');
-      }
-      if (hex.length !== 6) return null;
-      const num = parseInt(hex, 16);
-      return {
-        r: (num >> 16) & 255,
-        g: (num >> 8) & 255,
-        b: num & 255
-      };
-    }
-
-    function rgbToHex(r, g, b) {
-      const toHex = n => {
-        const h = Math.max(0, Math.min(255, n)).toString(16);
-        return h.length === 1 ? '0' + h : h;
-      };
-      return '#' + toHex(r) + toHex(g) + toHex(b);
-    }
-
-    function resetPositions() {
+    function initPosition() {
       const stageW = stage.clientWidth;
       const stageH = stage.clientHeight;
       const elemW = container.offsetWidth;
       const elemH = container.offsetHeight;
 
+      if (state.direction === 'still') {
+        container.style.left = '50%';
+        container.style.top = '50%';
+        container.style.transform = `translate(-50%, -50%) scaleX(${state.mirror ? -1 : 1})`;
+        return;
+      }
+
+      // Dynamic marquee positioning
+      container.style.left = '0px';
+      container.style.top = '50%';
+
+      // Start visible on screen initially so user sees it right away!
       if (state.direction === 'left') {
-        state.posX = stageW;
+        state.posX = Math.max(0, (stageW - elemW) / 2);
         state.posY = 0;
       } else if (state.direction === 'right') {
-        state.posX = -elemW;
+        state.posX = Math.min(0, (stageW - elemW) / 2);
         state.posY = 0;
       } else if (state.direction === 'up') {
         state.posX = 0;
-        state.posY = stageH;
+        state.posY = Math.max(0, (stageH - elemH) / 2);
+        container.style.left = '50%';
+        container.style.top = '0px';
       } else if (state.direction === 'down') {
         state.posX = 0;
-        state.posY = -elemH;
-      } else {
-        state.posX = 0;
-        state.posY = 0;
+        state.posY = Math.min(0, (stageH - elemH) / 2);
+        container.style.left = '50%';
+        container.style.top = '0px';
       }
-      renderMarqueeTransform();
+      renderTransform();
     }
 
-    function renderMarqueeTransform() {
-      const mirrorScale = state.mirror ? -1 : 1;
-      container.style.transform = `translate3d(${state.posX}px, ${state.posY}px, 0) scaleX(${mirrorScale})`;
+    function renderTransform() {
+      const mirror = state.mirror ? -1 : 1;
+      if (state.direction === 'still') {
+        container.style.transform = `translate(-50%, -50%) scaleX(${mirror})`;
+      } else if (state.direction === 'left' || state.direction === 'right') {
+        container.style.transform = `translate3d(${state.posX}px, -50%, 0) scaleX(${mirror})`;
+      } else {
+        container.style.transform = `translate3d(-50%, ${state.posY}px, 0) scaleX(${mirror})`;
+      }
     }
 
     function loop(now) {
-      const dt = (now - lastTime) / 1000;
+      if (!lastTime) lastTime = now;
+      let dt = (now - lastTime) / 1000;
       lastTime = now;
+      if (dt > 0.1) dt = 0.016;
 
       if (!state.paused && state.direction !== 'still') {
-        const step = state.speed * dt * 2.2;
+        const step = state.speed * dt * 1.5;
         const stageW = stage.clientWidth;
         const stageH = stage.clientHeight;
         const elemW = container.offsetWidth;
@@ -861,7 +970,7 @@
             state.posY = -elemH;
           }
         }
-        renderMarqueeTransform();
+        renderTransform();
       }
 
       animFrame = requestAnimationFrame(loop);
@@ -872,15 +981,31 @@
       toolbar.classList.remove('hidden');
       clearTimeout(hideTimer);
       hideTimer = setTimeout(() => {
-        if (!drawer.classList.contains('open')) {
+        if (!drawerSettings.classList.contains('open') && !drawerPresets.classList.contains('open')) {
           toolbar.classList.add('hidden');
         }
       }, 4000);
     }
 
-    // Event Handlers
-    stage.addEventListener('click', (e) => {
-      if (drawer.classList.contains('open')) return;
+    // Drawer Open/Close
+    function openDrawer(drawer) {
+      closeAllDrawers();
+      drawer.classList.add('open');
+      drawerBackdrop.classList.add('open');
+      toolbar.classList.remove('hidden');
+      clearTimeout(hideTimer);
+    }
+
+    function closeAllDrawers() {
+      drawerSettings.classList.remove('open');
+      drawerPresets.classList.remove('open');
+      drawerBackdrop.classList.remove('open');
+      triggerToolbarVisibility();
+    }
+
+    // Stage Click
+    stage.addEventListener('click', () => {
+      if (drawerSettings.classList.contains('open') || drawerPresets.classList.contains('open')) return;
       if (toolbar.classList.contains('hidden')) {
         triggerToolbarVisibility();
       } else {
@@ -889,6 +1014,7 @@
       tapHint.classList.add('fade-out');
     });
 
+    // Toolbar Buttons
     document.getElementById('btn-toggle-play').addEventListener('click', (e) => {
       e.stopPropagation();
       state.paused = !state.paused;
@@ -904,26 +1030,19 @@
       triggerToolbarVisibility();
     });
 
-    function openDrawer() {
-      drawer.classList.add('open');
-      drawerBackdrop.classList.add('open');
-      toolbar.classList.remove('hidden');
-      clearTimeout(hideTimer);
-    }
-
-    function closeDrawer() {
-      drawer.classList.remove('open');
-      drawerBackdrop.classList.remove('open');
-      triggerToolbarVisibility();
-    }
-
-    document.getElementById('btn-edit').addEventListener('click', (e) => {
+    document.getElementById('btn-open-settings').addEventListener('click', (e) => {
       e.stopPropagation();
-      openDrawer();
+      openDrawer(drawerSettings);
     });
 
-    document.getElementById('btn-close-drawer').addEventListener('click', closeDrawer);
-    drawerBackdrop.addEventListener('click', closeDrawer);
+    document.getElementById('btn-open-presets').addEventListener('click', (e) => {
+      e.stopPropagation();
+      openDrawer(drawerPresets);
+    });
+
+    document.getElementById('btn-close-settings').addEventListener('click', closeAllDrawers);
+    document.getElementById('btn-close-presets').addEventListener('click', closeAllDrawers);
+    drawerBackdrop.addEventListener('click', closeAllDrawers);
 
     // Fullscreen Toggle
     document.getElementById('btn-fullscreen').addEventListener('click', (e) => {
@@ -940,138 +1059,117 @@
       triggerToolbarVisibility();
     });
 
-    // Inputs
+    // Preset Selection
+    document.querySelectorAll('.preset-card').forEach(card => {
+      card.addEventListener('click', () => {
+        const key = card.getAttribute('data-preset');
+        if (PRESETS[key]) {
+          Object.assign(state, PRESETS[key]);
+          state.paused = false;
+          const playIcon = document.getElementById('icon-play-state');
+          const playText = document.getElementById('text-play-state');
+          playIcon.innerHTML = '<path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z"/>';
+          playText.textContent = '暂停';
+          applyState(false);
+          closeAllDrawers();
+          showToast('已载入：' + card.querySelector('.preset-card-header').textContent);
+        }
+      });
+    });
+
+    // Form Controls
     document.getElementById('input-text').addEventListener('input', (e) => {
-      state.text = e.target.value || ' ';
-      applyState();
+      state.text = e.target.value;
+      container.textContent = state.text;
+    });
+
+    document.querySelectorAll('#direction-group .opt-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        state.direction = btn.dataset.dir;
+        applyState(false);
+      });
     });
 
     document.getElementById('slider-speed').addEventListener('input', (e) => {
-      state.speed = parseInt(e.target.value);
-      document.getElementById('label-speed').textContent = state.speed;
+      state.speed = parseInt(e.target.value, 10);
+      document.getElementById('label-speed').textContent = state.speed + ' px/s';
     });
 
     document.getElementById('slider-size').addEventListener('input', (e) => {
-      state.fontSize = parseInt(e.target.value);
+      state.fontSize = parseInt(e.target.value, 10);
       document.getElementById('label-size').textContent = state.fontSize + ' px';
       container.style.fontSize = state.fontSize + 'px';
-      resetPositions();
     });
 
-    // Preset Selection
-    document.getElementById('presets-group').addEventListener('click', (e) => {
-      const btn = e.target.closest('.opt-btn');
-      if (!btn) return;
-      const p = PRESETS[btn.dataset.preset];
-      if (p) {
-        Object.assign(state, p);
-        applyState();
+    // Color swatches click
+    document.querySelectorAll('#text-color-swatches .swatch-item').forEach(sw => {
+      sw.addEventListener('click', () => {
+        state.textColor = sw.dataset.color;
+        applyState(true);
+      });
+    });
+
+    document.querySelectorAll('#bg-color-swatches .swatch-item').forEach(sw => {
+      sw.addEventListener('click', () => {
+        state.bgColor = sw.dataset.color;
+        applyState(true);
+      });
+    });
+
+    // Hex input
+    document.getElementById('hex-text-color').addEventListener('input', (e) => {
+      let val = e.target.value.trim();
+      if (!val.startsWith('#')) val = '#' + val;
+      if (/^#[0-9A-Fa-f]{6}$/.test(val)) {
+        state.textColor = val;
+        applyState(true);
       }
     });
 
-    // Direction Selection
-    document.getElementById('direction-group').addEventListener('click', (e) => {
-      const btn = e.target.closest('.opt-btn');
-      if (!btn) return;
-      state.direction = btn.dataset.dir;
-      applyState();
-    });
-
-    // Swatches
-    document.getElementById('text-color-swatches').addEventListener('click', (e) => {
-      const sw = e.target.closest('.swatch-item');
-      if (!sw) return;
-      state.textColor = sw.dataset.color;
-      applyState();
-    });
-
-    document.getElementById('bg-color-swatches').addEventListener('click', (e) => {
-      const sw = e.target.closest('.swatch-item');
-      if (!sw) return;
-      state.bgColor = sw.dataset.color;
-      applyState();
-    });
-
-    // Text Color RGB & Hex
-    function updateTextColorFromRgb() {
-      const r = parseInt(document.getElementById('text-r').value);
-      const g = parseInt(document.getElementById('text-g').value);
-      const b = parseInt(document.getElementById('text-b').value);
-      state.textColor = rgbToHex(r, g, b);
-      applyState();
-    }
-
-    ['text-r', 'text-g', 'text-b'].forEach(id => {
-      document.getElementById(id).addEventListener('input', updateTextColorFromRgb);
-    });
-
-    document.getElementById('hex-text-color').addEventListener('change', (e) => {
-      let v = e.target.value.trim();
-      if (!v.startsWith('#')) v = '#' + v;
-      if (/^#[0-9A-Fa-f]{6}$/.test(v)) {
-        state.textColor = v.toUpperCase();
-        applyState();
+    document.getElementById('hex-bg-color').addEventListener('input', (e) => {
+      let val = e.target.value.trim();
+      if (!val.startsWith('#')) val = '#' + val;
+      if (/^#[0-9A-Fa-f]{6}$/.test(val)) {
+        state.bgColor = val;
+        applyState(true);
       }
     });
 
-    // Bg Color RGB & Hex
-    function updateBgColorFromRgb() {
-      const r = parseInt(document.getElementById('bg-r').value);
-      const g = parseInt(document.getElementById('bg-g').value);
-      const b = parseInt(document.getElementById('bg-b').value);
-      state.bgColor = rgbToHex(r, g, b);
-      applyState();
-    }
-
-    ['bg-r', 'bg-g', 'bg-b'].forEach(id => {
-      document.getElementById(id).addEventListener('input', updateBgColorFromRgb);
-    });
-
-    document.getElementById('hex-bg-color').addEventListener('change', (e) => {
-      let v = e.target.value.trim();
-      if (!v.startsWith('#')) v = '#' + v;
-      if (/^#[0-9A-Fa-f]{6}$/.test(v)) {
-        state.bgColor = v.toUpperCase();
-        applyState();
-      }
-    });
-
-    // Effects
+    // Visual FX
     document.getElementById('btn-fx-glow').addEventListener('click', () => {
       state.glow = !state.glow;
-      applyState();
+      applyState(true);
     });
     document.getElementById('btn-fx-stroke').addEventListener('click', () => {
       state.stroke = !state.stroke;
-      applyState();
+      applyState(true);
     });
     document.getElementById('btn-fx-led').addEventListener('click', () => {
       state.led = !state.led;
-      applyState();
+      applyState(true);
     });
     document.getElementById('btn-fx-mirror').addEventListener('click', () => {
       state.mirror = !state.mirror;
-      applyState();
+      applyState(true);
     });
     document.getElementById('btn-fx-flash').addEventListener('click', () => {
       state.flash = !state.flash;
-      applyState();
+      applyState(true);
     });
 
-    window.addEventListener('resize', resetPositions);
+    window.addEventListener('resize', () => {
+      initPosition();
+    });
 
-    // Initial setup
-    applyState();
-    lastTime = performance.now();
+    // Boot
+    applyState(false);
     animFrame = requestAnimationFrame(loop);
     triggerToolbarVisibility();
 
-    // Auto fade hint after 5s
     setTimeout(() => {
       tapHint.classList.add('fade-out');
-    }, 5000);
+    }, 4000);
 
-    // Keep screen on if bridge is available
     if (window.Toolbox && window.Toolbox.system && window.Toolbox.system.keepScreenOn) {
       window.Toolbox.system.keepScreenOn(true);
     }

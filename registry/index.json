@@ -1233,9 +1233,9 @@
         "params": {}
       },
       "banners": [],
-      "size": 35149,
-      "md5": "b3fc34ff7c44da45513ada202319a023",
-      "sha256": "a73f6525f0b04e554b53790efc5e72cb630a3cecea43b924862ac9e76513a621",
+      "size": 40547,
+      "md5": "55d59f5aa616f0d6bcab6a894871257b",
+      "sha256": "9502fa41d133c4f1ff2024fe36a85ba5bd09e9496dbb50fd81bc719863db6f63",
       "isOfficial": true,
       "downloadUrls": {
         "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/releases/download/plugins/handheld-bulletin.zip",
@@ -2353,9 +2353,9 @@
         "params": {}
       },
       "banners": [],
-      "size": 217497,
-      "md5": "e50dcbf15a21d45614fe4d1e4c089fcc",
-      "sha256": "a5cc5689d74079f4ee478443c0ebfcb0543e05b7ff17a484d3faa3437da320fb",
+      "size": 217904,
+      "md5": "929ae30e3b1cdc2276dc972a52cb6664",
+      "sha256": "65156113ea213b112f434c046e7d666a8cd34e1ef8207b12c8dd064908ce87bf",
       "isOfficial": true,
       "downloadUrls": {
         "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/releases/download/plugins/petpet-generator.zip",
@@ -2562,23 +2562,16 @@
     {
       "id": "ssh-terminal",
       "name": "SSH 安全终端",
-      "version": "2.0.0",
+      "version": "2.0.1",
       "minAppVersion": "1.2.0",
       "category": "network",
       "platforms": [
         "windows",
         "android"
       ],
-      "executionType": "webview",
-      "engineType": "webview",
-      "webViewRunner": {
-        "entry": "dist/index.html",
-        "allowClipboard": true,
-        "keepScreenOn": true,
-        "fullscreenOnStart": false,
-        "initialTheme": "dark"
-      },
-      "description": "Windows / Android 双端交互式 SSH 终端，支持密码、PEM / OpenSSH 私钥和私钥口令认证，首次连接 SHA256 主机指纹核对、已知主机校验、连接配置保存、ANSI 终端与移动端快捷键。认证信息不落盘。基于 Webview 动态富交互引擎运行。",
+      "executionType": "internal",
+      "engineType": "internal",
+      "description": "Windows / Android 双端原生交互式 SSH 安全终端，两级界面架构：支持密码、PEM / OpenSSH 私钥本地选择导入与口令认证，本地 AES-256 加密保存凭据；连接后独占全屏终端，具备二次确认快速断开、字号大跨度调节、ANSI 终端色彩与移动端快捷键。",
       "author": "Toolbox Team",
       "permissions": [
         "network"
@@ -2592,9 +2585,9 @@
         "handler": "ssh_terminal",
         "params": {}
       },
-      "size": 33819,
-      "md5": "1de48be82772621ad3e96af28a831441",
-      "sha256": "dad9ba806fe1585e128bcef7b9ac3ccb2815a405d08469e52b5cc8fe509ee6bb",
+      "size": 1642,
+      "md5": "7f6d956bee6fed4f35ad5d15fdab55a4",
+      "sha256": "e7a953c09b317f4e32d07fa39ac5388cf6e1da2b63a16ee6045226142ce9bb46",
       "isOfficial": true,
       "downloadUrls": {
         "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/releases/download/plugins/ssh-terminal.zip",
@@ -3400,22 +3393,15 @@
     {
       "id": "windows-uninstaller",
       "name": "软件卸载",
-      "version": "2.0.0",
+      "version": "2.0.1",
       "minAppVersion": "1.2.0",
       "category": "system",
       "platforms": [
         "windows"
       ],
-      "executionType": "webview",
-      "engineType": "webview",
-      "webViewRunner": {
-        "entry": "dist/index.html",
-        "allowClipboard": true,
-        "keepScreenOn": false,
-        "fullscreenOnStart": false,
-        "initialTheme": "dark"
-      },
-      "description": "Windows 桌面软件卸载：读取 32/64 位和当前用户/所有用户卸载注册表，支持搜索排序、官方卸载器和管理员权限。卸载后可扫描常见残留，默认不勾选，经用户确认后永久清理；不包含 Microsoft Store 应用管理。基于 Webview 动态富交互引擎运行。",
+      "executionType": "internal",
+      "engineType": "internal",
+      "description": "Windows 桌面软件卸载：读取 32/64 位和当前用户/所有用户卸载注册表，支持搜索排序、官方卸载器和管理员权限。卸载后可扫描常见残留，默认不勾选，经用户确认后永久清理；不包含 Microsoft Store 应用管理。",
       "author": "Toolbox Team",
       "permissions": [],
       "icon": {
@@ -3434,9 +3420,9 @@
           "message": "卸载完成后会扫描常见残留；默认不勾选，只有你确认的项目才会永久删除。"
         }
       ],
-      "size": 32759,
-      "md5": "d0b37ff84fd69402bf51cd7a53e1f276",
-      "sha256": "42cc611ee4a726a0ebd215e7fc8d9abd0db8656776e8b3167b4a67af50017983",
+      "size": 1291,
+      "md5": "feae8c794257284ed401e0f7558b78a6",
+      "sha256": "21e9d4ca79fc2a214c4d0d1fa1bf30b07086005b7e4d8c460d2dd5195d4560c9",
       "isOfficial": true,
       "downloadUrls": {
         "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/releases/download/plugins/windows-uninstaller.zip",
