@@ -1233,9 +1233,9 @@
         "params": {}
       },
       "banners": [],
-      "size": 46858,
-      "md5": "266166405311e070bd18fc82a6c0c2bf",
-      "sha256": "9839ffd828276e428d4e23c6bfb21efdcec97ad87d6bc1b97e7b8b38c3ee729d",
+      "size": 45531,
+      "md5": "3b4836149ceda2d3a88b1333ce6ba55a",
+      "sha256": "307feec3573a8b05412ece727d6d4365aa6986beca9aa136048e7e1d0956816a",
       "isOfficial": true,
       "downloadUrls": {
         "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/releases/download/plugins/handheld-bulletin.zip",
@@ -2353,9 +2353,9 @@
         "params": {}
       },
       "banners": [],
-      "size": 225088,
-      "md5": "a6d7db4967214607a6195ac13ae24f7b",
-      "sha256": "3b274dcc9f8fcb276153469c86e300d83a194e2370d9dda6c5bd76e890d195da",
+      "size": 223176,
+      "md5": "a5045396c7dcca5e8d5ecaa46bc75649",
+      "sha256": "e0161baa870d8127d183b03bb57abd201e6956701957af5444b228a1e42ccfd4",
       "isOfficial": true,
       "downloadUrls": {
         "gitee": "https://gitee.com/sujiuovo/toolbox-community-registry/releases/download/plugins/petpet-generator.zip",
